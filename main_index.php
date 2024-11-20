@@ -25,8 +25,11 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 <body>
 
 <?php include 'header.php'; ?>
+
 <div class="layout">
-    <?php include 'side_navbar.php'; ?>
+
+    <?php include 'sidebar_nav.php'; ?>
+
     <div class="main-content">
         <?php include 'main.php'; ?>
     </div>
