@@ -1,4 +1,7 @@
 <?php
+
+
+
     require_once __DIR__.'/../../../database/dbconnection.php';
     include_once __DIR__.'/../../../config/settings-configuration.php';
     require_once __DIR__.'/../../../src/vendor/autoload.php';
@@ -471,6 +474,7 @@
     }   
 
     if(isset($_POST['btn-signup'])){
+    
         $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);
         $_SESSION['not_verify_email'] = trim($_POST['email']);
         $_SESSION['not_verify_password'] = trim($_POST['password']);
@@ -480,6 +484,7 @@
 
         $addAdmin = new ADMIN();
         $addAdmin-> sendOtp($otp, $email);
+
     }
 
     if(isset($_POST['btn-verify'])){
@@ -503,6 +508,7 @@
 
         $admindSignin = new ADMIN();
         $admindSignin->adminSignin($email, $password, $csrf_token);
+
     }
 
     if(isset($_GET['admin_signout'])){
