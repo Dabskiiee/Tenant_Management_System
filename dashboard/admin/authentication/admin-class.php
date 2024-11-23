@@ -1,7 +1,4 @@
 <?php
-
-
-
     require_once __DIR__.'/../../../database/dbconnection.php';
     include_once __DIR__.'/../../../config/settings-configuration.php';
     require_once __DIR__.'/../../../src/vendor/autoload.php';
@@ -117,11 +114,11 @@
             }
         }
 
-        public function verifyOTP($fullname, $email, $password, $tokencode, $otp, $csrf_token) {
+        public function verifyOTP($username, $email, $password, $tokencode, $otp, $csrf_token) {
             if($otp == $_SESSION['OTP']){
                 unset($_SESSION['OTP']);
                 
-                $this->addAdmin($csrf_token, $fullname, $email, $password);
+                $this->addAdmin($csrf_token, $username, $email, $password);
 
                 $subject = "VERIFICATION SUCCESS";
                 $message = "
@@ -194,7 +191,7 @@
             $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
             echo "<script>alert('OTP Verified and Admin Added Successfully, Thank You :)'); window.location.href = '../../../index.php';</script>";
 
-            unset($_SESSION['not_verify_fullname']);
+            unset($_SESSION['not_verify_username']);
             unset($_SESSION['not_verify_email']);
             unset($_SESSION['not_verify_password']);
 
@@ -207,7 +204,7 @@
          }
      }
 
-        public function addAdmin($csrf_token, $fullname, $email, $password)
+        public function addAdmin($csrf_token, $username, $email, $password)
         {
             $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email");
             $stmt->execute(array(":email" => $email));
@@ -226,10 +223,10 @@
 
             $hash_password = md5($password);
 
-            $stmt = $this->runQuery('INSERT INTO user (fullname, email, password) VALUES (:fullname, :email, :password)');
+            $stmt = $this->runQuery('INSERT INTO user (username, email, password) VALUES (:username, :email, :password)');
             
             $exec = $stmt->execute(array(
-                ":fullname" => $fullname,
+                ":username" => $username,
                 ":email" => $email,
                 ":password" => $hash_password
             ));
@@ -475,7 +472,7 @@
 
     if(isset($_POST['btn-signup'])){
     
-        $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);
+        $_SESSION['not_verify_username'] = trim($_POST['username']);
         $_SESSION['not_verify_email'] = trim($_POST['email']);
         $_SESSION['not_verify_password'] = trim($_POST['password']);
 
@@ -489,7 +486,7 @@
 
     if(isset($_POST['btn-verify'])){
         $csrf_token = trim($_POST['csrf_token']);
-        $fullname =  $_SESSION['not_verify_fullname'];
+        $username =  $_SESSION['not_verify_username'];
         $email = $_SESSION['not_verify_email'];
         $password =  $_SESSION['not_verify_password'];
 
@@ -497,7 +494,7 @@
         $otp = trim($_POST['otp']);
 
         $adminVerify = new ADMIN();
-        $adminVerify->verifyOTP($fullname, $email, $password, $tokencode, $otp, $csrf_token);
+        $adminVerify->verifyOTP($username, $email, $password, $tokencode, $otp, $csrf_token);
 
     }
 
