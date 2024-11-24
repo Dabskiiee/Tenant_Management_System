@@ -1,0 +1,115 @@
+reset-password.css
+:root {
+    --primary-color: #6C9BB3; 
+    --secondary-color: #4a7a96; 
+    --background-color: #a0c4d7; 
+    --input-background: #dbe8f0; 
+    --button-background: #5a89a7; 
+    --button-hover-background: #3d6f85; 
+    --border-color: #a9b8c1; 
+    --text-color: #333333; 
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color); 
+    background-image: url(../img/reset.jpg); 
+    background-size: cover; 
+    background-position: center center; 
+    background-attachment: fixed;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+.con {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    background-color: var(--input-background);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    z-index: 1; 
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+label {
+    font-size: 16px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    display: block;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    color: var(--text-color);
+    background-color: var(--input-background);
+}
+
+input[type="password"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background-color: var(--button-background);
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover-background);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Responsive Design for small screens */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    h2 {
+        font-size: 20px;
+    }
+    input[type="password"],
+    button {
+        font-size: 14px;
+    }
+}

@@ -241,6 +241,8 @@
                 exit;
             }
             unset($_SESSION['csrf_token']);
+            
+
 
             $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
             $stmt->execute(array(":email" => $email, ":status" => "active"));
@@ -249,9 +251,14 @@
             if($stmt->rowCount() == 1){
                 if($userRow['status']  == "active"){
                     if($userRow['password'] == md5($password)){
+        
                         $activity = "Has succesfully signed in.";
                         $user_id = $userRow['id'];
-                        $this->logs($activity, $user_id);
+
+                        $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
+
+
+                        $this->logs($user_id, $guests, $activity );
 
                         $_SESSION['adminSession'] = $user_id;
                         echo "<script>alert('Welcome'); window.location.href = '../../../main_index.php'; </script>";
@@ -297,10 +304,10 @@
             $mail->Send();
         }
 
-        public function logs($activity, $user_id)
+        public function logs($user_id, $guests, $activity)
         {
-            $stmt = $this->runQuery("INSERT INTO logs (user_id, activity) VALUES (:user_id, :activity)");
-            $stmt->execute(array(":user_id" => $user_id, ":activity" => $activity));
+            $stmt = $this->runQuery("INSERT INTO logs (user_id,guests,activity) VALUES (:user_id,:guests,:activity)");
+            $stmt->execute(array(":user_id" => $user_id, ":guests" => $guests ,":activity" => $activity ));
         }
 
         public function isUserLoggedIn()

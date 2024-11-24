@@ -25,8 +25,13 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 <body>
 
 <?php include 'header.php'; ?>
+
 <div class="layout">
+
     <?php include 'sidebar_nav.php'; ?>
+
+    <?php include 'sidebar_nav.php'; ?>
+  
     <div class="main-content">
         <?php include './dashboard/user/user-dashboard.php'; ?>
     </div>
