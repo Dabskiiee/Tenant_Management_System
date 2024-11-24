@@ -12,6 +12,21 @@
     <title>Tenant_Management_System Login Page</title>
 </head>
 
+<body>
+   <div class="parent">
+    <div id="login" class="wrapper active"> 
+      <h1>Login</h1> <br>
+      <form action="dashboard/admin/authentication/admin-class.php" method="POST">
+          <input type="hidden" name="csrf_token" value="<?php echo $csrf_token?>">
+          <input type="email" name="email" placeholder="Enter Email" class="curve" required><br>
+          <input type="password" name="password" placeholder="Enter Password" class="curve" required><br>
+          <input type="number" name="guests" class="curve"><br>
+          <p class="recover">
+            <a href="forgot-password.php">Forgot Password?</a>
+          <button type="submit" name="btn-signin">Sign in</button>
+      </form>
+    </div>
+
 <body background>
 
     <div class="container" id="container">

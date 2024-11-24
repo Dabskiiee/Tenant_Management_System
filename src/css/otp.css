@@ -1,0 +1,84 @@
+:root {
+    --background-color: #e8f7f2; 
+    --primary-color: #0abab5;
+    --button-bg-color: #007d85; 
+    --button-hover-bg-color: #005f63; 
+    --icon-border-color: #b5e4e0; 
+    --icon-color-green: #6fcf97; 
+    --icon-color-blue: #87d4dc; 
+}
+
+
+body{
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(-45deg, var(--button-hover-bg-color), var(--button-bg-color),var(--icon-color-green),var(--icon-border-color),var(--icon-color-blue));
+    background-size: 400% 400%;
+    animation: bg 12s ease infinite;
+    overflow-y: hidden;
+}
+
+.con{
+    display: flex;
+    position: relative;
+    justify-content:center;
+    margin: 30vh 30vw;
+}
+
+.container{
+    display: flex;
+    position: relative;
+    background-color: var(--icon-border-color);
+    width: 63ch;
+    height: 22vh;
+    flex-direction: column;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+.container > h2{
+    text-align: center;
+    color: var(--primary-color) ;
+    font-size: 2.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0.5em;
+}
+
+.container > form{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+input{
+    padding:0.5em;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0.288);
+    width: 98%;
+    margin-top: 0.5em;
+}
+
+button{
+    font-weight: bold;
+    border-radius: 7.5px;
+    background-color: var(--button-bg-color);
+    padding: 0.75em;
+    margin: 0em 1.5em;
+    margin-top: 0.5em;
+    width: 92.5%;
+    
+}
+button:hover{
+    background-color: var(--button-hover-bg-color);
+}
+@keyframes bg {
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 100%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+    
+}

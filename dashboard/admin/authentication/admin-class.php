@@ -234,6 +234,7 @@
         }
 
         public function adminSignin($email, $password, $csrf_token)
+
         {
             try {
                 // CSRF Token Validation
@@ -288,6 +289,54 @@
         
         
 
+
+    {
+        try{
+            if(!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)){
+                echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
+                exit;
+            }
+            unset($_SESSION['csrf_token']);
+            
+
+
+            $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
+            $stmt->execute(array(":email" => $email, ":status" => "active"));
+            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($stmt->rowCount() == 1){
+                if($userRow['status']  == "active"){
+                    if($userRow['password'] == md5($password)){
+        
+                        $activity = "Has succesfully signed in.";
+                        $user_id = $userRow['id'];
+
+                        $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
+
+
+                        $this->logs($user_id, $guests, $activity );
+
+                        $_SESSION['adminSession'] = $user_id;
+                        echo "<script>alert('Welcome'); window.location.href = '../../../main_index.php'; </script>";
+                        exit;
+                    }else{
+                        echo "<script>alert('Password is incorrect.'); window.location.href = '../../../index.php'; </script>";
+                        exit;
+                    }
+                }else{
+                    echo "<script>alert('Entered Email is not verify.'); window.location.href = '../../../index.php'; </script>";
+                    exit;
+                }
+            }else{
+                echo "<script>alert('No Account Found.'); window.location.href = '../../../index.php'; </script>";
+                exit;
+            }
+           
+        }catch(PDOException $ex){
+            echo $ex->getMessage();
+        }
+    }
+
         public function adminSignout()
         {
             unset($_SESSION['adminSession']);
@@ -320,6 +369,7 @@
 
         public function isUserLoggedIn()
         {
+
             if (isset($_SESSION['adminSession']) && $_SESSION['adminSession']) {
                 return true;
             } elseif (isset($_SESSION['userSession']) && $_SESSION['userSession']) {
@@ -328,6 +378,13 @@
             return false;
         }
         
+
+
+            if(isset($_SESSION['adminSession'])){
+                return true;
+            }
+            
+        }
 
    
         public function redirect()
@@ -372,7 +429,11 @@
                 ));
 
                 // Prepare the reset link
+
                 $resetLink = "localhost/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
+                $resetLink = "localhost/Phps/ACTIVITY1_2/reset-password.php?token=" . $token . "&id=" . $userId;
+
 
                 // Email Subject and Body
                 $subject = "Password Reset Request";
