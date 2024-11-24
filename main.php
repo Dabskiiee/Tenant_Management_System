@@ -1,4 +1,3 @@
 <div class="main-content">
-    <h1>Welcome to the Dashboard</h1>
-    <p>Work in progress palang po.</p>
+    <h1>THIS IS ADMIN HOME PAGE <?php echo $user_data['fullname']; ?></h1>
 </div>

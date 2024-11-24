@@ -373,6 +373,8 @@
 
                 // Prepare the reset link
                 $resetLink = "localhost/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+                $resetLink = "localhost/Phps/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
 
                 // Email Subject and Body
                 $subject = "Password Reset Request";
