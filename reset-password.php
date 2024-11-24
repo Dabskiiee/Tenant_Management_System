@@ -24,7 +24,7 @@ $token = $_GET['token'];
 <head>
     <meta charset="UTF-8">
     <title>Reset Password</title>
-    <link rel="stylesheet" href="src/css/reset-password.css">
+    <link rel="stylesheet" href="src/css/reset-passwordd.css">
 </head>
 <body>
     <div class = "con">
