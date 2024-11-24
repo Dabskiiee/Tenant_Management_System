@@ -1,143 +1,222 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 
 :root {
-    --background-color: #e8f7f2; 
-    --primary-color: #0abab5;
-    --button-bg-color: #007d85; 
-    --button-hover-bg-color: #005f63; 
-    --icon-border-color: #b5e4e0; 
-    --icon-color-green: #6fcf97; 
-    --icon-color-blue: #87d4dc; 
+    --font-family: 'Montserrat', sans-serif;
+    --bg-color: #c9d6ff;
+    --bg-gradient: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    --container-bg-color: #fff;
+    --container-border-radius: 30px;
+    --container-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    --primary-color: #42a4eb;
+    --primary-gradient: linear-gradient(to right, #06a0ddc0, #1369a6a8);
+    --secondary-color: #eee;
+    --text-color: #333;
+    --font-size-small: 12px;
+    --font-size-medium: 14px;
+    --font-size-large: 16px;
+    --btn-padding: 10px 45px;
+    --btn-border-radius: 8px;
+    --transition-duration: 0.6s;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-family);
 }
 
 body {
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
-    margin: 0; 
-    background-image: url('../img/loginsignupbg.jpg');
+    background-image: url('../img/signup.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-}
-
-.parent {
-    display: flex; 
-    justify-content: center; 
-    align-items: flex-start; 
-    gap: 400px; 
-    margin: 0 auto; 
-}
-
-.wrapper {
-    width: 330px; 
-    padding: 2rem 0 2.9rem 0;
-    background: #fff;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .container {
-    width: 330px; 
-    padding: 2rem 0 1rem 0;
-    background: #fff;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    background-color: var(--container-bg-color);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--container-box-shadow);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
 }
 
+.container p {
+    font-size: var(--font-size-medium);
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
 
+.container span {
+    font-size: var(--font-size-small);
+}
 
-    .recover {
-        text-align: right;
-        font-size: 0.8rem;
-        margin: 0.2rem 1.7rem 0 0;
+.container a {
+    color: var(--text-color);
+    font-size: var(--font-size-small);
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: var(--font-size-small);
+    padding: var(--btn-padding);
+    border: 1px solid transparent;
+    border-radius: var(--btn-border-radius);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background var(--transition-duration);
+}
+
+.container button.hidden {
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.container form {
+    background-color: var(--container-bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input {
+    background-color: var(--secondary-color);
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: var(--font-size-small);
+    border-radius: var(--btn-border-radius);
+    width: 100%;
+    outline: none;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all var(--transition-duration) ease-in-out;
+}
+
+.sign-in {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in {
+    transform: translateX(100%);
+}
+
+.sign-up {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move var(--transition-duration);
+}
+
+@keyframes move {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
     }
-
-    h1 {
-        font-size: 2rem;
-        color: var(--primary-color);
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
     }
+}
 
-    p {
-        margin-bottom: 1.7rem;
-    }
+.forgot-pass:hover{
+    color: blue;
+}
+.toggle-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all var(--transition-duration) ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
 
-    form input {
-        width: 85%;
-        outline: none;
-        border: none;
-        background: var(--background-color);
-        padding: 12px 14px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-    }
+.container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
 
-    button {
-        font-size: 1.1rem;
-        margin-top: 1rem;
-        padding: 8px 0;
-        border-radius: 5px;
-        outline: none;
-        border: none;
-        width: 85%;
-        background: var(--button-bg-color);
-        color: #fff;
-        cursor: pointer;
-    }
+.toggle {
+    background-color: var(--primary-color);
+    height: 100%;
+    background: var(--primary-gradient);
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all var(--transition-duration) ease-in-out;
+}
 
-    button:hover {
-        background: var(--button-hover-bg-color);
-    }
+.container.active .toggle {
+    transform: translateX(50%);
+}
 
-    .or {
-        font-size: 0.8rem;
-        margin-top: 1.5rem;
-    }
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all var(--transition-duration) ease-in-out;
+}
 
-    .icons i {
-        color: var(--primary-color);
-        padding: 00.8rem 1.5rem;
-        border-radius: 10px;
-        margin-left: .9rem;
-        font-size: 1.5rem;
-        cursor: pointer;
-        border: 2px solid var(--icon-border-color);
-    }
+.toggle-left {
+    transform: translateX(-200%);
+}
 
-    .icons i:hover {
-        color: #fff !important;
-        background: var(--primary-color);
-        transition: 1s;
-    }
+.container.active .toggle-left {
+    transform: translateX(0);
+}
 
-    .icons i:first-child {
-        color: var(--icon-color-green);
-    }
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
+}
 
-    .icons i:last-child {
-        color: var(--icon-color-blue);
-    }
-
-    .not-member {
-        font-size: 0.8rem;
-        margin-top: 1.4rem;
-    }
-
-    .not-member a {
-        color: var(--button-bg-color);
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
+.container.active .toggle-right {
+    transform: translateX(200%);
+}
