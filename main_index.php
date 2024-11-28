@@ -6,7 +6,7 @@ require_once 'dashboard/admin/authentication/admin-class.php';
 $admin = new ADMIN();
 
 if(!$admin->isUserLoggedIn()){
-    $admin->redirect('../../../main_index');
+    $admin->redirect();
 }
 
 $stmt = $admin->runQuery("SELECT * FROM user WHERE id = :id");

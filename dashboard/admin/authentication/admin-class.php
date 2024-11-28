@@ -189,7 +189,7 @@
             </html>";
 
             $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-            echo "<script>alert('OTP Verified and Admin Added Successfully, Thank You :)'); window.location.href = '../../../index.php';</script>";
+            echo "<script>alert('OTP Verified and Admin Added Successfully, Thank You 🙂'); window.location.href = '../../../index.php';</script>";
 
             unset($_SESSION['not_verify_fullname']);
             unset($_SESSION['not_verify_email']);
@@ -234,6 +234,7 @@
         }
 
         public function adminSignin($email, $password, $csrf_token)
+
     {
         try{
             if(!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)){
@@ -251,35 +252,62 @@
             if($stmt->rowCount() == 1){
                 if($userRow['status']  == "active"){
                     if($userRow['password'] == md5($password)){
-        
-                        $activity = "Has succesfully signed in.";
-                        $user_id = $userRow['id'];
 
-                        $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
-
-
-                        $this->logs($user_id, $guests, $activity );
-
-                        $_SESSION['adminSession'] = $user_id;
-                        echo "<script>alert('Welcome'); window.location.href = '../../../main_index.php'; </script>";
-                        exit;
-                    }else{
-                        echo "<script>alert('Password is incorrect.'); window.location.href = '../../../index.php'; </script>";
-                        exit;
-                    }
-                }else{
-                    echo "<script>alert('Entered Email is not verify.'); window.location.href = '../../../index.php'; </script>";
+        {
+            try {
+                // CSRF Token Validation
+                if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+                    echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
                     exit;
                 }
-            }else{
-                echo "<script>alert('No Account Found.'); window.location.href = '../../../index.php'; </script>";
-                exit;
+                unset($_SESSION['csrf_token']);
+
+        
+                // Query to fetch user details
+                $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
+                $stmt->execute(array(":email" => $email, ":status" => "active"));
+                $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                if ($stmt->rowCount() == 1) {
+                    // Check if user is active
+                    if ($userRow['status'] == "active") {
+                        // Validate password (consider using password_hash and password_verify for security)
+                        if ($userRow['password'] == md5($password)) {
+                            $activity = "Has successfully signed in.";
+                            $user_id = $userRow['id'];
+                            $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
+                            $this->logs($user_id, $guests, $activity );
+                            // Store user in session
+                            $_SESSION['userSession'] = $user_id;
+        
+                            // Redirect based on usertype
+                            if ($userRow['usertype'] === "admin") {
+                                echo "<script>alert('Welcome, Admin!'); window.location.href = '../../../admin_dashboard.php'; </script>";
+                            } elseif ($userRow['usertype'] === "user") {
+                                echo "<script>alert('Welcome, User!'); window.location.href = '../../../user_dashboard.php'; </script>";
+                            } else {
+                                echo "<script>alert('Invalid user type.'); window.location.href = '../../../index.php'; </script>";
+                            }
+                            exit;
+                        } else {
+                            echo "<script>alert('Password is incorrect.'); window.location.href = '../../../index.php'; </script>";
+                            exit;
+                        }
+                    } else {
+                        echo "<script>alert('Entered email is not verified.'); window.location.href = '../../../index.php'; </script>";
+                        exit;
+                    }
+                } else {
+                    echo "<script>alert('No account found for this email.'); window.location.href = '../../../index.php'; </script>";
+                    exit;
+                }
+            } catch (PDOException $ex) {
+                echo $ex->getMessage();
             }
-           
-        }catch(PDOException $ex){
-            echo $ex->getMessage();
         }
-    }
+        
+        
+
         public function adminSignout()
         {
             unset($_SESSION['adminSession']);
@@ -312,11 +340,15 @@
 
         public function isUserLoggedIn()
         {
-            if(isset($_SESSION['adminSession'])){
+            if (isset($_SESSION['adminSession']) && $_SESSION['adminSession']) {
+                return true;
+            } elseif (isset($_SESSION['userSession']) && $_SESSION['userSession']) {
                 return true;
             }
-            
+            return false;
         }
+        
+
    
         public function redirect()
         {
@@ -361,6 +393,10 @@
 
                 // Prepare the reset link
                 $resetLink = "localhost/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
+                $resetLink = "localhost/Phps/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
+
 
                 // Email Subject and Body
                 $subject = "Password Reset Request";
@@ -542,4 +578,3 @@
         $adminReset = new ADMIN();
         $adminReset->resetPassword($token, $new_password, $csrf_token);
     }
-    
