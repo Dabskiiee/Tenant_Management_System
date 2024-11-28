@@ -20,7 +20,7 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/css/style.css">
-    <title>ADMIN DASHBOARD</title>
+    <title>Tenante || Information</title>
 </head>
 <body>
 
@@ -30,8 +30,10 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <?php include 'sidebar_nav.php'; ?>
 
+    <?php include 'sidebar_nav.php'; ?>
+  
     <div class="main-content">
-        <?php include 'main.php'; ?>
+        <?php include './dashboard/user/user-dashboard.php'; ?>
     </div>
 </div>
 </body>

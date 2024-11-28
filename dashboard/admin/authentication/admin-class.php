@@ -234,6 +234,25 @@
         }
 
         public function adminSignin($email, $password, $csrf_token)
+
+    {
+        try{
+            if(!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)){
+                echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
+                exit;
+            }
+            unset($_SESSION['csrf_token']);
+            
+
+
+            $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
+            $stmt->execute(array(":email" => $email, ":status" => "active"));
+            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if($stmt->rowCount() == 1){
+                if($userRow['status']  == "active"){
+                    if($userRow['password'] == md5($password)){
+
         {
             try {
                 // CSRF Token Validation
@@ -242,6 +261,7 @@
                     exit;
                 }
                 unset($_SESSION['csrf_token']);
+
         
                 // Query to fetch user details
                 $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
@@ -291,7 +311,7 @@
         public function adminSignout()
         {
             unset($_SESSION['adminSession']);
-            echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../index.php';</script>";
+            echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../../login.php';</script>";
             exit;
         }
 
@@ -373,7 +393,9 @@
 
                 // Prepare the reset link
                 $resetLink = "localhost/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
                 $resetLink = "localhost/Phps/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
+
 
 
                 // Email Subject and Body
