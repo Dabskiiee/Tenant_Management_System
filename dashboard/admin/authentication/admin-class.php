@@ -265,6 +265,8 @@
                                 echo "<script>alert('Welcome, Admin!'); window.location.href = '../../../admin_dashboard.php'; </script>";
                             } elseif ($userRow['usertype'] === "user") {
                                 echo "<script>alert('Welcome, User!'); window.location.href = '../../../user_dashboard.php'; </script>";
+                            } elseif ($userRow['usertype'] === "sub_admin") {
+                                echo "<script>alert('Welcome, Sub admin!'); window.location.href = '../../../sub_admin.php'; </script>";
                             } else {
                                 echo "<script>alert('Invalid user type.'); window.location.href = '../../../index.php'; </script>";
                             }
