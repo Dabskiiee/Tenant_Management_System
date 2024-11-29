@@ -7,9 +7,3 @@
     </div>
 </div>
 
-        <a href="#home" class="logo">MyWebsite</a>
-        <a href="#profile">Profile</a>
-        <a href="#settings">Settings</a>
-    </div>
-</div>
-

@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
+    overflow-y: hidden;
 }
 
 :root{
@@ -13,20 +14,14 @@
 
 }
 
-/* General Layout */
 .layout {
     display: flex;
-    height: 100vh;
 }
 
-/* Top Navbar styling */
 .top-navbar {
     width: 100%;
     background-color: #333;
     padding: 10px 0;
-    position: fixed;
-    top: 0;
-    z-index: 10;
 }
 
 .top-navbar-content {
@@ -58,29 +53,29 @@
 .side-navbar {
     width: 200px;
     background-color: #444;
-    padding-top: 60px; /* Adjust to make room for fixed top navbar */
-    position: relative;
-    min-height: 100%;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    min-height: 100vh;
 }
 
 .side-navbar a {
     display: block;
-    color: #f2f2f2;
+    color: #000000;
     padding: 10px 20px;
     text-decoration: none;
 }
-.side-navbar button{
-    background-color: #444;
-}
+
 .side-navbar a:hover {
     background-color: #575757;
 }
 
-/* Main Content */
+.active{
+    background-color: #acaaaa;
+}
+
 .main-content {
     flex-grow: 1;
-    padding: 80px 20px; /* Add padding for top navbar */
+    padding:20px; 
+    padding-top: 5.5vh;
     background-color: #f9f9f9;
 }
 
@@ -89,24 +84,37 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0.2em;
+    padding: 12.5px;
+    
 }
 h3{
     font-weight: bold;
 }
 .user-info {
     display: flex;
-    justify-content: space-around;
+    justify-content:space-evenly;
     background-color:#45d4ff;
+    align-items: center;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 80%;
+    width: 75vw;
+    height: 25vh;
+    transition: 1s;
+    border:10px solid #52b9d86b;
+    
 }
 
+
+.user-info:hover{
+    background-color:#00c3ff9d ;
+    border:1px solid #f8f8f8;
+    box-shadow: 0px 1.5px 15px 3px #00c3ff;
+}
 .profile-img {
-    width: 80px;
-    height: 80px;
+    width: 20ch;
+    height: 20vh;
     background-color: #ccc;
     border-radius: 50%;
     margin-right: 20px;
@@ -123,30 +131,55 @@ h3{
 /* Bills Section */
 .bills {
     display: grid;
+    padding-top: 1.5em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 80%;
-    margin: 0 auto;
+    column-gap: 10vw;
+    row-gap: 5vh;
+    width: 70vw;
+    height: 50vh;
+    margin: auto;
 }
 
-.bills div {
+.bills > div {
     background-color: #fff;
-    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.user-img {
+    width: 15ch;
+    height: 15vh;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
 .bills .water{
-    background-color: #5177e0;
+    background-color: #2c59d4;
+    border:10px solid #0044ff;
+    transition: 1s;
+    
 }
 .bills .rent{
-    background-color: #37df99;
+    background-color: rgb(235, 57, 57);
+    border:10px solid #ff0000;
+    transition: 1s;
+    
 }
 .bills .elec{
-    background-color: #f3e746;
+    background-color: rgb(251, 206, 80);
+    border: 10px,solid,#ffee00;
+    transition: 1s;
 }
 .bills .wifi{
-    background-color: #575757;
+    background-color: #e7e7e7;
+    border:10px solid #747474c2;
+    transition: 1s;
 }
 .bills h3 {
     margin-bottom: 10px;
@@ -157,21 +190,59 @@ h3{
     font-weight: bold;
 }
 
-/* Total Amount Section */
-.total-amount {
-    background-color: var(--text-color);
+#c_water{
+    background-color:#0044ff8a;
+    border: 4px,solid,#0044ff;
+    overflow-x: hidden;
+}
+
+#c_rent{
+    background-color:rgba(235, 57, 57, 0.781);
+    border: 4px,solid,#ff0000;
+}
+
+
+#c_elec{
+    background-color: rgb(255, 217, 0);
+    border: 4px,solid,rgba(255, 238, 0, 0.644);
+}
+
+#c_wifi{
+    background-color: #74747462;
+    border: 4px,solid,#747474c2;
+}
+
+
+.bills > .water:hover{
+    background-color: #0044ff;
+    border:1px solid #f8f8f8;
+    box-shadow: 0px 3px 15px 10px #0044ff93;
+}
+.bills > .rent:hover{
+    background-color: rgb(255, 0, 0);
+    border:1px solid #f8f8f8;
+    box-shadow: 0px 3px 15px 10px #ff000041;
+    
+}
+.bills > .elec:hover{
+    background-color: rgb(255, 217, 0);
+    border:1px solid #f8f8f8;
+    box-shadow: 0px 3px 15px 15px rgba(255, 238, 0, 0.404);
+}
+.bills > .wifi:hover{
+
+    background-color: #747474c2;
+    border:1px solid #f8f8f8;
+    box-shadow: 0px 3px 15px 15px #49494944;
+}
+
+.total-amount{
+    background-color: rgba(255, 255, 255, 0.459);
     padding: 20px;
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
-    width: 80%;
+    width: 50ch;
     font-weight: bold;
-}
-.total-amount h3 {
-    margin-bottom: 10px;
-}
-.total-amount h4 {
-    font-size: 1.5em;
-    color: #333;
 }

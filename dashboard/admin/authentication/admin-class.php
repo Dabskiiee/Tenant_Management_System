@@ -230,29 +230,34 @@
                 ":email" => $email,
                 ":password" => $hash_password
             ));
+            
+            $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email");
+            $stmt->execute(array(":email" => $email));
+            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            
+            $user_details = $userRow['id'];
+            $email= $userRow['email'];
+            $balance = 6500;
+            $electricity = 0;
+            $water = 0;
+            $rent = 5000;
+            $wifi = 1500;
+
+            
+            $datetime = new DateTime();
+
+
+            $datetime->modify('first friday of next month'); // This moves to the first Friday of next month
+            $datetime->modify('first friday of next month'); // This moves to the first Friday of the month after that
+
+            $due_date = $datetime->format('Y-m-d');
+
+            $this->user_bills($user_details, $email,$balance,$electricity, $water, $rent, $wifi,$due_date);
 
         }
 
         public function adminSignin($email, $password, $csrf_token)
-
-    {
-        try{
-            if(!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)){
-                echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
-                exit;
-            }
-            unset($_SESSION['csrf_token']);
-            
-
-
-            $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
-            $stmt->execute(array(":email" => $email, ":status" => "active"));
-            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if($stmt->rowCount() == 1){
-                if($userRow['status']  == "active"){
-                    if($userRow['password'] == md5($password)){
-
         {
             try {
                 // CSRF Token Validation
@@ -261,7 +266,6 @@
                     exit;
                 }
                 unset($_SESSION['csrf_token']);
-
         
                 // Query to fetch user details
                 $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
@@ -277,14 +281,106 @@
                             $user_id = $userRow['id'];
                             $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
                             $this->logs($user_id, $guests, $activity );
+
                             // Store user in session
                             $_SESSION['userSession'] = $user_id;
-        
+
+                          
+                        
                             // Redirect based on usertype
                             if ($userRow['usertype'] === "admin") {
                                 echo "<script>alert('Welcome, Admin!'); window.location.href = '../../../admin_dashboard.php'; </script>";
+                                
                             } elseif ($userRow['usertype'] === "user") {
-                                echo "<script>alert('Welcome, User!'); window.location.href = '../../../user_dashboard.php'; </script>";
+
+                                $stmt = $this->runQuery('SELECT due_date FROM user_bills WHERE email = :email');
+                                $stmt->execute([':email' => $userRow['email']]);
+                                $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                $due_date = $user_data['due_date']; 
+                                $due_date_timestamp = strtotime($due_date); 
+
+                                $cur_timestamp = time(); 
+                                $alert_date = strtotime($due_date . ' -3 days');
+
+                                if ($cur_timestamp >= $alert_date && $cur_timestamp < $alert_date + 86400) {
+                                    echo "<script>alert('3 days from now, Your rent will be on due!'); window.location.href = '../../user/user_index.php'; </script>";
+
+                                $subject = "UPCOMING RENT ON DUE";
+                                $message = "
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                    <meta charset='UTF-8'>
+                                    <title>UPCOMING RENT DUE</title>
+                                    <style>
+                                        body{
+                                        font-family: Arial, sans-serif;
+                                        background-color: #f5f5f5;
+                                        margin: 0;
+                                        padding: 0;
+                                    }
+                                    
+                                    .container{
+                                        max-width: 600px;
+                                        margin: 0 auto;
+                                        padding: 30px;
+                                        background-color: #ffffff;
+                                        border-radius: 4px;
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                    }
+                                    
+                                    h1{
+                                        color: #333333;
+                                        font-size: 24px;
+                                        margin-bottom: 20px;
+                                    }
+
+                                    p{
+                                        color: #666666;
+                                        font-size: 16px;
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .button{
+                                        display: inline-block;
+                                        padding: 12px 24px;
+                                        background-color: #0088cc;
+                                        color: #ffffff;
+                                        text-decoration: none;
+                                        border-radius: 4px;
+                                        font-size: 16px;
+                                        margin-top: 20px;
+                                    }
+
+                                    .logo{
+                                        display: block;
+                                        text-align: center;
+                                        margin-bottom: 30px;
+                                    }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class='container'>
+                                        <h1>Your Rent on due 3 days from now!</h1>
+                                        <p>Hello Tenant!,</p>
+                                        <p>So hi! I'm one of the moderators for Tenant! I like to inform you 3 days from now, you're rent is on due! </p>
+                                        <p>Please prepare your payment thank you!</p>
+                                        <p>Thank you!</p>
+                                    </div>
+                                </body>
+                                </html>";
+
+                                
+                            $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
+                                
+                                } elseif ($cur_timestamp >= $due_date_timestamp && $cur_timestamp < $due_date_timestamp + 86400) {
+                                    echo "<script>alert('GO TO YOUR LANDLORD! Your rent payment is NOW DUE!'); window.location.href = '../../user/user_index.php'; </script>";
+                                } else {
+                                    echo "<script>window.location.href = '../../user/user_index.php';</script>";
+                                }
+
                             } else {
                                 echo "<script>alert('Invalid user type.'); window.location.href = '../../../index.php'; </script>";
                             }
@@ -305,13 +401,11 @@
                 echo $ex->getMessage();
             }
         }
-        
-        
 
         public function adminSignout()
         {
             unset($_SESSION['adminSession']);
-            echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../../login.php';</script>";
+            echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../index.php';</script>";
             exit;
         }
 
@@ -336,6 +430,12 @@
         {
             $stmt = $this->runQuery("INSERT INTO logs (user_id,guests,activity) VALUES (:user_id,:guests,:activity)");
             $stmt->execute(array(":user_id" => $user_id, ":guests" => $guests ,":activity" => $activity ));
+        }
+
+        public function user_bills($user_details, $email,$balance,$electricity, $water, $rent, $wifi,$due_date)
+        {
+            $stmt = $this->runQuery("INSERT INTO user_bills (user_details,email,balance,electricity, water,rent,wifi, due_date) VALUES (:user_details,:email,:balance,:electricity,:water,:rent,:wifi,:due_date)");
+            $stmt->execute(array(":user_details" => $user_details,":email" => $email,":balance" => $balance, ":electricity" => $electricity,":water" => $water,":rent" => $rent,":wifi" => $wifi,":due_date" => $due_date));
         }
 
         public function isUserLoggedIn()
@@ -393,9 +493,7 @@
 
                 // Prepare the reset link
                 $resetLink = "localhost/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
-
                 $resetLink = "localhost/Phps/Tenant_Management_System/reset-password.php?token=" . $token . "&id=" . $userId;
-
 
 
                 // Email Subject and Body
@@ -578,3 +676,6 @@
         $adminReset = new ADMIN();
         $adminReset->resetPassword($token, $new_password, $csrf_token);
     }
+
+
+
