@@ -1,13 +1,13 @@
 <?php
-
 require_once __DIR__.'/../../../database/dbconnection.php';
 include_once __DIR__.'/../../../config/settings-configuration.php';
+require_once __DIR__.'/../../admin/authentication/admin-class.php';
 require_once __DIR__.'/../../../src/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-CLASS Comments{
+CLASS User{
 
         private $conn;
         private $settings;
@@ -23,5 +23,19 @@ CLASS Comments{
             $this->conn = $database->dbConnection();
     }
 
+    public function upload($to_whom,$type,$text){
+
+
+
+    }
     
+
+    
+}
+
+if (isset($_POST['btn-submit-sup'])) {
+    $to_whom = trim($_POST['person']);
+    $type =trim($_POST['type']);
+    $text =trim($_POST['message']);
+
 }
