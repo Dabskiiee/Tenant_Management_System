@@ -25,7 +25,7 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 <div class="layout">
 <div class="side-navbar">
     <a href="user_index.php">Dashboard</a>
-    <a href="user_profile.php">User Profile</a>
+    <a href="#messages">User Profile</a>
     <a href="user_about_us.php">About Us</a>
     <a href="user_support.php"class="active">Support</a>
     <button class="sign-out"> 
