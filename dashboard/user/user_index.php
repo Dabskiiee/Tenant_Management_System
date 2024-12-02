@@ -33,7 +33,11 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 <div class="side-navbar">
     <a href="#" class="active">Dashboard</a>
     <a href="#messages">User Profile</a>
+
     <a href="user_about_us.php">About Us</a>
+
+    <a href="#settings">About Us</a>
+
     <a href="user_support.php">Support</a>
     <button class="sign-out"> 
         <a href="dashboard/admin/authentication/admin-class.php?admin-signout">SIGN OUT</a>
