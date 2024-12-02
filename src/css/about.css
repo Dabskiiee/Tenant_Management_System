@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
+
+:root {
+    --primary-color: #4070f4;
+    --secondary-color: #333;
+    --background-color: #fff;
+    --font-size-h2: 90px;
+    --font-size-p: 18px;
+    --padding-small: 20px;
+    --padding-large: 90px;
+    --margin-small: 10px;
+    --margin-medium: 15px;
+    --margin-bottom: 20px;
+    --max-width-about: 1130px;
+    --pic-width: 45%;  /* Set the image width to 40% */
+    --text-width: 540px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.about-us {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    padding: var(--padding-large) 0;
+    background: var(--background-color);
+    margin-top: -10%;
+    flex-wrap: wrap;
+}
+
+.pic {
+    height: auto;
+    width: var(--pic-width);  /* Apply 40% width */
+    border-radius: 12px;
+    margin-bottom: var(--margin-small);
+}
+
+.about {
+    width: var(--max-width-about);
+    max-width: 85%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.text {
+    width: var(--text-width);
+}
+
+.text h2 {
+    color: var(--secondary-color);
+    font-size: var(--font-size-h2);
+    font-weight: 600;
+    margin-bottom: var(--margin-small);
+    text-align: center;
+}
+
+.text p {
+    color: var(--secondary-color);
+    font-size: var(--font-size-p);
+    line-height: 25px;
+    letter-spacing: 1px;
+    text-align: justify;
+}
+
+@media screen and (max-width: 768px) {
+    .about-us {
+        padding: 50px 0;
+    }
+
+    .about {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .pic {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto var(--margin-small) auto;
+    }
+
+    .text {
+        width: 100%;
+        text-align: center;
+        padding: 0 var(--padding-small);
+    }
+
+    .text h2 {
+        font-size: 50px;
+        margin-bottom: var(--margin-medium);
+    }
+
+    .text p {
+        font-size: 16px;
+        line-height: 22px;
+        padding: 0 var(--padding-small);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .text h2 {
+        font-size: 40px;
+    }
+
+    .text p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
