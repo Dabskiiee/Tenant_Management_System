@@ -304,7 +304,7 @@
                                 $alert_date = strtotime($due_date . ' -3 days');
 
                                 if ($cur_timestamp >= $alert_date && $cur_timestamp < $alert_date + 86400) {
-                                    echo "<script>alert('3 days from now, Your rent will be on due!'); window.location.href = '../../user/user_index.php'; </script>";
+                                echo "<script>alert('3 days from now, Your rent will be on due!'); window.location.href = '../../user/user_index.php'; </script>";
 
                                 $subject = "UPCOMING RENT ON DUE";
                                 $message = "
@@ -377,6 +377,77 @@
                                 
                                 } elseif ($cur_timestamp >= $due_date_timestamp && $cur_timestamp < $due_date_timestamp + 86400) {
                                     echo "<script>alert('GO TO YOUR LANDLORD! Your rent payment is NOW DUE!'); window.location.href = '../../user/user_index.php'; </script>";
+                                    
+                                    echo "<script>alert('3 days from now, Your rent will be on due!'); window.location.href = '../../user/user_index.php'; </script>";
+
+                                    $subject = "RENT DUE TODAY!!!!";
+                                    $message = "
+                                    <!DOCTYPE html>
+                                    <html>
+                                    <head>
+                                        <meta charset='UTF-8'>
+                                        <title>RENT DUE TODAY</title>
+                                        <style>
+                                            body{
+                                            font-family: Arial, sans-serif;
+                                            background-color: #f5f5f5;
+                                            margin: 0;
+                                            padding: 0;
+                                        }
+                                        
+                                        .container{
+                                            max-width: 600px;
+                                            margin: 0 auto;
+                                            padding: 30px;
+                                            background-color: #ffffff;
+                                            border-radius: 4px;
+                                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                        }
+                                        
+                                        h1{
+                                            color: #333333;
+                                            font-size: 24px;
+                                            margin-bottom: 20px;
+                                        }
+    
+                                        p{
+                                            color: #666666;
+                                            font-size: 16px;
+                                            margin-bottom: 10px;
+                                        }
+    
+                                        .button{
+                                            display: inline-block;
+                                            padding: 12px 24px;
+                                            background-color: #0088cc;
+                                            color: #ffffff;
+                                            text-decoration: none;
+                                            border-radius: 4px;
+                                            font-size: 16px;
+                                            margin-top: 20px;
+                                        }
+    
+                                        .logo{
+                                            display: block;
+                                            text-align: center;
+                                            margin-bottom: 30px;
+                                        }
+                                        </style>
+                                    </head>
+                                    <body>
+                                        <div class='container'>
+                                            <h1>Your Rent is DUE NOW!!</h1>
+                                            <p>Hello Tenant!,</p>
+                                            <p>So hi! I'm one of the moderators for Tenant! I like to inform you, your rent due is TODAY. THAT's ALL!</p>
+                                            <p>Please prepare your payment thank you!</p>
+                                            <p>Thank you!</p>
+                                        </div>
+                                    </body>
+                                    </html>";
+    
+                                    
+                                $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
                                 } else {
                                     echo "<script>window.location.href = '../../user/user_index.php';</script>";
                                 }
