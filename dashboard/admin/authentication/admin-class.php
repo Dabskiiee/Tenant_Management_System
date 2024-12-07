@@ -235,41 +235,39 @@
 
         public function adminSignin($email, $password, $csrf_token)
     {
-        try{
-            if(!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)){
+        try {
+            // CSRF Token Validation
+            if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
                 echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
                 exit;
             }
             unset($_SESSION['csrf_token']);
 
+            // Fetch user details based on email and active status
             $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email AND status = :status");
             $stmt->execute(array(":email" => $email, ":status" => "active"));
             $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($stmt->rowCount() == 1){
-                if($userRow['status']  == "active"){
-                    if($userRow['password'] == md5($password)){
-                        $activity = "Has succesfully signed in.";
-                        $user_id = $userRow['id'];
-                        $this->logs($activity, $user_id);
+            if ($stmt->rowCount() == 1) {
+                if ($userRow['password'] == md5($password)) {
+                    $activity = "Has successfully signed in.";
+                    $user_id = $userRow['id'];
+                    $this->logs($activity, $user_id);
 
-                        $_SESSION['adminSession'] = $user_id;
-                        echo "<script>alert('Welcome'); window.location.href = '../../../main_index.php'; </script>";
-                        exit;
-                    }else{
-                        echo "<script>alert('Password is incorrect.'); window.location.href = '../../../index.php'; </script>";
-                        exit;
-                    }
-                }else{
-                    echo "<script>alert('Entered Email is not verify.'); window.location.href = '../../../index.php'; </script>";
+                    $_SESSION['adminSession'] = $user_id;
+
+                    // Redirect the admin to the main index
+                    echo "<script>alert('Welcome'); window.location.href = '../../../main_index.php'; </script>";
+                    exit;
+                } else {
+                    echo "<script>alert('Incorrect password.'); window.location.href = '../../../index.php'; </script>";
                     exit;
                 }
-            }else{
-                echo "<script>alert('No Account Found.'); window.location.href = '../../../index.php'; </script>";
+            } else {
+                echo "<script>alert('No account found with this email or account is inactive.'); window.location.href = '../../../index.php'; </script>";
                 exit;
             }
-           
-        }catch(PDOException $ex){
+        } catch (PDOException $ex) {
             echo $ex->getMessage();
         }
     }

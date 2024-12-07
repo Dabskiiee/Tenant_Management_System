@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 require 'database/dbconnection.php';
 
-$user_id = '1'; // Fetch user ID from session
+$user_id = $_SESSION['adminSession'];
 
 // Instantiate the Database class and connect
 $db_instance = new Database();
@@ -148,6 +148,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
 
         <br>
         <a href="login.php"><button type="button">Log Out</button></a>
+        <br>
         <a href="main_index.php"><button type="button">Back</button></a>
     </div>
 </body>
