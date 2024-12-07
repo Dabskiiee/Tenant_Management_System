@@ -751,6 +751,3 @@
         $adminReset = new ADMIN();
         $adminReset->resetPassword($token, $new_password, $csrf_token);
     }
-
-
-
