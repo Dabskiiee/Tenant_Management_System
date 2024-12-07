@@ -1,21 +1,23 @@
 <?php
+
 require 'database/dbconnection.php';
+
+$user_id = '1'; // Fetch user ID from session
 
 // Instantiate the Database class and connect
 $db_instance = new Database();
 $conn = $db_instance->dbConnection();
 
-// Assume we fetch the user with ID 1 for simplicity
-$user_id = 1;
-
 // Fetch user data
-$sql = "SELECT * FROM users WHERE id = :id";
+$sql = "SELECT * FROM user WHERE id = :id";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize and capture form data
     $firstname = htmlspecialchars(trim($_POST['firstname']));
     $lastname = htmlspecialchars(trim($_POST['lastname']));
     $birthday = htmlspecialchars(trim($_POST['birthday']));
@@ -49,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($error_message)) {
         // Update user data including profile image
-        $update_sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, 
+        $update_sql = "UPDATE user SET firstname = :firstname, lastname = :lastname, 
                        birthday = :birthday, civil_status = :civil_status, gender = :gender, 
                        profile_image = :profile_image WHERE id = :id";
         $update_stmt = $conn->prepare($update_sql);
@@ -84,7 +86,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="src/css/profile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="sidebar">
