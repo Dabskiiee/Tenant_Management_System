@@ -147,7 +147,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         </form>
 
         <br>
-        <a href="../../logout.php"><button type="button">Log Out</button></a>
+        <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
         <br>
         <a href="main_index.php"><button type="button">Back</button></a>
     </div>
