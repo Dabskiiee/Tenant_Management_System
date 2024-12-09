@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Nov 30, 2024 at 10:49 AM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 09, 2024 at 05:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,7 +64,22 @@ INSERT INTO `logs` (`id`, `user_id`, `guests`, `activity`, `created_at`) VALUES
 (69, 49, 0, 'Has successfully signed in.', '2024-11-29 12:55:47'),
 (70, 49, 0, 'Has successfully signed in.', '2024-11-29 13:32:25'),
 (71, 49, 0, 'Has successfully signed in.', '2024-11-29 16:33:21'),
-(72, 49, 0, 'Has successfully signed in.', '2024-11-29 18:10:06');
+(72, 49, 0, 'Has successfully signed in.', '2024-11-29 18:10:06'),
+(73, 50, 0, 'Has successfully signed in.', '2024-12-07 14:54:51'),
+(74, 50, 0, 'Has successfully signed in.', '2024-12-07 15:01:03'),
+(75, 51, 1, 'Has successfully signed in.', '2024-12-07 15:13:10'),
+(76, 51, 0, 'Has successfully signed in.', '2024-12-07 15:14:33'),
+(77, 31, 0, 'Has successfully signed in.', '2024-12-07 15:14:40'),
+(78, 31, 0, 'Has successfully signed in.', '2024-12-07 15:16:32'),
+(79, 51, 0, 'Has successfully signed in.', '2024-12-07 15:17:01'),
+(80, 51, 0, 'Has successfully signed in.', '2024-12-07 15:23:40'),
+(81, 51, 0, 'Has successfully signed in.', '2024-12-07 15:23:51'),
+(82, 51, 0, 'Has successfully signed in.', '2024-12-07 15:39:00'),
+(83, 51, 0, 'Has successfully signed in.', '2024-12-07 15:39:38'),
+(84, 51, 0, 'Has successfully signed in.', '2024-12-07 15:42:00'),
+(85, 51, 0, 'Has successfully signed in.', '2024-12-07 15:42:07'),
+(86, 51, 0, 'Has successfully signed in.', '2024-12-07 15:42:17'),
+(87, 51, 0, 'Has successfully signed in.', '2024-12-07 15:42:37');
 
 -- --------------------------------------------------------
 
@@ -74,14 +89,15 @@ INSERT INTO `logs` (`id`, `user_id`, `guests`, `activity`, `created_at`) VALUES
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `profile_pic` varchar(400) DEFAULT NULL,
   `fullname` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `usertype` varchar(50) NOT NULL DEFAULT 'user',
-  `rent_bill` int(50) NOT NULL,
-  `water_bill` decimal(50,0) NOT NULL,
-  `elec_bill` decimal(50,0) NOT NULL,
-  `wifi_bill` int(50) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `birthday` date DEFAULT NULL,
+  `civil_status` enum('single','married','divorced','widowed') NOT NULL DEFAULT 'single',
+  `gender` enum('Male','Female','Other','') NOT NULL DEFAULT 'Other',
+  `profile_image` varchar(255) DEFAULT 'default_profile.png',
   `password` varchar(500) DEFAULT NULL,
   `reset_token` varchar(400) DEFAULT NULL,
   `token_expiry` datetime DEFAULT NULL,
@@ -94,10 +110,12 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `profile_pic`, `fullname`, `email`, `usertype`, `rent_bill`, `water_bill`, `elec_bill`, `wifi_bill`, `password`, `reset_token`, `token_expiry`, `status`, `tokencode`, `created_at`) VALUES
-(31, NULL, 'Adrian Miko C. Maglaqui', 'drpepper3k@gmail.com', 'user', 10000, 415, 1912, 1700, '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-11-23 06:09:43'),
-(33, NULL, 'alan john', 'ajjohn152129@gmail.com', 'admin', 0, 0, 0, 0, '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-24 06:46:26'),
-(49, NULL, 'adie', 'adiesayu928@gmail.com', 'user', 0, 0, 0, 0, '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-27 15:39:32');
+INSERT INTO `user` (`id`, `fullname`, `email`, `usertype`, `firstname`, `lastname`, `birthday`, `civil_status`, `gender`, `profile_image`, `password`, `reset_token`, `token_expiry`, `status`, `tokencode`, `created_at`) VALUES
+(31, 'Adrian Miko C. Maglaqui', 'drpepper3k@gmail.com', 'user', 'Adruia', 'Lolad', '0033-12-03', 'widowed', 'Female', 'uploads/profile_pictures/profile_6754667007c3b8.35262126.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-11-23 06:09:43'),
+(33, 'alan john', 'ajjohn152129@gmail.com', 'admin', '0', '0', '0000-00-00', '', 'Other', 'default_profile.png', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-24 06:46:26'),
+(49, 'adie', 'adiesayu928@gmail.com', 'user', '0', '0', '0000-00-00', '', 'Other', 'default_profile.png', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-27 15:39:32'),
+(50, 'Adrian Miko C. Maglaqui', 'alucifer757@gmail.com', 'user', '123', 'adasd123', '0023-12-31', 'divorced', 'Female', 'uploads/profile_pictures/profile_6754635193f7c9.56919858.png', 'c13367945d5d4c91047b3b50234aa7ab', NULL, NULL, 'active', NULL, '2024-12-07 14:48:31'),
+(51, 'Lelouch vi Britannia', 'idkfamhelpme@gmail.com', 'user', 'alsdkoka', 'Lelo123', '0144-04-04', 'single', 'Female', 'uploads/profile_pictures/profile_67546641d61165.02221014.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-07 15:13:00');
 
 -- --------------------------------------------------------
 
@@ -123,7 +141,9 @@ CREATE TABLE `user_bills` (
 
 INSERT INTO `user_bills` (`id`, `user_details`, `email`, `balance`, `electricity`, `water`, `rent`, `wifi`, `due_date`) VALUES
 (1, 31, 'drpepper3k@gmail.com', 0, 1912.15, 415.12, 5000, 1500, '2024-12-01'),
-(10, 49, 'adiesayu928@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-01-03');
+(10, 49, 'adiesayu928@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-01-03'),
+(11, 50, 'alucifer757@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07'),
+(12, 51, 'idkfamhelpme@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07');
 
 --
 -- Indexes for dumped tables
@@ -157,19 +177,19 @@ ALTER TABLE `user_bills`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `user_bills`
 --
 ALTER TABLE `user_bills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
