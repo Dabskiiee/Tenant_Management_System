@@ -47,8 +47,8 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
     <div>
         <div class="user-info-container">
             <div class="user-info">
-                <div class="profile-img">
-                    <!-- Profile image placeholder -->
+                <div class="profile-image-section">
+                    <img src="<?php echo htmlspecialchars($user_data2['profile_image'] ?? 'uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
                 </div>
                 <div class="details">
                     <h3>Name: <span><?php echo $user_data2['fullname']; ?></span></h3>
