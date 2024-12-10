@@ -450,6 +450,10 @@
                                     echo "<script>window.location.href = '../../user/user_index.php';</script>";
                                 }
 
+                            }elseif ($userRow['usertype'] === "landlord"){
+                                $_SESSION['adminSession'] = $user_id;
+                                echo "<script>alert('WELCOME LANDLORD!'); window.location.href = '../../landlord/landlord_home.php'; </script>";
+                                
                             } else {
                                 echo "<script>alert('Invalid user type.'); window.location.href = '../../../index.php'; </script>";
                             }
