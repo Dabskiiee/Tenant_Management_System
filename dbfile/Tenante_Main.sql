@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `itelec5`
+Database: `Tenante_Main`
 --
 
 -- --------------------------------------------------------
@@ -97,7 +97,7 @@ CREATE TABLE `user` (
   `birthday` date DEFAULT NULL,
   `civil_status` enum('single','married','divorced','widowed') NOT NULL DEFAULT 'single',
   `gender` enum('Male','Female','Other','') NOT NULL DEFAULT 'Other',
-  `profile_image` varchar(255) DEFAULT 'default_profile.png',
+  `profile_image` varchar(255) DEFAULT 'uploads/profile_pictures/default_profile.jpg',
   `password` varchar(500) DEFAULT NULL,
   `reset_token` varchar(400) DEFAULT NULL,
   `token_expiry` datetime DEFAULT NULL,
@@ -111,11 +111,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `fullname`, `email`, `usertype`, `firstname`, `lastname`, `birthday`, `civil_status`, `gender`, `profile_image`, `password`, `reset_token`, `token_expiry`, `status`, `tokencode`, `created_at`) VALUES
-(31, 'Adrian Miko C. Maglaqui', 'drpepper3k@gmail.com', 'user', 'Adruia', 'Lolad', '0033-12-03', 'widowed', 'Female', 'uploads/profile_pictures/profile_6754667007c3b8.35262126.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-11-23 06:09:43'),
-(33, 'alan john', 'ajjohn152129@gmail.com', 'admin', '0', '0', '0000-00-00', '', 'Other', 'default_profile.png', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-24 06:46:26'),
-(49, 'adie', 'adiesayu928@gmail.com', 'user', '0', '0', '0000-00-00', '', 'Other', 'default_profile.png', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-27 15:39:32'),
-(50, 'Adrian Miko C. Maglaqui', 'alucifer757@gmail.com', 'user', '123', 'adasd123', '0023-12-31', 'divorced', 'Female', 'uploads/profile_pictures/profile_6754635193f7c9.56919858.png', 'c13367945d5d4c91047b3b50234aa7ab', NULL, NULL, 'active', NULL, '2024-12-07 14:48:31'),
-(51, 'Lelouch vi Britannia', 'idkfamhelpme@gmail.com', 'user', 'alsdkoka', 'Lelo123', '0144-04-04', 'single', 'Female', 'uploads/profile_pictures/profile_67546641d61165.02221014.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-07 15:13:00');
+(0, 'Adrian', 'drpepper3k@gmail.com', 'user', 'Adruia', 'Lolad', '0033-12-03', 'widowed', 'Female', 'uploads/profile_pictures/profile_6754667007c3b8.35262126.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-11-23 06:09:43'),
+(0, 'alan john', 'ajjohn152129@gmail.com', 'admin', '0', '0', '0000-00-00', '', 'Other', 'default_profile.png', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-24 06:46:26'),
+(0, 'Miko', 'alucifer757@gmail.com', 'user', '123', 'adasd123', '0023-12-31', 'divorced', 'Female', 'uploads/profile_pictures/profile_6754635193f7c9.56919858.png', 'c13367945d5d4c91047b3b50234aa7ab', NULL, NULL, 'active', NULL, '2024-12-07 14:48:31'),
+(0, 'Lelouch vi Britannia', 'idkfamhelpme@gmail.com', 'user', 'alsdkoka', 'Lelo123', '0144-04-04', 'single', 'Female', 'uploads/profile_pictures/profile_67546641d61165.02221014.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-07 15:13:00');
 
 -- --------------------------------------------------------
 
@@ -140,10 +139,10 @@ CREATE TABLE `user_bills` (
 --
 
 INSERT INTO `user_bills` (`id`, `user_details`, `email`, `balance`, `electricity`, `water`, `rent`, `wifi`, `due_date`) VALUES
-(1, 31, 'drpepper3k@gmail.com', 0, 1912.15, 415.12, 5000, 1500, '2024-12-01'),
-(10, 49, 'adiesayu928@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-01-03'),
-(11, 50, 'alucifer757@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07'),
-(12, 51, 'idkfamhelpme@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07');
+(0, 2, 'drpepper3k@gmail.com', 0, 1912.15, 415.12, 5000, 1500, '2024-12-01'),
+(0, 3, 'adiesayu928@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-01-03'),
+(0, 4, 'alucifer757@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07'),
+(0, 5, 'idkfamhelpme@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07');
 
 --
 -- Indexes for dumped tables

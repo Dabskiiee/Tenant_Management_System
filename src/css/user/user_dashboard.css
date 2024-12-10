@@ -1,85 +1,56 @@
-*{
-    padding: 0;
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
-    overflow-y: hidden;
+    padding: 0;
+    background-color: #F1F8F8;
 }
 
-:root{
-    --main-color: #eeeeee;
-    --text-color: #C73659;
-    --box-color: #e2e2e2;
-    --shadow-color: #181818;
 
-}
-
-.layout {
-    display: flex;
-}
-
-.top-navbar {
-    width: 100%;
-    background-color: #333;
-    padding: 10px 0;
-}
-
-.top-navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.top-navbar a {
-    color: #f2f2f2;
-    text-decoration: none;
-    padding: 8px 16px;
-}
-
-.top-navbar a:hover {
-    background-color: #575757;
+.sidebar {
+    background-color: #0ABAB5; 
     color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    width: 220px;
+    top: 0;
+    left: 0;
 }
 
-.logo {
-    font-weight: bold;
-    font-size: 1.2em;
+.sidebar ul {
+    list-style: none;
+    padding: 0;
 }
 
-/* Side Navbar styling */
-.side-navbar {
-    width: 200px;
-    background-color: #444;
-    padding-top: 20px;
-    min-height: 100vh;
+.sidebar ul li {
+    margin: 20px 0;
 }
 
-.side-navbar a {
-    display: block;
-    color: #000000;
-    padding: 10px 20px;
+.sidebar ul li a {
+    color: white;
     text-decoration: none;
+    font-size: 18px;
+    display: block;
+    transition: all 0.3s ease;
 }
 
-.side-navbar a:hover {
-    background-color: #575757;
+.sidebar ul li a:hover {
+    background-color: #095E5E; 
+    padding-left: 10px;
 }
 
-.active{
-    background-color: #acaaaa;
-}
 
 .main-content {
-    flex-grow: 1;
-    padding:20px; 
-    padding-top: 5.5vh;
-    background-color: #f9f9f9;
+    margin-left: 240px; 
+    padding: 5px 15px;
+    color: #0A4444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-/* User Info Container */
 .user-info-container {
     display: flex;
     flex-direction: column;

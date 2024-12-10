@@ -178,3 +178,7 @@ button:hover {
     margin-bottom: 20px;
     width: 100%;
 }
+
+.active{
+    background-color: #acaaaa;
+}
