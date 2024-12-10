@@ -15,7 +15,7 @@ $stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
 $stmt2->execute(array(":id" => $_SESSION['userSession']));
 $user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-$total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + $user_data['wifi'];
+$total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + $user_data['wifi'] + $user_data['unpaid_amt'];
       
 ?>
 <!DOCTYPE html>
@@ -23,37 +23,38 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../src/css/style.css">
+    <link rel="stylesheet" href="../../src/css/user/user_dashboard.css">
     <title>Tenante || Information</title>
 </head>
 <body>
 
-<?php include '../../header.php'; ?>
+
 <div class="layout">
-<div class="side-navbar">
-    <a href="#" class="active">Dashboard</a>
-    <a href="#messages">User Profile</a>
-
-    <a href="user_about_us.php">About Us</a>
-
-    <a href="#settings">About Us</a>
-
-    <a href="user_support.php">Support</a>
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#" class="sidebar-link">Dashboard</a></li>
+            <li><a href="user_history.php" class="sidebar-link">Mailbox</a></li>
+            <li><a href="user_support.php" class="sidebar-link">Support</a></li>
+            <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
+            <li><a href="user_profile.php" class="sidebar-link" >Profile</a></li>
+        </ul>
+    </div>
     <button class="sign-out"> 
         <a href="dashboard/admin/authentication/admin-class.php?admin-signout">SIGN OUT</a>
     </button>
-</div>
+
     <div class="main-content">
     <div>
         <div class="user-info-container">
             <div class="user-info">
-                <div class="profile-img">
-                    <!-- Profile image placeholder -->
+                <div class="profile-image-section">
+                    <img src="<?php echo htmlspecialchars($user_data2['profile_image'] ?? 'uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
                 </div>
                 <div class="details">
                     <h3>Name: <span><?php echo $user_data2['fullname']; ?></span></h3>
                     <h3>Email: <span><?php echo $user_data['email']; ?></span></h3>
                     <h3>Balance: ₱<span><?php echo $user_data['balance']; ?></span></h3>
+                    <h3>Due date: <span><?php echo $user_data['due_date']; ?></span></h3>
                 </div>
             </div>
         </div>
@@ -98,7 +99,8 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
                 </div>  
         </div>
         <div class="total-amount">
-                <h3>Total Amount Payable:₱<?php echo $total ?></h3>
+                <h3>Total Amount Payable:₱<?php echo $total ?></h3><br>
+                <h3 style="color:blue;">Add:<span style="color:tomato;text-decoration: underline;">₱<?=$user_data['unpaid_amt'] ?></span></h3>
         </div> 
 </div>
 </body>

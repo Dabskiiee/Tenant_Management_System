@@ -16,33 +16,52 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../src/css/style.css">
+    <link rel="stylesheet" href="../../src/css/user/user_support.css">
     <title>Tenante || Information</title>
 </head>
 <body>
 
-<?php include '../../header.php'; ?>
+
 <div class="layout">
-<div class="side-navbar">
-    <a href="user_index.php">Dashboard</a>
-    <a href="#messages">User Profile</a>
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="user_index.php" class="sidebar-link">Dashboard</a></li>
+            <li><a href="user_history.php" class="sidebar-link">Mailbox</a></li>
+            <li><a href="#" class="sidebar-link">Support</a></li>
+            <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
+            <li><a href="user_profile.php" class="sidebar-link" >Profile</a></li>
+        </ul>
+    </div>
 
-    <a href="user_about_us.php">About Us</a>
-    <a href="user_support.php"class="active">Support</a>
-
-    <a href="#settings">About Us</a>
-    <a href="#"class="active">Support</a>
-
-    <button class="sign-out"> 
-        <a href="dashboard/admin/authentication/admin-class.php?admin-signout">SIGN OUT</a>
-    </button>
-</div>
     <div class="main-content">
+    
+        <h1>SUPPORT</h1>
 
-         <?php include 'support.php'; ?>
+        <form action="user_function/user-side.php" method="POST">
+            <br>
+                <label for="to whom">To:</label>
+                <select name="person" id="to_whom">
+                    <option value="Admin">Admin</option>
+                    <option value="Landlord">Landlord</option>
+                </select>
 
-         <?php include 'user_include.php'; ?>
+                <br>
+                <label for="kind">Type:</label>
+                <select name="type" id="kind">
+                    <option value="Report">Report</option>
+                    <option value="Comment">Comment</option>
+                    <option value="Request">Request</option>
+                </select>
 
+                <br>
+                <label for="message">Message:</label>
+                <input type="text" name="message">
+
+            <br>
+
+            <button type="submit"name="btn-submit-sup">submit</button>
+                
+        </form>
     </div>  
 </div>
 </body>

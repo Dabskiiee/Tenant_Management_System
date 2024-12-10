@@ -18,6 +18,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize and capture form data
+    $fullname = htmlspecialchars(trim($_POST['fullname']));
     $firstname = htmlspecialchars(trim($_POST['firstname']));
     $lastname = htmlspecialchars(trim($_POST['lastname']));
     $birthday = htmlspecialchars(trim($_POST['birthday']));
@@ -51,10 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($error_message)) {
         // Update user data including profile image
-        $update_sql = "UPDATE user SET firstname = :firstname, lastname = :lastname, 
+        $update_sql = "UPDATE user SET fullname = :fullname, firstname = :firstname, lastname = :lastname, 
                        birthday = :birthday, civil_status = :civil_status, gender = :gender, 
                        profile_image = :profile_image WHERE id = :id";
+
         $update_stmt = $conn->prepare($update_sql);
+
+        $update_stmt->bindParam(":fullname", $fullname, PDO::PARAM_STR);
         $update_stmt->bindParam(":firstname", $firstname, PDO::PARAM_STR);
         $update_stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
         $update_stmt->bindParam(":birthday", $birthday, PDO::PARAM_STR);
@@ -85,16 +89,16 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="../../src/css/profile.css">
+    <link rel="stylesheet" href="../../src/css/user/user_profile.css">
 </head>
 <body>
     <div class="sidebar">
         <ul class="sidebar-menu">
-            <li><a href="dashboard.php" class="sidebar-link">Dashboard</a></li>
-            <li><a href="history.php" class="sidebar-link">History</a></li>
-            <li><a href="profile.php" class="sidebar-link">Profile</a></li>
-            <li><a href="message.php" class="sidebar-link">Messages</a></li>
-            <li><a href="about.php" class="sidebar-link">About Us</a></li>
+            <li><a href="user_index.php" class="sidebar-link">Dashboard</a></li>
+            <li><a href="user_history.php" class="sidebar-link">Mailbox</a></li>
+            <li><a href="user_support.php" class="sidebar-link">Support</a></li>
+            <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
+            <li><a href="#" class="sidebar-link" >Profile</a></li>
         </ul>
     </div>
 
@@ -116,11 +120,15 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
             </div>
 
             <div class="profile-info-left">
+
+                <label for="fullname" class="profile-label">Username:</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Enter username" value="<?php echo htmlspecialchars($user['fullname']); ?>" required class="input-text">
+
                 <label for="firstname" class="profile-label">First Name:</label>
-                <input type="text" id="firstname" name="firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required class="input-text">
+                <input type="text" id="firstname" name="firstname" placeholder="Enter firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required class="input-text">
 
                 <label for="lastname" class="profile-label">Last Name:</label>
-                <input type="text" id="lastname" name="lastname" value="<?php echo htmlspecialchars($user['lastname']); ?>" required class="input-text">
+                <input type="text" id="lastname" name="lastname" placeholder="Enter lastname" value="<?php echo htmlspecialchars($user['lastname']); ?>" required class="input-text">
             </div>
 
             <div class="profile-info-right">
@@ -149,7 +157,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         <br>
         <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
         <br>
-        <a href="main_index.php"><button type="button">Back</button></a>
     </div>
 </body>
 </html>

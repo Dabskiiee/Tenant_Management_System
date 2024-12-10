@@ -23,6 +23,60 @@
     font-family: "Poppins", sans-serif;
 }
 
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F1F8F8;
+}
+
+
+.sidebar {
+    background-color: #0ABAB5; 
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    width: 220px;
+    top: 0;
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #095E5E; 
+    padding-left: 10px;
+}
+
+
+.main-content {
+    margin-left: 240px; 
+    padding: 5px 15px;
+    color: #0A4444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
 .about-us {
     display: flex;
     align-items: center;

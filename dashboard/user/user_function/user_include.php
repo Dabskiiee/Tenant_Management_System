@@ -8,12 +8,12 @@
 <body>
     <h1>SUPPORT</h1>
 
-    <form action="" method="POST">
+    <form action="user_function/user-side.php" method="POST">
     <br>
     <label for="to whom">To:</label>
     <select name="person" id="to_whom">
-        <option value="Admin">Admin</option>
-        <option value="Landlord">Landlord</option>
+        <option value="admin">Admin</option>
+        <option value="landlord">Landlord</option>
     </select>
 
     <br>
