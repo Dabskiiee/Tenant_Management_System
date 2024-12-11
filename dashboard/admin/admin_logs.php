@@ -34,7 +34,6 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="main-content">
         <h3>TODAY'S LOGS</h3>
-
         <br>
         <br>
 

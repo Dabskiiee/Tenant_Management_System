@@ -1,3 +1,7 @@
+<?php
+    include_once 'config/settings-configuration.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
