@@ -40,7 +40,7 @@ CREATE TABLE `email_config` (
 --
 
 INSERT INTO `email_config` (`id`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'maglaquimiko55@gmail.com', 'gdlp anev qwfm bxqb', '2024-09-22 00:44:32', NULL);
+(1, 'tenantemanagement@gmail.com', 'bqpn gijq kenu sxbl', '2024-09-22 00:44:32', NULL);
 
 -- --------------------------------------------------------
 

@@ -181,7 +181,7 @@
                     </div>
                     <h1>Welcome</h1>
                     <p>Hello, <strong>$email</strong></p>
-                    <p>Welcome to Adrian System</p>
+                    <p>Welcome to Tenante Management System</p>
                     <p>If you didn't sign up for an account, you can please ignore this email.</p>
                     <p>Thank you!</p>
                 </div>
@@ -493,7 +493,7 @@
             $mail->addAddress($email);
             $mail->Username = $smtp_email;
             $mail->Password = $smtp_password;
-            $mail->setFrom($smtp_email, "Adrian");
+            $mail->setFrom($smtp_email, "Tenante Management");
             $mail->Subject = $subject;
             $mail->msgHTML($message);
             $mail->Send();
