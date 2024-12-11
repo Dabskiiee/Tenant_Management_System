@@ -29,6 +29,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="admin_dashboard.php" class="sidebar-link">Tenants</a></li>
             <li><a href="#" class="sidebar-link">Logs</a></li>
             <li><a href="admin_comment.php" class="sidebar-link">Bulletin</a></li>
+            <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
         </ul>
     </div>
 

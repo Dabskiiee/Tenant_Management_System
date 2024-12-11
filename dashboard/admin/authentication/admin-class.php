@@ -273,25 +273,26 @@
                 $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
         
                 if ($stmt->rowCount() == 1) {
-                    // Check if user is active
-                    if ($userRow['status'] == "active") {
-                        // Validate password (consider using password_hash and password_verify for security)
-                        if ($userRow['password'] == md5($password)) {
+                    
+                    if ($userRow['status'] == "active") {               // Check if user is active
+
+                        if ($userRow['password'] == md5($password)) {               // Validate password (consider using password_hash and password_verify for security)
 
                                 $user_id = $userRow['id'];          //Stores user that will be put to every session based on usertype
 
                             if ($userRow['usertype'] === "admin") {     // Redirect based on usertype
                                 $_SESSION['adminSession'] = $user_id;
+                                $_SESSION['role'] = 'admin';
                                 echo "<script>alert('Welcome, Admin!'); window.location.href = '../admin_dashboard.php'; </script>";
                                 
                             } elseif ($userRow['usertype'] === "user") {
+
+                                $_SESSION['userSession'] = $user_id;    //ENSURES THAT ONLY THE USER WILL BE MONITORED TO THE LOGS TABLE
 
                                 $activity = "Has successfully signed in.";
                                 $name = $userRow['fullname'];                                
                                 $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
                                 $this->logs($user_id, $name, $guests, $activity);
-
-                                $_SESSION['userSession'] = $user_id;    //ENSURES THAT ONLY THE USER WILL BE MONITORED TO THE LOGS TABLE
 
                                 $stmt = $this->runQuery('SELECT due_date FROM user_bills WHERE email = :email');
                                 $stmt->execute([':email' => $userRow['email']]);
@@ -452,6 +453,8 @@
 
                             }elseif ($userRow['usertype'] === "landlord"){
                                 $_SESSION['adminSession'] = $user_id;
+                                $_SESSION['role'] = 'landlord';
+
                                 echo "<script>alert('WELCOME LANDLORD!'); window.location.href = '../../landlord/landlord_home.php'; </script>";
                                 
                             } else {
@@ -477,7 +480,11 @@
 
         public function adminSignout()
         {
-            unset($_SESSION['adminSession']);
+            if($_SESSION['role'] = 'admin' || $_SESSION['role'] = 'landlord'){
+                unset($_SESSION['adminSession']);
+                unset($_SESSION['role']);
+            }else
+                unset($_SESSION['userSession']);
             echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../index.php';</script>";
             exit;
         }
@@ -966,37 +973,85 @@ public function user_paid ($paid_user){
         } 
 
     
-public function approve_user($approve_user) {  //NOTIFIES THE USER ABOUT HIS/HER CONCERN 
-    try {
-        
-        $id=$approve_user;
-
-        $stmt=$this->runQuery('SELECT user_id,address,type FROM user_comments WHERE id=:id');
-        $stmt->execute([':id' => $id]);
-        $result=$stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($result){
-        $user_id=$result['user_id'];
-        $sent_by=$result['address'];
-        $type=$result['type'];
-        $notif="Your $type is approved and noted by this dormitory! We will take further action as soon as possible!";
-        
-        $this->user_notification($user_id, $sent_by ,$notif);
-
-        echo "<script>alert('APPROVAL SENT TO THE TENANT. '); window.location.href = 'admin_comment.php';</script>";
-
-        $stmt=$this->runQuery('DELETE FROM user_comments WHERE id=:id');
-        $stmt->execute([':id' => $id]);
-
-    }else{
-        echo "<script>alert('FAILED TO PROCESS the approval '); window.location.href = 'admin_comment.php';</script>";
-    }
-
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
+        public function approve_user($approve_user)
+        {  //NOTIFIES THE USER ABOUT HIS/HER CONCERN 
+    
+            try {
+                $id = $approve_user;
+    
+                $stmt = $this->runQuery('SELECT user_id,address,type FROM user_comments WHERE id=:id');
+                $stmt->execute([':id' => $id]);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+                if ($result) {
+                    $user = $result['user_id'];
+    
+                    $stmt1 = $this->runQuery('SELECT usertype FROM user WHERE id=:user');      //checks if the user type OF THE SENDER is landlord/user/admin
+                    $stmt1->execute([':user' => $user]);
+                    $user_data = $stmt1->fetch(PDO::FETCH_ASSOC);
+    
+                    $roleee = $user_data['usertype'];
+    
+                    if ($_SESSION['role'] == 'landlord') {
+    
+                        if ($roleee === 'user') { //kung yung nagsend sa kanya type nya ay user....
+                            $user_id = $user;
+                            $sent_by = $result['address'];
+                            $type = $result['type'];
+                            $notif = "Your $type is approved and noted by this dormitory! We will take further action as soon as possible!";
+    
+                            $this->user_notification($user_id, $sent_by, $notif);
+                            
+                            $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
+                            $stmt->execute([':id' => $id]);
+                            echo "<script>alert('Tenant eto oh para sayu yi3333'); window.location.href = '../landlord/landlord_comment.php';</script>";
+                        } else { //eto naman pag YUNG INAAPPROVE NI LANDLORD is indi user (which is impossible dapat mangyare kaya ganyan eror)
+                            echo "<script>alert('How? Dapat di mo to maaccess ah kasi delete lang yung sa landlord'); window.location.href = '../landlord/landlord_comment.php';</script>";
+                        }
+                        //landlord code
+                    } elseif ($_SESSION['role'] == 'admin') {
+                        if ($roleee === 'landlord') { //kung yung nagsend sa kanya type nya ay landlord....
+                            $user_id = $user;
+                            $address = $user_data['usertype'];
+                            $typee = $result['type'];
+                            $comment = "G lang ako boss sa $typee mo bastat ikaw!";
+    
+                            $stmt = $this->runQuery('INSERT INTO user_comments(user_id,address,type,comment)VALUES(:user_id,:address, :type,:comment)');
+                            $stmt->execute([':user_id' => $user_id, ':address' => $address, ':type' => $typee, ':comment' => $comment]);
+    
+                            $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
+                            $stmt->execute([':id' => $id]);
+    
+                            echo "<script>alert('Nag game ka kay boss ah dont forget!'); window.location.href = 'admin_comment.php';</script>";
+    
+                        } elseif ($roleee === 'user') {    //kung yung nagsend sa kanya type nya ay user....
+    
+                            $user_id = $user;
+                            $sent_by = $result['address'];
+                            $type = $result['type'];
+                            $notif = "Your $type is approved and noted by this dormitory! We will take further action as soon as possible!";
+    
+                            $this->user_notification($user_id, $sent_by, $notif);
+    
+    
+                            $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
+                            $stmt->execute([':id' => $id]);
+    
+                            echo "<script>alert('Ayan tenant, nireplyan kita ah'); window.location.href = 'admin_comment.php';</script>";
+    
+                        } else {     //eto for sam rison nirereplyan nya sarili nya HAHAHHAHA
+                            echo "<script>alert('Baliw ka ba? Bat mo nirereplyan sarili mo?'); window.location.href = 'admin_comment.php';</script>";
+                        }
+                    }
+                } else {
+                    echo "<script>alert('FAILED TO PROCESS the approval '); window.location.href = 'admin_comment.php';</script>";
+                }
+    
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+                return false;
+            }
+        }
 
 public function ignore_user($ignore_user) {    //IGNORES THE USER'S CONCERN AND DELETE THE CONCERN BY THE ADMIN
     try {
@@ -1005,8 +1060,12 @@ public function ignore_user($ignore_user) {    //IGNORES THE USER'S CONCERN AND 
 
         $stmt=$this->runQuery('DELETE FROM user_comments WHERE id=:id');
         $stmt->execute([':id' => $id]);
-        
-        echo "<script>alert('THE COMMENT IS IGNORED AND DELETED! '); window.location.href = 'admin_comment.php';</script>";
+
+        if($_SESSION['role'] === 'landlord'){
+            echo "<script>alert('Declined Successfully!!'); window.location.href = '../landlord/landlord_comment.php';</script>";
+        }else{
+            echo "<script>alert('Message ignored! '); window.location.href = 'admin_comment.php';</script>";
+        }    
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return false;

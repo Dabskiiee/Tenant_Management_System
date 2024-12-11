@@ -50,3 +50,126 @@ body {
     min-height: 100vh;
     flex-direction: column;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+td {
+    font-size: 14px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+
+td[colspan="8"] {
+    text-align: center;
+    font-weight: bold;
+    color: #ff0000;
+    background-color: #f9f9f9;
+    font-size: 16px;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+.buttons{
+    display: inline-block;
+    padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.actions{
+    display: flex;
+    padding: 0px;
+}
+
+
+
+#edit {
+    background-color: #007bff; 
+}
+
+#edit:hover {
+    background-color: #072546;  
+}
+
+#delete{
+    background-color: #ff3b30; 
+}
+
+#delete:hover {
+    background-color: #ac3225; 
+}
+
+#save {
+    background-color: #00ff95; 
+}
+
+#save:hover {
+    background-color: #46dd41;  
+}
+
+#delete{
+    background-color: #ff3b30; 
+}
+
+#delete:hover {
+    background-color: #ac3225; 
+}
+
+
+.circle-compose-msg {
+    position: absolute;
+    bottom: 20px; /* Position it 20px from the bottom */
+    right: 20px;   /* Position it 20px from the left */
+    width: 60px;  /* Set the width of the button */
+    height: 60px; /* Set the height of the button */
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #969696; /* Set the background color of the button */
+    color: white;
+    border: none;
+    font-size: 50px;
+    transition: background-color 0.3s ease;
+}
+
+.circle-compose-msg:hover {
+    background-color: #095E5E; /* Change color on hover */
+}
+
+.circle-compose-msg:focus {
+    outline: none;
+}
