@@ -24,9 +24,11 @@ if(!$admin->isUserLoggedIn()) {
         <ul class="sidebar-menu">
             <li><a href="#" class="sidebar-link">Home</a></li>
             <li><a href="#" class="sidebar-link">Tenant Profiles</a></li>
-            <li><a href="#" class="sidebar-link">Logs Monitoring</a></li>
+            <li><a href="landlord_logs.php" class="sidebar-link">Logs Monitoring</a></li>
             <li><a href="#" class="sidebar-link">Bill Management</a></li>
             <li><a href="#">Comment Management</a></li>
+            <li><a href="../admin/authentication/admin-class.php?admin_signout">Sign Out</a></li>
+            
         </ul>
     </div>
 
