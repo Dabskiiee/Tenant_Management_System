@@ -1,0 +1,135 @@
+/* General Layout Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f9f9;  /* Soft light background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Main layout container */
+.layout {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Main content styling */
+.main-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Title Styling */
+h3 {
+    text-align: center;
+    font-size: 28px;
+    color: #008080;  /* Tiffany Blue */
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Table Header Styling */
+table thead {
+    background-color: #008080;  /* Tiffany Blue */
+    color: white;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button Styling */
+.buttons {
+    padding: 10px 15px;
+    margin: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* VIEW Button Styling */
+.view-btn {
+    background-color: #008080;  /* Tiffany Blue */
+    color: white;
+    border: none;
+}
+
+.view-btn:hover {
+    background-color: #006666;  /* Darker Tiffany Blue for hover */
+}
+
+/* REMOVE Button Styling */
+.remove-btn {
+    background-color: #f44336;  /* Red for remove */
+    color: white;
+    border: none;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f;  /* Darker red for hover */
+}
+
+/* Save Button Styling */
+form button {
+    background-color: #008080;  /* Tiffany Blue */
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #006666;  /* Darker Tiffany Blue for hover */
+}
+
+/* Form Styling */
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* No Record Found Styling */
+td[colspan="4"] {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #777;  /* Soft gray */
+}
+
+/* Additional Styling for the Table Rows */
+table tr {
+    transition: background-color 0.3s ease;
+}
+
+table tr:hover {
+    background-color: #e5f5f5;  /* Light blue-gray hover effect */
+}
+
+/* Ensure form and buttons have consistent margins and padding */
+form, .buttons {
+    margin: 10px;
+}
+
