@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
-<button><a href="../user/tenant_profile.php">Back</a></button>
+<button><a href="../landlord/landlord_tenant_profile.php">Back</a></button>
 </div>
 
 </body>

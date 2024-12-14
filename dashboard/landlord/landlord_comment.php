@@ -27,10 +27,10 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="sidebar">
             <ul class="sidebar-menu">
                 <li><a href="landlord_home.php" class="sidebar-link">Home</a></li>
-                <li><a href="#" class="sidebar-link">Tenant Profiles</a></li>
+                <li><a href="landlord_tenant_profile.php" class="sidebar-link">Tenant Profiles</a></li>
                 <li><a href="#" class="sidebar-link">Logs Monitoring</a></li>
-                <li><a href="#" class="sidebar-link">Bill Management</a></li>
-                <li><a href="#">Comment Management</a></li>
+                <li><a href="landlord_bill_mng.php" class="sidebar-link">Bill Management</a></li>
+                <li><a href="#" class="sidebar-link">Comment Management</a></li>
                 <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log
                         Out</button></a>
             </ul>
@@ -42,7 +42,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <br>
             <br>
 
-            <h3>TENANTS MESSAGES</h3>
+            <h2>TENANTS MESSAGES</h2>
             <table>
                 <thead>
                     <tr>
@@ -104,7 +104,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
             <br>
             <br>
-            <h3>Admin Replies</h3>
+            <h2>Admin Replies</h2>
             <table>
                 <thead>
                     <tr>

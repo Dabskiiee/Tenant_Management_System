@@ -1,54 +1,95 @@
+/* General Layout Styling */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f9f9;  /* Soft light background */
     margin: 0;
     padding: 0;
-    background-color: #F1F8F8;
 }
 
+/* Main layout container */
+.layout {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
 
 .sidebar {
-    background-color: #c2b32a; 
-    color: white;
+    width: 250px;  /* Set sidebar width */
+    background-color: #f4c430;  /* Dark background for the sidebar */
+    color: white;  /* White text for readability */
     padding: 20px;
-    height: 100vh;
-    position: fixed;
-    width: 220px;
+    border-radius: 5px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;  /* Fixes the sidebar to the left side */
+    height: 100vh;  /* Full height sidebar */
     top: 0;
     left: 0;
+    overflow-y: auto;  /* Ensure the content inside is scrollable */
 }
 
-.sidebar ul {
-    list-style: none;
+.sidebar-menu {
+    list-style: none;  /* Remove default list styling */
     padding: 0;
+    margin: 0;
 }
 
-.sidebar ul li {
-    margin: 20px 0;
+.sidebar-menu li {
+    margin-bottom: 20px;  /* Space out the items */
 }
 
-.sidebar ul li a {
-    color: white;
+.sidebar-link {
     text-decoration: none;
-    font-size: 18px;
+    color: white;  /* White text for links */
+    font-size: 16px;
     display: block;
-    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.sidebar ul li a:hover {
-    background-color: #095E5E; 
-    padding-left: 10px;
+.sidebar-link:hover {
+    background-color: #b9600d;  /* Hover effect with Tiffany Blue */
+}
+
+.sidebar a button {
+    background-color: #F46230;  /* Red background for the logout button */
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a button:hover {
+    background-color: #d32f2f;  /* Darker red for hover */
 }
 
 
+/* Main content styling */
 .main-content {
-    margin-left: 300px; 
-    padding: 5px 15px;
-    color: #0A4444;
-    display: flex;
-    justify-content:center;
-    align-items:start;
-    min-height: 100vh;
-    flex-direction: column;
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 45px;
+    color: #3060F4;  /* Tiffany Blue */
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: left;
+    font-size: 20px;
+    color: #11bae498;  /* Tiffany Blue */
+    margin-bottom: 20px;
 }
 
 table {
@@ -60,12 +101,12 @@ table {
 
 th, td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     border: 1px solid #ddd;
 }
 
 th {
-    background-color: #4CAF50;
+    background-color: #3060F4;
     color: white;
     font-size: 16px;
 }
@@ -167,7 +208,7 @@ td[colspan="8"] {
 }
 
 .circle-compose-msg:hover {
-    background-color: #095E5E; /* Change color on hover */
+    background-color: #0c2980; /* Change color on hover */
 }
 
 .circle-compose-msg:focus {

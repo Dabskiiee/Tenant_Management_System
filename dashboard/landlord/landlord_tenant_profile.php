@@ -9,12 +9,13 @@ if (!$admin->isUserLoggedIn()) {
 // Initialize the search term
 $search_term = isset($_POST['search_term']) ? $_POST['search_term'] : '';
 
+
 // Modify the SQL query to filter users by username
 if ($search_term != '') {
     $stmt = $admin->runQuery("SELECT * FROM user WHERE fullname LIKE :search_term");
     $stmt->execute([':search_term' => '%' . $search_term . '%']);
 } else {
-    $stmt = $admin->runQuery("SELECT * FROM user");
+    $stmt = $admin->runQuery("SELECT * FROM user WHERE usertype = 'user'");
     $stmt->execute();
 }
 
@@ -43,12 +44,24 @@ if (isset($_POST['remove_user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../src/css/landlord/tenants_profile.css">
-    <title>ADMIN DASHBOARD</title>
+    <title>Tenant Profiles</title>
 </head>
 <body>
 
 <div class="layout">
 
+<div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="landlord_home.php" class="sidebar-link">Home</a></li>
+                <li><a href="#" class="sidebar-link">Tenant Profiles</a></li>
+                <li><a href="#" class="sidebar-link">Logs Monitoring</a></li>
+                <li><a href="landlord_bill_mng.php" class="sidebar-link">Bill Management</a></li>
+                <li><a href="landlord_comment.php" class="sidebar-link">Comment Management</a></li>
+
+                <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log
+                        Out</button></a>
+            </ul>
+        </div>
     <div class="main-content">
         <h3>TENANTS PROFILE</h3>
 
