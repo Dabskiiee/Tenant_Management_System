@@ -148,7 +148,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= $row2['water'] ?> </td>
                             <td><?= $row2['rent'] ?> </td>
                             <td><?= $row2['wifi'] ?> </td>
-                            <td><?= $row1['unpaid_amt'] ?> </td>
+                            <td><?= $row2['unpaid_amt'] ?> </td>
                             <td><?= $row2['due_date'] ?> </td>
                             <td><a class="buttons" id= "edit" href="edit.php?id=<?=$row2['user_details']?>">EDIT</a></td>
                             <form action="" method="POST">
