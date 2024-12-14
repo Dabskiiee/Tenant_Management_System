@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             u.id AS room_number,
             CONCAT(u.firstname, ' ', u.lastname) AS user_name,
             l.activity,
-            l.time_entered,
+            l.created_at,
             l.guests
         FROM 
             user u
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // Add date filter if provided
         if ($dateSearch) {
-            $query .= " AND DATE(l.time_entered) = :datesearch";
+            $query .= " AND DATE(l.created_at) = :datesearch";
         }
 
         // Add name filter if provided
@@ -63,29 +63,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../src/css/landlord/landlord_side.css">
     <title>Search Results</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .no-results {
-            color: red;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
+<div class="layout">
+
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="landlord_home.php" class="sidebar-link">Home</a></li>
+            <li><a href="landlord_tenant_profile.php" class="sidebar-link">Tenant Profiles</a></li>
+            <li><a href="#" class="sidebar-link">Logs Monitoring</a></li>
+            <li><a href="landlord_bill_mng.php" class="sidebar-link">Bill Management</a></li>
+            <li><a href="landlord_comment.php" class="sidebar-link">Comment Management</a></li>
+            <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
+        </ul>
+    </div>
+
+    <div class="main-content">
+
     <h3>Search Results:</h3>
 
     <?php if (empty($results)): ?>
@@ -110,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <td><?php echo htmlspecialchars($result['user_name']); ?></td>
                     <td><?php echo htmlspecialchars($result['guests']); ?></td>
                     <td><?php echo htmlspecialchars($result['activity']); ?></td>
-                    <td><?php echo htmlspecialchars($result['time_entered']); ?></td>
+                    <td><?php echo htmlspecialchars($result['created_at']); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -118,5 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <?php endif; ?>
 
     <a href="landlord_logs.php">Back</a>
+    </div>
 </body>
 </html>

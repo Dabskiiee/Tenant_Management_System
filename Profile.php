@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $error_message = "Error updating profile.";
         }
+    }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize input data
@@ -116,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Check for success flag in GET request
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     $success_message = "Profile updated successfully!";
+}
 }
 ?>
 
@@ -243,4 +245,3 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     </div>
 </body>
 </html>
-
