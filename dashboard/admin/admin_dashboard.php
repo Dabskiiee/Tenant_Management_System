@@ -42,6 +42,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="#" class="sidebar-link">Tenants</a></li>
             <li><a href="admin_logs.php" class="sidebar-link">Logs</a></li>
             <li><a href="admin_comment.php" class="sidebar-link">Bulletin</a></li>
+            <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
         </ul>
     </div>
 
@@ -64,6 +65,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>WATER</th>
                     <th>RENT</th>
                     <th>WIFI</th>
+                    <th>UNPAID AMOUNT</th>
                     <th>DUE DATE</th>
                     <th>EDIT</th>
                     <th>DELETE</th>
@@ -83,6 +85,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= $row1['water'] ?> </td>
                             <td><?= $row1['rent'] ?> </td>
                             <td><?= $row1['wifi'] ?> </td>
+                            <td><?= $row1['unpaid_amt'] ?> </td>
                             <td><?= $row1['due_date'] ?> </td>
                             <td><a class="buttons" id= "edit" href="edit.php?id=<?=$row1['user_details']?>">EDIT</a></td>
                             <form action="" method="POST">
@@ -125,6 +128,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>WATER</th>
                     <th>RENT</th>
                     <th>WIFI</th>
+                    <th>UNPAID AMOUNT</th>
                     <th>DUE DATE</th>
                     <th>EDIT</th>
                     <th>DELETE</th>
@@ -144,6 +148,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= $row2['water'] ?> </td>
                             <td><?= $row2['rent'] ?> </td>
                             <td><?= $row2['wifi'] ?> </td>
+                            <td><?= $row2['unpaid_amt'] ?> </td>
                             <td><?= $row2['due_date'] ?> </td>
                             <td><a class="buttons" id= "edit" href="edit.php?id=<?=$row2['user_details']?>">EDIT</a></td>
                             <form action="" method="POST">
@@ -186,6 +191,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>WATER</th>
                     <th>RENT</th>
                     <th>WIFI</th>
+                    <th>UNPAID AMOUNT</th>
                     <th>DUE DATE</th>
                     <th>EDIT</th>
                     <th>DELETE</th>
@@ -205,6 +211,7 @@ $user_data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= $row3['water'] ?> </td>
                             <td><?= $row3['rent'] ?> </td>
                             <td><?= $row3['wifi'] ?> </td>
+                            <td><?= $row3['unpaid_amt'] ?> </td>
                             <td><?= $row3['due_date'] ?> </td>
                             <td><a class="buttons" id= "edit" href="edit.php?id=<?=$row3['user_details']?>">EDIT</a></td>
                             

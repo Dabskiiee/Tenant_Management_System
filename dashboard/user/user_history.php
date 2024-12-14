@@ -41,7 +41,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="message-bubble">
         
         <div class="sender">FROM: <?= $row['sent_by'] ?></div>
-        <div class="notification"><?= $row['notif'] ?></div>
+        <div class="notification"><?= nl2br($row['notif']) ?></div>
         <div class="time-sent"><?= $row['time_sent'] ?></div>
         <form action="user_function/user-side.php" method="POST">
         <button type="submit" name="user-btn-delete" class="buttons" id= "edit" value="<?=$row['id']?>">DELETE</button>

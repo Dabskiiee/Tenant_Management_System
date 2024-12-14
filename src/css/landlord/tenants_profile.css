@@ -48,7 +48,7 @@ body {
 }
 
 .sidebar-link:hover {
-    background-color: #b9600d;  /* Hover effect with Tiffany Blue */
+    background-color: #b9600d;;  /* Hover effect with Tiffany Blue */
 }
 
 .sidebar a button {
@@ -78,139 +78,113 @@ body {
     max-width: 1200px;
 }
 
+/* Title Styling */
 h3 {
     text-align: center;
-    font-size: 45px;
+    font-size: 28px;
     color: #3060F4;  /* Tiffany Blue */
     margin-bottom: 20px;
 }
 
-h2 {
-    text-align: left;
-    font-size: 20px;
-    color: #11bae498;  /* Tiffany Blue */
-    margin-bottom: 20px;
-}
-
+/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-family: Arial, sans-serif;
+    margin-top: 20px;
 }
 
-th, td {
-    padding: 12px 15px;
-    text-align: center;
+/* Table Header Styling */
+table thead {
+    background-color:#3060F4;  /* Tiffany Blue */
+    color: white;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
     border: 1px solid #ddd;
 }
 
-th {
-    background-color: #3060F4;
-    color: white;
-    font-size: 16px;
+table th {
+    font-weight: bold;
 }
 
-td {
-    font-size: 14px;
-}
-
-tr:nth-child(even) {
+table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-tr:hover {
-    background-color: #ddd;
-}
-
-
-td[colspan="8"] {
-    text-align: center;
-    font-weight: bold;
-    color: #ff0000;
-    background-color: #f9f9f9;
-    font-size: 16px;
-}
-
-.container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-
-.buttons{
-    display: inline-block;
-    padding: 8px;
-    border-radius: 5px;
+/* Button Styling */
+.buttons {
+    padding: 10px 15px;
+    margin: 5px;
     text-decoration: none;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    transition: background-color 0.3s ease;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.actions{
-    display: flex;
-    padding: 0px;
-}
-
-
-
-#edit {
-    background-color: #007bff; 
-}
-
-#edit:hover {
-    background-color: #072546;  
-}
-
-#delete{
-    background-color: #ff3b30; 
-}
-
-#delete:hover {
-    background-color: #ac3225; 
-}
-
-#save {
-    background-color: #00ff95; 
-}
-
-#save:hover {
-    background-color: #46dd41;  
-}
-
-#delete{
-    background-color: #ff3b30; 
-}
-
-#delete:hover {
-    background-color: #ac3225; 
-}
-
-
-.circle-compose-msg {
-    position: absolute;
-    bottom: 20px; /* Position it 20px from the bottom */
-    right: 20px;   /* Position it 20px from the left */
-    width: 60px;  /* Set the width of the button */
-    height: 60px; /* Set the height of the button */
-    border-radius: 50%; /* Make it circular */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #969696; /* Set the background color of the button */
+/* VIEW Button Styling */
+.view-btn {
+    background-color: #3060F4;  /* Tiffany Blue */
     color: white;
     border: none;
-    font-size: 50px;
+}
+
+.view-btn:hover {
+    background-color: #3060F4;  /* Darker Tiffany Blue for hover */
+}
+
+/* REMOVE Button Styling */
+.remove-btn {
+    background-color: #f44336;  /* Red for remove */
+    color: white;
+    border: none;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f;  /* Darker red for hover */
+}
+
+/* Save Button Styling */
+form button {
+    background-color: #3060F4;  /* Tiffany Blue */
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #3060F4;  /* Darker Tiffany Blue for hover */
+}
+
+/* Form Styling */
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* No Record Found Styling */
+td[colspan="4"] {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #777;  /* Soft gray */
+}
+
+/* Additional Styling for the Table Rows */
+table tr {
     transition: background-color 0.3s ease;
 }
 
-.circle-compose-msg:hover {
-    background-color: #0c2980; /* Change color on hover */
+table tr:hover {
+    background-color: #a4b8f3;  /* Light blue-gray hover effect */
 }
 
-.circle-compose-msg:focus {
-    outline: none;
+/* Ensure form and buttons have consistent margins and padding */
+form, .buttons {
+    margin: 10px;
 }
+
