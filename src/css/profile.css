@@ -1,4 +1,5 @@
 
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -20,16 +21,37 @@ body {
 
 .sidebar ul {
     list-style: none;
+
+/* Sidebar Styles */
+.sidebar {
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+
     padding: 0;
 }
 
 .sidebar ul li {
+
     margin: 20px 0;
+
+    padding: 10px;
+    text-align: center;
+
 }
 
 .sidebar ul li a {
     color: white;
     text-decoration: none;
+
     font-size: 18px;
     display: block;
     transition: all 0.3s ease;
@@ -176,4 +198,59 @@ button:hover {
     border-radius: 5px;
     margin-bottom: 20px;
     width: 100%;
+
+    display: block;
+}
+
+.sidebar ul li a:hover {
+    background-color: #575757;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+/* Form Styles */
+form {
+    width: 300px;
+}
+
+form label {
+    display: block;
+    margin: 5px 0;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* Success and Error Message Styles */
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+
 }
