@@ -37,7 +37,6 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
             <li><a href="user_support.php" class="sidebar-link">Support</a></li>
             <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
             <li><a href="user_profile.php" class="sidebar-link" >Profile</a></li>
-            <li><a href="tenant_profile.php" class="sidebar-link" >Tenants</a></li>
         </ul>
     </div>
     <button class="sign-out"> 

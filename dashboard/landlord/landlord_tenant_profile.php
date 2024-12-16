@@ -54,7 +54,7 @@ if (isset($_POST['remove_user'])) {
             <ul class="sidebar-menu">
                 <li><a href="landlord_home.php" class="sidebar-link">Home</a></li>
                 <li><a href="#" class="sidebar-link">Tenant Profiles</a></li>
-                <li><a href="#" class="sidebar-link">Logs Monitoring</a></li>
+                <li><a href="landlord_logs.php" class="sidebar-link">Logs Monitoring</a></li>
                 <li><a href="landlord_bill_mng.php" class="sidebar-link">Bill Management</a></li>
                 <li><a href="landlord_comment.php" class="sidebar-link">Comment Management</a></li>
 
