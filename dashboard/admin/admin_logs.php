@@ -55,11 +55,11 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($user_data as $row){
                     ?>
                         <tr>
-                            <td><?= $row['user_id'] ?> </td>
-                            <td><?= $row['name'] ?> </td>
-                            <td><?= $row['guests'] ?> </td>
-                            <td><?= $row['activity'] ?> </td>
-                            <td><?= $row['created_at'] ?></td>
+                            <td><?= htmlspecialchars($row['user_id']) ?> </td>
+                            <td><?= htmlspecialchars($row['name']) ?> </td>
+                            <td><?= htmlspecialchars($row['guests']) ?> </td>
+                            <td><?= htmlspecialchars($row['activity']) ?> </td>
+                            <td><?= htmlspecialchars($row['created_at']) ?></td>
                         </tr>
 
                     <?php

@@ -44,13 +44,13 @@ if (isset($_GET['id'])) {
                 <img src="<?php echo htmlspecialchars($user_data['profile_image'] ?? 'uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
             </div>
             <div class="details">
-                <h3>Name: <span><?php echo $user_data['fullname']; ?></span></h3>
-                <h3>Email: <span><?php echo $user_data['email']; ?></span></h3>
-                <h3>First Name: <span><?php echo $user_data['firstname']; ?></span></h3>
-                <h3>Last Name: <span><?php echo $user_data['lastname']; ?></span></h3>
-                <h3>Birthday: <span><?php echo $user_data['birthday']; ?></span></h3>
-                <h3>Gender: <span><?php echo $user_data['gender']; ?></span></h3>
-                <h3>Civil Status: <span><?php echo $user_data['civil_status']; ?></span></h3>
+                <h3>Name: <span><?php echo htmlspecialchars($user_data['fullname']); ?></span></h3>
+                <h3>Email: <span><?php echo htmlspecialchars($user_data['email']); ?></span></h3>
+                <h3>First Name: <span><?php echo htmlspecialchars($user_data['firstname']); ?></span></h3>
+                <h3>Last Name: <span><?php echo htmlspecialchars($user_data['lastname']); ?></span></h3>
+                <h3>Birthday: <span><?php echo htmlspecialchars($user_data['birthday']); ?></span></h3>
+                <h3>Gender: <span><?php echo htmlspecialchars($user_data['gender']);?></span></h3>
+                <h3>Civil Status: <span><?php echo htmlspecialchars($user_data['civil_status']); ?></span></h3>
             </div>
         </div>
     </div>

@@ -71,11 +71,11 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 ?>
 
                                 <tr>
-                                    <td><?= $user_data1['room_no'] ?> </td>
-                                    <td><?= $user_data1['name'] ?> </td>
-                                    <td><?= $row['type'] ?> </td>
-                                    <td><?= $row['comment'] ?> </td>
-                                    <td><?= $row['commented_at'] ?> </td>
+                                    <td><?= htmlspecialchars($user_data1['room_no']) ?> </td>
+                                    <td><?= htmlspecialchars($user_data1['name']) ?> </td>
+                                    <td><?= htmlspecialchars($row['type']) ?> </td>
+                                    <td><?= htmlspecialchars($row['comment']) ?> </td>
+                                    <td><?= htmlspecialchars($row['commented_at']) ?> </td>
 
                                     <form action="" method="POST">
                                         <td class="actions">
@@ -131,9 +131,9 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                 <tr>
                                     <td><?= htmlspecialchars('admin') ?> </td>
-                                    <td><?= $row['type'] ?> </td>
-                                    <td><?= $row['comment'] ?> </td>
-                                    <td><?= $row['commented_at'] ?> </td>
+                                    <td><?= htmlspecialchars($row['type']) ?> </td>
+                                    <td><?= htmlspecialchars($row['comment']) ?> </td>
+                                    <td><?= htmlspecialchars($row['commented_at']) ?> </td>
 
                                     <form action="" method="POST">
                                         <td class="actions">

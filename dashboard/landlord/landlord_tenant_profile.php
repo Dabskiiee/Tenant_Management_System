@@ -97,9 +97,9 @@ if (isset($_POST['remove_user'])) {
                         $anchor_id = "user_" . $row['id'];
                 ?>
                     <tr id="<?= $anchor_id ?>">
-                        <td><?= $row['id'] ?> </td>
-                        <td><?= $row['fullname'] ?> </td>
-                        <td><?= $row['email'] ?> </td>
+                        <td><?= htmlspecialchars($row['id']) ?> </td>
+                        <td><?= htmlspecialchars($row['fullname']) ?> </td>
+                        <td><?= htmlspecialchars($row['email']) ?> </td>
                         <td>
                             <!-- VIEW button inside the table row -->
                             <a href="tenants_view.php?id=<?= $row['id'] ?>" class="buttons view-btn">VIEW</a>

@@ -52,8 +52,6 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>MESSAGE</th>
                     <th>TIME OF COMMENT</th>
                     <th>APPROVE/IGNORE</th>
-                    
-                
                 </tr>
             </thead>
             <tbody>
@@ -62,23 +60,22 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($user_data as $row){
                     ?>
                         <tr>
-                            <td><?= $row['id'] ?> </td>
-                            <td><?= $row['address'] ?> </td>
-                            <td><?= $row['type'] ?> </td>
-                            <td><?= $row['comment'] ?> </td>
-                            <td><?= $row['commented_at'] ?> </td>
+                            <td><?= htmlspecialchars($row['id']) ?> </td>
+                            <td><?= htmlspecialchars($row['address']) ?> </td>
+                            <td><?= htmlspecialchars($row['type']) ?> </td>
+                            <td><?= htmlspecialchars($row['comment']) ?> </td>
+                            <td><?= htmlspecialchars($row['commented_at']) ?> </td>
                             
                             <form action="" method="POST">
                             <td class="actions">
-                                <button type="submit" name="admin-btn-approve" class="buttons" id= "edit" value="<?=$row['id']?>">APPROVE</button>
-                                <button type="submit" name="admin-btn-ignore" class="buttons" id= "delete" value="<?=$row['id']?>">IGNORE</button>
+                                <button type="submit" name="admin-btn-approve" class="buttons" id="edit" value="<?= htmlspecialchars($row['id']) ?>">APPROVE</button>
+                                <button type="submit" name="admin-btn-ignore" class="buttons" id="delete" value="<?= htmlspecialchars($row['id']) ?>">IGNORE</button>
                             </td>
                             </form>
                         </tr>
                     <?php
                     }
                     }else{
-                    
                     ?>
                         <tr>
                             <td colspan="7">NO RECORD FOUND</td>
@@ -94,14 +91,12 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <table>
             <thead>
                 <tr>
-                    
                     <th>ROOM</th>
                     <th>ELECTRICITY BILL</th>
                     <th>WATER BILL</th>
                     <th>RENT BILL</th>
                     <th>WIFI BILL</th>
                     <th>DISTRIBUTE</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -110,15 +105,15 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($user_data1 as $row1){
                     ?>
                         <tr>
-                            <td><?= $row1['id'] ?> </td>
-                            <td><?= $row1['elec'] ?> </td>
-                            <td><?= $row1['water'] ?> </td>
-                            <td><?= $row1['rent'] ?> </td>
-                            <td><?= $row1['wifi'] ?> </td>
+                            <td><?= htmlspecialchars($row1['id']) ?> </td>
+                            <td><?= htmlspecialchars($row1['elec']) ?> </td>
+                            <td><?= htmlspecialchars($row1['water']) ?> </td>
+                            <td><?= htmlspecialchars($row1['rent']) ?> </td>
+                            <td><?= htmlspecialchars($row1['wifi']) ?> </td>
                             
                             <form action="" method="POST">
                             <td class="actions">
-                                <button type="submit" name="admin-btn-distribute" class="buttons" id= "edit" value="<?=$row1['room_no']?>">DISTRIBUTE</button>
+                                <button type="submit" name="admin-btn-distribute" class="buttons" id="edit" value="<?= htmlspecialchars($row1['room_no']) ?>">DISTRIBUTE</button>
                             </td>
                             </form>
                         </tr>
@@ -134,7 +129,6 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
             </tbody>
         </table>
-        
 
     </div>
 </div>
