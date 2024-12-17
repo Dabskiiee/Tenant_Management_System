@@ -1,142 +1,294 @@
-body {
-    font-family: Arial, sans-serif;
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --color-bg: #fff;
+    --color-bg-sidebar: #0ABAB5;
+    --color-bg-hover: rgba(255, 255, 255, 0.075);
+    --color-highlight: #6c757d;
+    --color-text: #fff;
+    --font-size-base: 0.9rem;
+    --font-size-logo: 1.15rem;
+    --font-size-icon: 1.5rem;
+    --font-size-sidebar-icon: 1.1rem;
+    --spacing-base: 1rem;
+    --spacing-large: 1.5rem;
+    --spacing-small: 0.625rem;
+    --spacing-medium: 1.625rem;
+    --transition-fast: 0.25s ease-in-out;
+    --transition-medium: 0.35s ease-in-out;
+}
+
+::after,
+::before {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #F1F8F8;
 }
 
-.sidebar {
-    background-color: #0ABAB5; 
-    color: white;
-    padding: 20px;
-    height: 100vh;
-    position: fixed;
-    width: 220px;
-    top: 0;
-    left: 0;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin: 20px 0;
-}
-
-.sidebar ul li a {
-    color: white;
+a {
     text-decoration: none;
-    font-size: 18px;
-    display: block;
-    transition: all 0.3s ease;
 }
 
-.sidebar ul li a:hover {
-    background-color: #095E5E; 
-    padding-left: 10px;
+li {
+    list-style: none;
 }
 
-.main-content {
-    background-color: white;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 5vw;
-    margin-left: 20vw; /* Ensure the content is not overlapping with the sidebar */
-    flex-grow: 1; /* Allow content to grow and occupy available space */
+body {
+    font-family: var(--font-primary);
 }
-
-.header {
-    width: 90%;
+h1 {
+    color: #0ABAB5;
+    font-size: 2em;
+    margin-bottom: 30px;
+    justify-content: center;
+    text-align: center;
+}
+.wrapper {
     display: flex;
-    text-align: center; 
-    align-items: center; /* Vertically align the items */
-    padding: 20px;
-    background-color: #ffffff;
-    position: relative;
-    top: 0;
 }
 
-.header h3 {
-    margin: 0;
-    font-size: 24px;
-    color: #0A4444;
-}
-
-.header button {
-    background-color: #0ABAB5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    position: absolute;
-    right: 20px; /* Button positioned on the extreme right */
-    top: 20px; /* Button aligned with the heading */
-}
-
-.header button:hover {
-    background-color: #095E5E;
-}
-
-.message {
+.main {
     display: flex;
-    margin-top: 5vh;
     flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+    background-color: var(--color-bg);
+    min-width: 0;
 }
 
-/* Styling for the message bubble */
-.message-bubble {
-    max-width: 70%; 
-    padding: 35px;
-    border-radius: 10px;
-    background-color: #84c2ec; 
-    margin-bottom: 5px;
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all var(--transition-fast);
+    background-color: var(--color-bg-sidebar);
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: var(--spacing-base) var(--spacing-large);
+}
+
+.toggle-btn i {
+    font-size: var(--font-size-icon);
+    color: var(--color-text);
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: var(--color-text);
+    font-size: var(--font-size-logo);
+    font-weight: 600;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+
+#sidebar.expand .sidebar-logo,
+#sidebar.expand a.sidebar-link span {
+    animation: fadeIn var(--transition-fast);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+a.sidebar-link {
+    padding: var(--spacing-small) var(--spacing-medium);
+    color: var(--color-text);
+    display: block;
+    font-size: var(--font-size-base);
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link i,
+.dropdown-item i {
+    font-size: var(--font-size-sidebar-icon);
+    margin-right: 0.75rem;
+}
+
+a.sidebar-link:hover {
+    background-color: var(--color-bg-hover);
+    border-left: 3px solid var(--color-highlight);
+}
+
+.sidebar-item {
     position: relative;
-    display: inline-block;
-    word-wrap: break-word;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
-/* Styling for the sender's name */
-.message-bubble .sender {
-    font-weight: bold;
-    color: #ffffff; 
-    font-size: 14px;
-}
-
-/* Styling for the message notification (message content) */
-.message-bubble .notification {
-    margin-top: 5px;
-    color: #333; 
-    font-size: 16px;
-}
-
-/* Styling for the time the message was sent */
-.message-bubble .time-sent {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #888; 
-    text-align: right;
-}
-
-/* The tail of the message bubble */
-.message-bubble:after {
-    content: '';
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
     position: absolute;
-    bottom: -10px;
-    left: 10px;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #e1f7d5; 
+    top: 0;
+    left: 70px;
+    background-color: var(--color-bg-sidebar);
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 0.075rem 0.075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: var(--spacing-large);
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all 0.2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all 0.2s ease-out;
+}
+
+.navbar {
+    background-color: #f5f5f5;
+    box-shadow: 0 0 2rem 0 rgba(33, 37, 41, 0.1);
+}
+
+.navbar-expand .navbar-collapse {
+    min-width: 200px;
+}
+
+/* Notifications Section */
+.notifications {
+    flex-grow: 1;
+    background-color: white;
+    padding: 20px;
+}
+
+.notifications h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.message-box {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: flex-start; /* Align items to the start */
+    align-items: flex-start; /* Align items to the start horizontally */
+    position: relative; /* For positioning the date and trash icon */
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    color: black;
+    background-color: #F5A9F2;
+    gap: 10px; /* Adds space between child elements */
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure it spans the full width */
+} 
+
+.message-content p {
+    margin: 5px 0;
+    word-wrap: break-word; /* Ensure long words wrap */
+}
+
+.time-sent {
+    font-size: 0.9rem;
+    color: black;
+    position: absolute;
+    top: 10px; /* Position it in the upper right corner */
+    right: 10px; /* Move it to the right side */
+    font-weight: bold; /* Optional: make the time bold */
+}
+
+.delete-icon {
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    position: absolute;
+    bottom: 30px; /* Position it towards the bottom of the message box */
+    right: 30px; /* Center it horizontally */
+    transform: translateX(50%); /* Ensure it is centered */
+}
+.delete-icon:hover {
+    color: red;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .message-box {
+        padding: 10px;
+    }
+
+    .message-content p {
+        font-size: 0.85rem;
+    }
+
+    .time-sent {
+        font-size: 0.8rem;
+        top: 5px;
+        right: 5px;
+    }
+
+    .delete-icon {
+        font-size: 1.3rem;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .message-box {
+        padding: 8px;
+    }
+
+    .message-content p {
+        font-size: 0.8rem;
+    }
+
+    .time-sent {
+        font-size: 0.75rem;
+        top: 5px;
+        right: 5px;
+    }
+
+    .delete-icon {
+        font-size: 1.2rem;
+        bottom: 15px;
+        right: 15px;
+    }
 }
