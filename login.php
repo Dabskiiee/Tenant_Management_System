@@ -18,7 +18,7 @@ if (isset($_POST['btn-signin'])) {
             // Check if the user status is not 'active'
             if ($user['status'] !== 'active') {
                 // Redirect or show message if user is not active
-                $_SESSION['error_message'] = "Your account is not active. Please contact the administrator.";
+                $_SESSION['error_message'] = "No account found with that email.";
                 header("Location: ../../login.php");
                 exit;
             }

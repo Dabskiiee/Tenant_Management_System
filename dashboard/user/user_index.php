@@ -2,21 +2,26 @@
 require_once '../admin/authentication/admin-class.php';
 
 $admin = new ADMIN();
-if(!$admin->isUserLoggedIn()) {
+if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
+}
+
+$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
+$stmt2->execute(array(":id" => $_SESSION['userSession']));
+$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($user_data2['status'] !== 'active') {
+    session_destroy();
+    header("Location: ../../login.php?status=inactive");
+    exit();
 }
 
 $stmt = $admin->runQuery("SELECT * FROM user_bills WHERE user_details = :id");
 $stmt->execute(array(":id" => $_SESSION['userSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
-$stmt2->execute(array(":id" => $_SESSION['userSession']));
-$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
 $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + $user_data['wifi'] + $user_data['unpaid_amt'];
-      
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
