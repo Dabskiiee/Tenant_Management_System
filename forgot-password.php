@@ -13,6 +13,7 @@ if (empty($_SESSION['csrf_token'])) {
     <meta charset="UTF-8">
     <title>Forgot Password</title>
     <link rel="stylesheet" href="src/css/login/password.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
 </head>
 <body>
@@ -27,5 +28,6 @@ if (empty($_SESSION['csrf_token'])) {
         </form>
     </div>
     </div>
+    <?php include_once 'config/sweetalert.php'; ?>
 </body>
 </html>
