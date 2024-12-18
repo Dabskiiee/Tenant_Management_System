@@ -33,6 +33,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="admin_dashboard.php" class="sidebar-link">Tenants</a></li>
             <li><a href="admin_logs.php" class="sidebar-link">Logs</a></li>
             <li><a href="#" class="sidebar-link">Bulletin</a></li>
+            <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log Out</button></a>
         </ul>
     </div>
 
@@ -41,8 +42,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <br>
         <br>
-        
-
+    
         <table>
             <thead>
                 <tr>
@@ -74,9 +74,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <button type="submit" name="admin-btn-ignore" class="buttons" id= "delete" value="<?=$row['id']?>">IGNORE</button>
                             </td>
                             </form>
-                            
                         </tr>
-
                     <?php
                     }
                     }else{
@@ -136,7 +134,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
             </tbody>
         </table>
-
+        
 
     </div>
 </div>
