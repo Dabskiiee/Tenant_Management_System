@@ -873,38 +873,194 @@ public function user_paid ($paid_user){
     public function unsettled_payment ($id,$unsettled_payment ){
 
         try{
-        $unsettled_id = $id;
-    
-        $stmt= $this->runQuery('SELECT name,email FROM user_bills WHERE user_details=:unsettled_id');
-        $stmt->execute([':unsettled_id' => $unsettled_id]);
-        $result=$stmt->fetch(PDO::FETCH_ASSOC);
-
-        if($result){
-            $user_id= $unsettled_id;
-            $month= date('F');
-            $tenant=$result['name'];
+            $unsettled_id = $id;
         
-            $sent_by='landlord';
-            $type='unsettled amount';
-            $notif="Hey $tenant! You have an $type for the month of $month. Please compromise to the next rent due!";
+            $stmt= $this->runQuery('SELECT name,email,balance,unpaid_amt FROM user_bills WHERE user_details=:unsettled_id');
+            $stmt->execute([':unsettled_id' => $unsettled_id]);
+            $result=$stmt->fetch(PDO::FETCH_ASSOC);
             
-            $this->user_notification($user_id, $sent_by ,$notif);
+        
+            if($result){
+                $user_id= $unsettled_id;
+                $month= date('F');
+                $tenant=$result['name'];
+            
+                $sent_by='landlord';
+                $type='unsettled amount';
+                $notif="Hey $tenant! You have an $type for the month of $month. Please compromise to the next rent due!";
+                
+                $this->user_notification($user_id, $sent_by ,$notif);
+        
+                $balance=$result['balance'];
+        
+                $elec=0;
+                $water=0;
+                $datetime = new DateTime();
+                $datetime->modify('first friday of next month'); // This moves to the first Friday of next month
+                $due_date = $datetime->format('Y-m-d');
+    
+                $add_amt=$result['unpaid_amt'];
 
-            $elec=0;
-            $water=0;
-            $rent=5000;
-            $wifi=1500;
-            $datetime = new DateTime();
-            $datetime->modify('first friday of next month'); // This moves to the first Friday of next month
-            $due_date = $datetime->format('Y-m-d');
-            $unpaid_amt = $unsettled_payment;
+                $total_unp_amt= $unsettled_payment + $add_amt;
+                
+                if($unsettled_payment > 0){  //ensures that the unsettled pay has value
+        
+                    if($total_unp_amt > $balance && $balance > 0 ){                    //kapag mas malaki value o equal sya sa balance  and sinusure na indi zero value ng balance         
+    
+                        $unpaid_amt=$total_unp_amt - $balance;
 
-            $stmt=$this->runQuery('UPDATE user_bills SET electricity = :elec ,  water = :water ,  rent = :rent , wifi = :wifi , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
-            $stmt->execute([':elec' =>$elec , ':water' =>$water,':rent' =>$rent , ':wifi' =>$wifi , ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt , ':id' => $user_id]);
-        }    
-            $email=$result['email'];
-            $subject = "UNSETTLED PAYMENT";
-            $message = "
+                        $email=$result['email'];
+                        $subject = "UNPAID AMOUNT REDUCTION DUE TO HAVING BALANCE AMOUNT";
+                        $message = "
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset='UTF-8'>
+                            <title>UNPAID AMOUNT REDUCTION DUE TO HAVING BALANCE AMOUNT</title>
+                            <style>
+                            body{
+                                font-family: Arial, sans-serif;
+                                background-color: #f5f5f5;
+                                margin: 0;
+                                padding: 0;
+                            }
+                                    
+                            .container{
+                                max-width: 600px;
+                                margin: 0 auto;
+                                padding: 30px;
+                                background-color: #ffffff;
+                                border-radius: 4px;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            }
+                                    
+                            h1{
+                                color: #333333;
+                                font-size: 24px;
+                                margin-bottom: 20px;
+                            }
+
+                            p{
+                                color: #666666;
+                                font-size: 16px;
+                                margin-bottom: 10px;
+                            }
+
+                            .button{
+                                display: inline-block;
+                                padding: 12px 24px;
+                                background-color: #0088cc;
+                                color: #ffffff;
+                                text-decoration: none;
+                                border-radius: 4px;
+                                font-size: 16px;
+                                margin-top: 20px;
+                            }
+                            </style>
+                            </head>
+                            <body>
+                                    <div class='container'>
+                                        <h1></h1>
+                                        <p>Hey vro $tenant!,</p>
+                                        <p>Your balance deducted an amount of ₱$balance to your unpaid amount!</p>
+                                        <p>To make sure to be saved ALWAYS,top up your balance to our office. Just go there and we will update your account's balance!</p>
+                                        <p>Anyway, Thank you!</p>
+                                        <br>
+                                        <p>-$sent_by</p>
+                                    </div>
+                                </body>
+                                </html>";
+                        $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+    
+                        echo "<script>alert('Your balance deducts your unpaid amount by ₱$balance'); window.location.href = 'admin_dashboard.php';</script>";
+    
+                        $balance=0;
+                        
+                        $stmt=$this->runQuery('UPDATE user_bills SET balance = :balance, electricity = :elec ,  water = :water , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
+                        $stmt->execute([':balance'=>$balance,':elec' =>$elec , ':water' =>$water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt , ':id' => $user_id]);
+                        
+                    }elseif($total_unp_amt <= $balance){           //kapag mas maliit value ng inenter na number sa balance na meron sa database
+                        $balance=abs($balance - $total_unp_amt);
+                        $unpaid_amt=0;
+        
+                        $stmt=$this->runQuery('UPDATE user_bills SET balance = :balance, electricity = :elec ,  water = :water , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
+                        $stmt->execute([':balance'=>$balance,':elec' =>$elec , ':water' =>$water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt , ':id' => $user_id]);
+                        
+                        $email=$result['email'];
+                        $subject = "FULLY PAID DUE TO BALANCE SUFFICIENCY";
+                        $message = "
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset='UTF-8'>
+                            <title>FULLY PAID DUE TO BALANCE SUFFICIENCY</title>
+                            <style>
+                            body{
+                                font-family: Arial, sans-serif;
+                                background-color: #f5f5f5;
+                                margin: 0;
+                                padding: 0;
+                            }
+                                    
+                            .container{
+                                max-width: 600px;
+                                margin: 0 auto;
+                                padding: 30px;
+                                background-color: #ffffff;
+                                border-radius: 4px;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            }
+                                    
+                            h1{
+                                color: #333333;
+                                font-size: 24px;
+                                margin-bottom: 20px;
+                            }
+
+                            p{
+                                color: #666666;
+                                font-size: 16px;
+                                margin-bottom: 10px;
+                            }
+
+                            .button{
+                                display: inline-block;
+                                padding: 12px 24px;
+                                background-color: #0088cc;
+                                color: #ffffff;
+                                text-decoration: none;
+                                border-radius: 4px;
+                                font-size: 16px;
+                                margin-top: 20px;
+                            }
+                            </style>
+                            </head>
+                            <body>
+                                    <div class='container'>
+                                        <h1></h1>
+                                        <p>Hey vro $tenant!,</p>
+                                        <p>You are saved by your balance! We got your payment and now you are fully paid for this month !</p>
+                                        <p>You may add your balance to our office. Just go there and we will update your account's balance!</p>
+                                        <p>Anyway, Thank you!</p>
+                                        <br>
+                                        <p>-$sent_by</p>
+                                    </div>
+                                </body>
+                                </html>";
+                        $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
+                        echo "<script>alert('You have sufficient balance for your unpaid amount!'); window.location.href = 'admin_dashboard.php';</script>";
+
+                    }elseif($total_unp_amt > $balance && $balance == 0){                    //kapag mas malaki value o equal sya sa balance  and balance nya is equal to zero       
+    
+                        $unpaid_amt=$total_unp_amt;
+    
+                        $stmt=$this->runQuery('UPDATE user_bills SET balance = :balance, electricity = :elec ,  water = :water , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
+                        $stmt->execute([':balance'=>$balance,':elec' =>$elec , ':water' =>$water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt , ':id' => $user_id]);
+
+                        $email=$result['email'];
+                        $subject = "UNSETTLED PAYMENT";
+                        $message = "
                         <!DOCTYPE html>
                         <html>
                         <head>
@@ -964,13 +1120,28 @@ public function user_paid ($paid_user){
                                 </body>
                                 </html>";
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-                     
-                        }catch (PDOException $e) {
-                            echo "Error: " . $e->getMessage();
-                            return false;
-                        }
-                        echo "<script>alert('TENANT IS NOTIFIED ABOUT HIS ACTIONS. '); window.location.href = 'admin_dashboard.php';</script>";
-        } 
+
+                        echo "<script>alert('Tenant is notified about his/her unpaid amount! '); window.location.href = 'admin_dashboard.php';</script>";
+
+                    }else{
+                        echo "<script>alert('BALANCE IS A NEGATIVE NUMBER *for sam rison* '); window.location.href = 'admin_dashboard.php';</script>";
+                    }
+                
+            }else{                  //Para sure lang maglalagay parin sya
+                $unpaid_amt=$unsettled_payment;
+        
+                $stmt=$this->runQuery('UPDATE user_bills SET electricity = :elec ,  water = :water , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
+                $stmt->execute([':elec' =>$elec , ':water' =>$water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt , ':id' => $user_id]);
+            }
+            }else{    //kung nagfail lang yung pagfetch ng user_bills table
+                echo "<script>alert('Process Unsuccessful :(( '); window.location.href = 'admin_dashboard.php';</script>";
+            }
+            
+            }catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+                return false;
+            }
+}   
 
     
         public function approve_user($approve_user)
@@ -992,7 +1163,7 @@ public function user_paid ($paid_user){
     
                     $roleee = $user_data['usertype'];
     
-                    if ($_SESSION['role'] == 'landlord') {
+                    if ($_SESSION['role'] === 'landlord') {
     
                         if ($roleee === 'user') { //kung yung nagsend sa kanya type nya ay user....
                             $user_id = $user;
@@ -1009,7 +1180,8 @@ public function user_paid ($paid_user){
                             echo "<script>alert('How? Dapat di mo to maaccess ah kasi delete lang yung sa landlord'); window.location.href = '../landlord/landlord_comment.php';</script>";
                         }
                         //landlord code
-                    } elseif ($_SESSION['role'] == 'admin') {
+                    } elseif ($_SESSION['role'] === 'admin') {
+
                         if ($roleee === 'landlord') { //kung yung nagsend sa kanya type nya ay landlord....
                             $user_id = $user;
                             $address = $user_data['usertype'];
@@ -1078,17 +1250,17 @@ public function distribute_rent($id) {    //IGNORES THE USER'S CONCERN AND DELET
         
         $room_no=$id;
 
-        $stmt = $this->runQuery('SELECT COUNT(room_no) AS tenants_per_room FROM user_bills WHERE room_no = :room_no;');
+        $stmt = $this->runQuery('SELECT COUNT(room_no) AS tenants_per_room FROM user_bills WHERE room_no = :room_no;');    //counts the number of tenants INSIDE the room
         $stmt->execute([':room_no' => $room_no]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result) { // Check if there was a result
-            $no_tenants = $result['tenants_per_room'];
+            $no_tenants = $result['tenants_per_room'];              //no of tenants
         
-            $stmt = $this->runQuery("SELECT * FROM rent_distribution");
-            $stmt->execute();
+            $stmt = $this->runQuery("SELECT * FROM rent_distribution WHERE room_no = :room_no");      // select all collumns with that room no.   
+            $stmt->execute([':room_no' => $room_no]);
             $rent_total = $stmt->fetch(PDO::FETCH_ASSOC);
-        }
+
             if($no_tenants > 0){
                 $total_elec = $rent_total['elec'];
                 $total_water = $rent_total['water'];
@@ -1107,12 +1279,14 @@ public function distribute_rent($id) {    //IGNORES THE USER'S CONCERN AND DELET
 
                 echo "<script>alert('Error: No tenants in room $room_no'); window.location.href = 'admin_comment.php';</script>";   // If there are no tenants, show an alert
             }
+        }
+            
         
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return false;
     }
-}   
+}     
 }
 if(isset($_POST['btn-signup'])){
     $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);

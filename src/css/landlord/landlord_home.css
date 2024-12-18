@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e4e0e0;  /* Soft light background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Main layout container */
+.layout {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5vw;
+    padding: 10px;
+    
+}
+
+/* Main content styling */
+.main-content {
+    background-color: white;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    animation: bounce 4s infinite; 
+}
+
+h3 {
+    font-size: 75px;
+    text-align: center;
+}
+
+/* Button container for 2x2 grid layout */
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* 2 columns */
+    gap: 20px;  /* Space between buttons */
+    margin-top: 20px;
+    align-items: center;  /* Ensure buttons are aligned in the center vertically */
+    justify-items: center;  /* Center the items horizontally */
+}
+
+/* Each individual button wrapper */
+.button-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;  /* Ensure button wrapper takes full width of the grid cell */
+    height: 100%;  /* Ensure button wrapper takes full height of the grid cell */
+}
+
+/* Button styling */
+.home-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
+    width: 15vw;
+    text-align: center;
+    padding: 20px;
+    background-color: #363636;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for buttons */
+#home-buttons-red:hover {
+    background-color: #c93f3f;
+    transform: translateY(-5px);  /* Small lift effect */
+}
+
+#home-buttons-green:hover {
+    background-color: #15e620;
+    transform: translateY(-5px);  /* Small lift effect */
+}
+
+#home-buttons-blue:hover {
+    background-color: #0e8fda;
+    transform: translateY(-5px);  /* Small lift effect */
+}
+
+#home-buttons-yellow:hover {
+    background-color: #cfac0ede;
+    transform: translateY(-5px);  /* Small lift effect */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .button-container {
+        grid-template-columns: 1fr;  /* Stack buttons vertically on small screens */
+    }
+}
+
+
+/* Keyframes for the bouncing animation */
+@keyframes bounce {
+    0% {
+        transform: translateY(0); /* Start at normal position */
+    }
+    50% {
+        transform: translateY(-8px); /* Move up */
+    }
+    100% {
+        transform: translateY(0); /* Return to normal position */
+    }
+}
