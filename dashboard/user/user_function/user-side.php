@@ -70,8 +70,9 @@ CLASS User_Side{
             echo "Error: " . $e->getMessage();
             return false;
         }
-        
     }
+
+    
 }
 
 if (isset($_POST['btn-submit-sup'])) {

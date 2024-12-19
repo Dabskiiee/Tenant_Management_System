@@ -130,7 +130,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
         <script src="../../src/js/show.js"></script>
-        <?php include_once 'config/sweetalert.php'; ?>
+        <?php include_once '../../config/sweetalert.php'; ?>
 </body>
 
 </html>

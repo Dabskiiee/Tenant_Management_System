@@ -202,11 +202,12 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
             </div>
 
             <button type="submit" class="submit-btn">Update Profile</button>
+            <br>
+            <a href="../admin/authentication/admin-class.php?admin_signout"><button class="out" type="button" >Log Out</button></a>
+            <br>
         </form>
 
-        <br>
-        <a href="../admin/authentication/admin-class.php?admin_signout"><button class="out" type="button" >Log Out</button></a>
-        <br>
+        
                 </section>
             </main>
           
