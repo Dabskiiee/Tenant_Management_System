@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #e4e0e0;  /* Soft light background */
+    background-color: #e4e0e0; /* Soft light background */
     margin: 0;
     padding: 0;
 }
@@ -11,7 +11,6 @@ body {
     justify-content: center;
     margin-top: 1.5vw;
     padding: 10px;
-    
 }
 
 /* Main content styling */
@@ -24,22 +23,35 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 1200px;
-    animation: bounce 4s infinite; 
+    animation: bounce 4s infinite;
+    text-align: center; /* Center-align text */
 }
 
 h3 {
-    font-size: 75px;
+    font-size: 48px;
     text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    h3 {
+        font-size: 28px; /* Adjust font size for smaller screens */
+    }
 }
 
 /* Button container for 2x2 grid layout */
 .button-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* 2 columns */
-    gap: 20px;  /* Space between buttons */
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 20px; /* Space between buttons */
     margin-top: 20px;
-    align-items: center;  /* Ensure buttons are aligned in the center vertically */
-    justify-items: center;  /* Center the items horizontally */
+    align-items: center; /* Ensure buttons are aligned in the center vertically */
+    justify-items: center; /* Center the items horizontally */
+}
+
+@media screen and (max-width: 768px) {
+    .button-container {
+        grid-template-columns: 1fr; /* Stack buttons vertically on small screens */
+    }
 }
 
 /* Each individual button wrapper */
@@ -47,8 +59,8 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;  /* Ensure button wrapper takes full width of the grid cell */
-    height: 100%;  /* Ensure button wrapper takes full height of the grid cell */
+    width: 100%; /* Ensure button wrapper takes full width of the grid cell */
+    height: 100%; /* Ensure button wrapper takes full height of the grid cell */
 }
 
 /* Button styling */
@@ -56,10 +68,10 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 15vh;
-    width: 15vw;
+    height: 12vh;
+    width: 80%; /* Adjust width for better scaling on small screens */
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     background-color: #363636;
     color: white;
     font-size: 18px;
@@ -69,44 +81,36 @@ h3 {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover effect for buttons */
+/* Button hover effects */
 #home-buttons-red:hover {
     background-color: #c93f3f;
-    transform: translateY(-5px);  /* Small lift effect */
+    transform: translateY(-5px); /* Small lift effect */
 }
 
 #home-buttons-green:hover {
     background-color: #15e620;
-    transform: translateY(-5px);  /* Small lift effect */
+    transform: translateY(-5px); /* Small lift effect */
 }
 
 #home-buttons-blue:hover {
     background-color: #0e8fda;
-    transform: translateY(-5px);  /* Small lift effect */
+    transform: translateY(-5px); /* Small lift effect */
 }
 
 #home-buttons-yellow:hover {
     background-color: #cfac0ede;
-    transform: translateY(-5px);  /* Small lift effect */
+    transform: translateY(-5px); /* Small lift effect */
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .button-container {
-        grid-template-columns: 1fr;  /* Stack buttons vertically on small screens */
-    }
-}
-
-
-/* Keyframes for the bouncing animation */
+/* Keyframes for bounce animation */
 @keyframes bounce {
     0% {
-        transform: translateY(0); /* Start at normal position */
+        transform: translateY(0);
     }
     50% {
-        transform: translateY(-8px); /* Move up */
+        transform: translateY(-8px);
     }
     100% {
-        transform: translateY(0); /* Return to normal position */
+        transform: translateY(0);
     }
 }
