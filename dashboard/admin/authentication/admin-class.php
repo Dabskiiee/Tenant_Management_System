@@ -871,6 +871,15 @@ class ADMIN
 
 
             unlink($filename);
+
+            $stmt = $this->runQuery('DELETE FROM logs');           //BABALIKAN
+            $stmt->execute();
+            $_SESSION['status_title'] = "Oops!";
+            $_SESSION['status'] = "Text File Downloaded!";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_timer'] = 40000;
+            header('Location: ../admin_logs.php');
+            
         } else {
             $_SESSION['status_title'] = "Oops!";
             $_SESSION['status'] = "No data to export!";
@@ -878,14 +887,6 @@ class ADMIN
             $_SESSION['status_timer'] = 40000;
             header('Location: ../admin_logs.php');
         }
-
-        $stmt = $this->runQuery('DELETE FROM logs');
-        $stmt->execute();
-        $_SESSION['status_title'] = "Oops!";
-        $_SESSION['status'] = "Text File Downloaded!";
-        $_SESSION['status_code'] = "error";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: ../admin_logs.php');
     }
 
     public function user_paid($paid_user)
@@ -1098,7 +1099,7 @@ class ADMIN
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
                         $_SESSION['status_title'] = "Oops!";
                         $_SESSION['status'] = "Your balance deducts your unpaid amount by ₱$balance";
-                        $_SESSION['status_code'] = "";
+                        $_SESSION['status_code'] = "success";
                         $_SESSION['status_timer'] = 40000;
                         header('Location: admin_dashboard.php');
 
@@ -1177,7 +1178,7 @@ class ADMIN
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
                         $_SESSION['status_title'] = "Oops!";
                         $_SESSION['status'] = "You have sufficient balance for your unpaid amount!";
-                        $_SESSION['status_code'] = "";
+                        $_SESSION['status_code'] = "success";
                         $_SESSION['status_timer'] = 40000;
                         header('Location: admin_dashboard.php');
                     } elseif ($total_unp_amt > $balance && $balance == 0) {                    //kapag mas malaki value o equal sya sa balance  and balance nya is equal to zero       

@@ -5,11 +5,12 @@ $admin = new ADMIN();
 if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
 }
+$user_id=$_SESSION['userSession'];
 
 $stmt = $admin->runQuery("SELECT * FROM user_notification WHERE user_id= :user_id");
-$stmt->execute(array(":user_id" => $_SESSION['userSession']));
+$stmt->execute(array(":user_id" => $user_id));
 $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
 ?>
 
 <!DOCTYPE html>
@@ -86,8 +87,14 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             </nav>
             <main class="content px-3 py-4">
-                <h1>Notifications</h1>
-
+            
+            <div class="header">
+            <h1>Notifications</h1>
+                <form action="user_function/user-side.php" method="POST">
+                <button type="submit" name="user-btn-delete-all" value="<?=$user_id?>">DELETE ALL</button>
+            </div>
+                
+            <hr>
                 <?php
                 if ($user_data) {
                     foreach ($user_data as $row) { ?>
@@ -100,7 +107,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <p class="time-sent"><?= $row['time_sent'] ?></p>
                                 </div>
 
-                                <form action="user_function/user-side.php" method="POST">
+                                
                                     <button type="submit" name="user-btn-delete" class="delete-icon" value="<?= $row['id'] ?>">
                                         <i class="fa fa-trash"></i>
                                     </button>

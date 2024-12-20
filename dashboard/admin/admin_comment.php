@@ -184,7 +184,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
             crossorigin="anonymous"></script>
         <script src="../../src/js/show.js"></script>
     </div>
-    <?php include_once 'config/sweetalert.php'; ?>
+    <?php include_once '../../config/sweetalert.php'; ?>
 
 </body>
 

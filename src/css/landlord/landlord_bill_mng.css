@@ -186,6 +186,39 @@ a.sidebar-link:hover {
     width: 40px;
 }
 
+.add_room {
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-medium);
+    text-align: center;
+    background-color: #6c757d;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    text-transform: uppercase;
+}
+
+.add_room:hover {
+    background-color: #f4c330d2;
+}
+
+.add_room:focus {
+    outline: none;
+}
+
+/* Responsive Design for the Add Room Button */
+@media (max-width: 768px) {
+    .add_room {
+        width: 100%;
+        padding: var(--spacing-small);
+        font-size: 0.9rem;
+    }
+}
+
 @media (min-width: 768px) {}
 
 /* Reset some default styles */

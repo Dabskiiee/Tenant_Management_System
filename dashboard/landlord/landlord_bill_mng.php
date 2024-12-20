@@ -1,16 +1,9 @@
 <?php
-// Database configuration
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "tenante_main"; // Replace with your database name
+require_once '../admin/authentication/admin-class.php';
 
-// Connect to the database
-$conn = new mysqli($host, $user, $password, $database);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$admin = new ADMIN();
+if (!$admin->isUserLoggedIn()) {
+    $admin->redirect();
 }
 
 $message = "";
@@ -25,24 +18,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
         $rent = $_POST['rent'];
         $wifi = $_POST['wifi'];
 
-        // Prepare and execute the update query
-        $updateQuery = "UPDATE rent_distribution SET elec = ?, water = ?, rent = ?, wifi = ? WHERE room_no = ?";
-        $stmt = $conn->prepare($updateQuery);
-        $stmt->bind_param("iiiis", $elec, $water, $rent, $wifi, $room_no);
+        // Prepare and execute the update query with named placeholders
+        $stmt = $admin->runQuery("UPDATE rent_distribution SET elec = :elec, water = :water, rent = :rent, wifi = :wifi WHERE room_no = :room_no");
 
+        // Bind the parameters
+        $stmt->bindParam(':elec', $elec, PDO::PARAM_INT);
+        $stmt->bindParam(':water', $water, PDO::PARAM_INT);
+        $stmt->bindParam(':rent', $rent, PDO::PARAM_INT);
+        $stmt->bindParam(':wifi', $wifi, PDO::PARAM_STR);
+        $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
+
+        // Execute the statement and check for success
         if ($stmt->execute()) {
             $message = "Bills for Room $room_no updated successfully!";
         } else {
-            $message = "Error updating bills: " . $conn->error;
+            $message = "Error updating bills: " . $conn->errorInfo()[2];
         }
     } else {
         $message = "Error: Room number is missing!";
     }
 }
 
-// Fetch all records from the table
-$sql = "SELECT * FROM rent_distribution";
-$result = $conn->query($sql);
+$stmt = $admin->runQuery("SELECT * FROM rent_distribution");
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -136,26 +135,30 @@ $result = $conn->query($sql);
                     </thead>
                     <tbody>
                         <?php
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                        <form method='POST'>
-                            <td>" . htmlspecialchars($row['room_no']) . "<input type='hidden' name='room_no' value='" . htmlspecialchars($row['room_no']) . "'></td>
-                            <td><input type='number' name='elec' value='" . htmlspecialchars($row['elec']) . "' required></td>
-                            <td><input type='number' name='water' value='" . htmlspecialchars($row['water']) . "' required></td>
-                            <td><input type='number' name='rent' value='" . htmlspecialchars($row['rent']) . "' required></td>
-                            <td><input type='number' name='wifi' value='" . htmlspecialchars($row['wifi']) . "' required></td>
-                            <td><input type='submit' name='update' value='Update'></td>
-                        </form>
-                    </tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='6'>No records found</td></tr>";
-                        }
+                        if ($result) {
+                            foreach($result as $row) {
                         ?>
+                                 <tr>
+                        <form method='POST'>
+                            <td> <?= htmlspecialchars($row['room_no'])?><input type='hidden' name='room_no' value='<?=htmlspecialchars($row['room_no'])?>'></td>
+                            <td><input type='number' name='elec' value='<?=htmlspecialchars($row['elec'])?>' required></td>
+                            <td><input type='number' name='water' value='<?=htmlspecialchars($row['water'])?>' required></td>
+                            <td><input type='number' name='rent' value='<?=htmlspecialchars($row['rent'])?>' required></td>
+                            <td><input type='number' name='wifi' value='<?=htmlspecialchars($row['wifi'])?>' required></td>
+                            <td><input type='submit' name='update' value='Update'></td>                            
+                        </form>
+                    </tr>
+                    <?php
+                    
+                            }?>
+                    <form method='POST'>
+                            <td colspan='6'><button class='add_room' type='submit' name='add_room' value='1'>+</button></td>
+                     </form>
+                     <?php   } else { ?>
+                             <tr><td colspan='6'>No records found</td></tr>";
+                      <?php  } ?>
                     </tbody>
                 </table>
-
               
             </main>
             <script>

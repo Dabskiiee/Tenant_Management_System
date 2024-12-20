@@ -34,7 +34,7 @@ li {
 
 body {
     font-family: var(--font-primary);
-    overflow-y: hidden;
+    
 }
 
 .wrapper {
