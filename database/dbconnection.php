@@ -17,9 +17,9 @@ class Database
         }
         else{
             $this->host = "localhost";
-            $this->db_name = "";
-            $this->username = "";
-            $this->password = "";
+            $this->db_name = "u175342239_tenante_main";
+            $this->username = "u175342239_group_four";
+            $this->password = "Itelec22024";
         }
     }
 
