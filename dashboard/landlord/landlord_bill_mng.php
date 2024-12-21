@@ -6,33 +6,11 @@ if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
 }
 
-$message = "";
 
-// Handle form submissions
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['update'])) {
-        $room_no = $_POST['room_no'];
-        $elec = $_POST['elec'];
-        $water = $_POST['water'];
-        $rent = $_POST['rent'];
-        $wifi = $_POST['wifi'];
+$stmt = $admin->runQuery("SELECT * FROM rent_distribution");
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($admin->updateBill($room_no, $elec, $water, $rent, $wifi)) {
-            $message = "Bills for Room $room_no updated successfully!";
-        } else {
-            $message = "Error updating bills.";
-        }
-    } elseif (isset($_POST['add_room'])) {
-        $room_no = $_POST['new_room_no'];
-        if ($admin->addRoom($room_no)) {
-            $message = "Room $room_no added successfully!";
-        } else {
-            $message = "Error adding room.";
-        }
-    }
-}
-
-$result = $admin->getBills();
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +91,7 @@ $result = $admin->getBills();
                 <?php if (!empty($message)) {
                     echo "<p style='text-align: center; color: green;'>$message</p>";
                 } ?>
+
                 <table>
                     <thead>
                         <tr>
@@ -128,30 +107,36 @@ $result = $admin->getBills();
                         <?php
                         if ($result) {
                             foreach ($result as $row) {
-                        ?>
+                                ?>
                                 <tr>
-                                    <form method='POST'>
-                                        <td> <?= htmlspecialchars($row['room_no']) ?><input type='hidden' name='room_no' value='<?= htmlspecialchars($row['room_no']) ?>'></td>
-                                        <td><input type='number' name='elec' value='<?= htmlspecialchars($row['elec']) ?>' required></td>
-                                        <td><input type='number' name='water' value='<?= htmlspecialchars($row['water']) ?>' required></td>
-                                        <td><input type='number' name='rent' value='<?= htmlspecialchars($row['rent']) ?>' required></td>
-                                        <td><input type='number' name='wifi' value='<?= htmlspecialchars($row['wifi']) ?>' required></td>
-                                        <td><input type='submit' name='update' value='Update'></td>
+                                    <form method='POST' action="">
+                                        <td> <?= htmlspecialchars($row['room_no']) ?><input type='hidden' name='room_no'
+                                                value='<?= htmlspecialchars($row['room_no']) ?>'></td>
+                                        <td><input type='number' name='elec' value='<?= htmlspecialchars($row['elec']) ?>'
+                                                required></td>
+                                        <td><input type='number' name='water' value='<?= htmlspecialchars($row['water']) ?>'
+                                                required></td>
+                                        <td><input type='number' name='rent' value='<?= htmlspecialchars($row['rent']) ?>'
+                                                required></td>
+                                        <td><input type='number' name='wifi' value='<?= htmlspecialchars($row['wifi']) ?>'
+                                                required></td>
+                                        <td><input type='submit' name='landlord-btn-update' value='Update'></td>
                                     </form>
                                 </tr>
-                        <?php
+                                <?php
                             }
-                        ?>
+                            ?>
                             <form method='POST'>
-                                <td colspan='6'><button class='add_room' type='submit' name='add_room' value='1'>+</button></td>
+                                <td colspan='6'><button class='add_room' type='submit' name='landlord-add-room'>+</button>
+                                </td>
                             </form>
-                        <?php
+                            <?php
                         } else {
-                        ?>
+                            ?>
                             <tr>
                                 <td colspan='6'>No records found</td>
                             </tr>
-                        <?php
+                            <?php
                         }
                         ?>
                     </tbody>
@@ -160,7 +145,7 @@ $result = $admin->getBills();
             </main>
             <script>
                 // Scroll to the search result after form submission (if any)
-                <?php if ($search_term != '') : ?>
+                <?php if ($search_term != ''): ?>
                     var userRow = document.getElementById("user_<?= $row['id'] ?>");
                     if (userRow) {
                         userRow.scrollIntoView({

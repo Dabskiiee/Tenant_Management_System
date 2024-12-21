@@ -24,7 +24,7 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Comment</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -80,103 +80,106 @@ $user_data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </nav>
             <h3>Tenants' and Landlord's Bulletin</h3>
 
-<br>
-<br>
+            <br>
+            <br>
 
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>NAME</th>
-            <th>TYPE</th>
-            <th>MESSAGE</th>
-            <th>TIME OF COMMENT</th>
-            <th>APPROVE/IGNORE</th>
-            
-        
-        </tr>
-    </thead>
-    <tbody>
-            <?php 
-            if($user_data){
-            foreach ($user_data as $row){
-            ?>
-                <tr>
-                    <td><?= $row['id'] ?> </td>
-                    <td><?= $row['address'] ?> </td>
-                    <td><?= $row['type'] ?> </td>
-                    <td><?= $row['comment'] ?> </td>
-                    <td><?= $row['commented_at'] ?> </td>
-                    
-                    <form action="" method="POST">
-                    <td class="actions">
-                        <button type="submit" name="admin-btn-approve" class="buttons" id= "edit" value="<?=$row['id']?>">APPROVE</button>
-                        <button type="submit" name="admin-btn-ignore" class="buttons" id= "delete" value="<?=$row['id']?>">IGNORE</button>
-                    </td>
-                    </form>
-                    
-                </tr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>TYPE</th>
+                        <th>MESSAGE</th>
+                        <th>TIME OF COMMENT</th>
+                        <th>APPROVE/IGNORE</th>
 
-            <?php
-            }
-            }else{
-            
-            ?>
-                <tr>
-                    <td colspan="7">NO RECORD FOUND</td>
-                </tr>
-            <?php    
-            }
-            ?>
-    </tbody>
-</table>
 
-<br>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($user_data) {
+                        foreach ($user_data as $row) {
+                            ?>
+                            <tr>
+                                <td><?= $row['id'] ?> </td>
+                                <td><?= $row['address'] ?> </td>
+                                <td><?= $row['type'] ?> </td>
+                                <td><?= $row['comment'] ?> </td>
+                                <td><?= $row['commented_at'] ?> </td>
 
-<table>
-    <thead>
-        <tr>
-            
-            <th>ROOM</th>
-            <th>ELECTRICITY BILL</th>
-            <th>WATER BILL</th>
-            <th>RENT BILL</th>
-            <th>WIFI BILL</th>
-            <th>DISTRIBUTE</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-            <?php 
-            if($user_data1){
-            foreach ($user_data1 as $row1){
-            ?>
-                <tr>
-                    <td><?= $row1['id'] ?> </td>
-                    <td><?= $row1['elec'] ?> </td>
-                    <td><?= $row1['water'] ?> </td>
-                    <td><?= $row1['rent'] ?> </td>
-                    <td><?= $row1['wifi'] ?> </td>
-                    
-                    <form action="" method="POST">
-                    <td class="actions">
-                        <button type="submit" name="admin-btn-distribute" class="buttons" id= "edit" value="<?=$row1['room_no']?>">DISTRIBUTE</button>
-                    </td>
-                    </form>
-                </tr>
-            <?php
-            }
-            }else{
-            ?>
-                <tr>
-                    <td colspan="7">NO RECORD FOUND</td>
-                </tr>
-            <?php    
-            }
-            ?>
-    </tbody>
-</table>
+                                <form action="" method="POST">
+                                    <td class="actions">
+                                        <button type="submit" name="admin-btn-approve" class="buttons" id="edit"
+                                            value="<?= $row['id'] ?>">APPROVE</button>
+                                        <button type="submit" name="admin-btn-ignore" class="buttons" id="delete"
+                                            value="<?= $row['id'] ?>">IGNORE</button>
+                                    </td>
+                                </form>
+
+                            </tr>
+
+                            <?php
+                        }
+                    } else {
+
+                        ?>
+                        <tr>
+                            <td colspan="7">NO RECORD FOUND</td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+            <br>
+
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>ROOM</th>
+                        <th>ELECTRICITY BILL</th>
+                        <th>WATER BILL</th>
+                        <th>RENT BILL</th>
+                        <th>WIFI BILL</th>
+                        <th>DISTRIBUTE</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($user_data1) {
+                        foreach ($user_data1 as $row1) {
+                            ?>
+                            <tr>
+                                <td><?= $row1['id'] ?> </td>
+                                <td><?= $row1['elec'] ?> </td>
+                                <td><?= $row1['water'] ?> </td>
+                                <td><?= $row1['rent'] ?> </td>
+                                <td><?= $row1['wifi'] ?> </td>
+
+                                <form action="" method="POST">
+                                    <td class="actions">
+                                        <button type="submit" name="admin-btn-distribute" class="buttons" id="edit"
+                                            value="<?= $row1['room_no'] ?>">DISTRIBUTE</button>
+                                    </td>
+                                </form>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="7">NO RECORD FOUND</td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
 
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

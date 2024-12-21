@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../../../database/dbconnection.php';
 include_once __DIR__ . '/../../../config/settings-configuration.php';
 require_once __DIR__ . '/../../../src/vendor/autoload.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -27,11 +26,7 @@ class ADMIN
     public function sendOtp($otp, $email)
     {
         if ($email == NULL) {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "No Email Found.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 100000;
-            header('Location: ../../../');
+            echo "<script>alert('No Email Found'); window.location.href = '../../../';</script>";
             exit;
         } else {
             $stmt = $this->runQuery("SELECT * FROM user WHERE email = :email");
@@ -39,11 +34,7 @@ class ADMIN
             $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($stmt->rowCount() > 0) {
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "Email is already taken. Please try another one.";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 100000;
-                header('Location: ../../../');
+                echo "<script>alert('Email is already taken. Please try another one.'); window.location.href = '../../../';</script>";
                 exit;
             } else {
                 $_SESSION['OTP'] = $otp;
@@ -118,13 +109,8 @@ class ADMIN
 
 
                 $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-                header('Location: ../../../verify-otp.php');
-                // Set session success message and redirect
-                $_SESSION['status_title'] = "Success!";
-                $_SESSION['status'] = "Please check the email to verify the account.";
-                $_SESSION['status_code'] = "success";
-                $_SESSION['status_timer'] = 40000;
-                exit();
+                echo "<script>alert('We sent the OTP to $email'); window.location.href = '../../../verify-otp.php';</script>";
+
             }
         }
     }
@@ -205,30 +191,17 @@ class ADMIN
             </html>";
 
             $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+            echo "<script>alert('OTP Verified and Admin Added Successfully, Thank You 🙂'); window.location.href = '../../../index.php';</script>";
 
-            header('Location: ../../../index.php');
-            // Set session success message and redirect
-            $_SESSION['status_title'] = "Success!";
-            $_SESSION['status'] = "OTP Verified and Admin Added Successfully, Thank You 🙂";
-            $_SESSION['status_code'] = "success";
-            $_SESSION['status_timer'] = 40000;
-            exit();
             unset($_SESSION['not_verify_fullname']);
             unset($_SESSION['not_verify_email']);
             unset($_SESSION['not_verify_password']);
+
         } else if ($otp == NULL) {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "No OTP Found.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 100000;
-            header('Location: ../../../verify-otp.php');
+            echo "<script>alert('No OTP Found'); window.location.href = '../../../verify-otp.php';</script>";
             exit;
         } else {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "It appears that the OTP you entered is invalid.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 100000;
-            header('Location: ../../../verify-otp.php');
+            echo "<script>alert('It appears that the OTP you entered is invalid'); window.location.href = '../../../verify-otp.php';</script>";
             exit;
         }
     }
@@ -239,20 +212,12 @@ class ADMIN
         $stmt->execute(array(":email" => $email));
 
         if ($stmt->rowCount() > 0) {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Email already Exist.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 100000;
-            header('Location: ../../../index.php');
+            echo "<script>alert('Email already Exist.'); window.location.href = '../../../index.php';</script>";
             exit;
         }
 
         if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Invalid CSRF Token.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 100000;
-            header('Location: ../../../index.php');
+            echo "<script>alert('Invalid CSRF Token.'); window.location.href = '../../../index.php';</script>";
             exit;
         }
 
@@ -292,6 +257,12 @@ class ADMIN
         $due_date = $datetime->format('Y-m-d');
 
         $this->user_bills($user_details, $name, $email, $balance, $electricity, $water, $rent, $wifi, $due_date);
+
+        $user_id = $user_details;
+        $sent_by = 'Tenante Organization';
+        $notif = "HELLO THERE $name! We welcome you to your first day as a tenant. We do hope for a happy and healthy landlord-tenant relationship! Enjoy staying!";
+
+        $this->user_notification($user_id, $sent_by, $notif);
     }
 
     public function adminSignin($email, $password, $csrf_token)
@@ -299,11 +270,7 @@ class ADMIN
         try {
             // CSRF Token Validation
             if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "Invalid CSRF Token.";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 100000;
-                header('Location: ../../../index.php');
+                echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../index.php'; </script>";
                 exit;
             }
             unset($_SESSION['csrf_token']);
@@ -324,20 +291,15 @@ class ADMIN
                         if ($userRow['usertype'] === "admin") {     // Redirect based on usertype
                             $_SESSION['adminSession'] = $user_id;
                             $_SESSION['role'] = 'admin';
+                            echo "<script>alert('Welcome, Admin!'); window.location.href = '../admin_dashboard.php'; </script>";
 
-                            header('Location: ../admin_dashboard.php');
-
-                            $_SESSION['status_title'] = "Success!";
-                            $_SESSION['status'] = "Welcome, Admin!";
-                            $_SESSION['status_code'] = "success";
-                            $_SESSION['status_timer'] = 40000;
                         } elseif ($userRow['usertype'] === "user") {
 
                             $_SESSION['userSession'] = $user_id;    //ENSURES THAT ONLY THE USER WILL BE MONITORED TO THE LOGS TABLE
 
                             $activity = "Has successfully signed in.";
                             $name = $userRow['fullname'];
-                            $guests = isset($_POST['guests']) ? (int)$_POST['guests'] : 0;
+                            $guests = isset($_POST['guests']) ? (int) $_POST['guests'] : 0;
                             $this->logs($user_id, $name, $guests, $activity);
 
                             $stmt = $this->runQuery('SELECT due_date FROM user_bills WHERE email = :email');
@@ -351,12 +313,14 @@ class ADMIN
                             $alert_date = strtotime($due_date . ' -3 days');
 
                             if ($cur_timestamp >= $alert_date && $cur_timestamp < $alert_date + 86400) {
-                                header('Location: ../../user/user_index.php');
-                                $_SESSION['status_title'] = "Success!";
-                                $_SESSION['status'] = "3 days from now, Your rent will be on due!";
-                                $_SESSION['status_code'] = "";
-                                $_SESSION['status_timer'] = 40000;
 
+                                $user_id = $_SESSION['userSession'];
+                                $sent_by = 'Admin';
+                                $notif = "Hi $name! The rent due for this month is fast approaching. Please prepare the payment in 3 days from now. Thnx";
+
+                                $this->user_notification($user_id, $sent_by, $notif);
+
+                                echo "<script>alert('3 days from now, Your rent will be on due!'); window.location.href = '../../user/user_index.php'; </script>";
 
                                 $subject = "UPCOMING RENT ON DUE";
                                 $message = "
@@ -425,12 +389,17 @@ class ADMIN
 
 
                                 $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
+
                             } elseif ($cur_timestamp >= $due_date_timestamp && $cur_timestamp < $due_date_timestamp + 86400) {
-                                $_SESSION['status_title'] = "Success!";
-                                $_SESSION['status'] = "GO TO YOUR LANDLORD! Your rent payment is NOW DUE!";
-                                $_SESSION['status_code'] = "";
-                                $_SESSION['status_timer'] = 40000;
-                                header('Location: ../../user/user_index.php');
+
+                                $user_id = $_SESSION['userSession'];
+                                $sent_by = 'Admin';
+                                $notif = "Hi $name! Rent is due today! If you want to have an extension, just comply or request with the landlord or admin. Thank you!";
+
+                                $this->user_notification($user_id, $sent_by, $notif);
+
+                                echo "<script>alert('GO TO YOUR LANDLORD! Your rent payment is NOW DUE!'); window.location.href = '../../user/user_index.php'; </script>";
 
                                 $subject = "RENT DUE TODAY!!!!";
                                 $message = "
@@ -498,54 +467,35 @@ class ADMIN
                                     </html>";
 
 
+
                                 $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
+
+
                             } else {
                                 echo "<script>window.location.href = '../../user/user_index.php';</script>";
                             }
+
                         } elseif ($userRow['usertype'] === "landlord") {
                             $_SESSION['adminSession'] = $user_id;
                             $_SESSION['role'] = 'landlord';
 
-                            echo "<script>alert(''); window.location.href = ''; </script>";
-                            $_SESSION['status_title'] = "Success!";
-                            $_SESSION['status'] = "WELCOME LANDLORD!";
-                            $_SESSION['status_code'] = "";
-                            $_SESSION['status_timer'] = 40000;
-                            header('Location: ../../landlord/landlord_home.php');
-                            exit;
-                        } else {
+                            echo "<script>alert('WELCOME LANDLORD!'); window.location.href = '../../landlord/landlord_home.php'; </script>";
 
-                            $_SESSION['status_title'] = "Oops!";
-                            $_SESSION['status'] = "Invalid user type.";
-                            $_SESSION['status_code'] = "error";
-                            $_SESSION['status_timer'] = 40000;
-                            header('Location: ../../../index.php');
-                            exit;
+                        } else {
+                            echo "<script>alert('Invalid user type.'); window.location.href = '../../../index.php'; </script>";
                         }
                         exit;
                     } else {
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "Password is incorrect.";
-                        $_SESSION['status_code'] = "error";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: ../../../index.php');
+                        echo "<script>alert('Password is incorrect.'); window.location.href = '../../../index.php'; </script>";
                         exit;
                     }
                 } else {
-                    $_SESSION['status_title'] = "Oops!";
-                    $_SESSION['status'] = "Entered email is not verified.";
-                    $_SESSION['status_code'] = "error";
-                    $_SESSION['status_timer'] = 40000;
-                    header('Location: ../../../index.php');
+                    echo "<script>alert('Entered email is not verified.'); window.location.href = '../../../index.php'; </script>";
                     exit;
                 }
             } else {
-
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "No account found for this email.";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 40000;
-                header('Location: ../../../index.php');
+                echo "<script>alert('No account found for this email.'); window.location.href = '../../../index.php'; </script>";
                 exit;
             }
         } catch (PDOException $ex) {
@@ -560,11 +510,7 @@ class ADMIN
             unset($_SESSION['role']);
         } else
             unset($_SESSION['userSession']);
-        $_SESSION['status_title'] = "Success!";
-        $_SESSION['status'] = "Sign Out Successfully.";
-        $_SESSION['status_code'] = "success";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: ../../../index.php');
+        echo "<script>alert('Sign Out Successfully'); window.location.href = '../../../index.php';</script>";
         exit;
     }
 
@@ -589,34 +535,8 @@ class ADMIN
     {
         $stmt = $this->conn->prepare($sql);
         return $stmt;
+
     }
-
-    // Bill Management Functions
-public function getBills()
-{
-    $stmt = $this->runQuery("SELECT * FROM rent_distribution");
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-public function updateBill($room_no, $elec, $water, $rent, $wifi)
-{
-    $stmt = $this->runQuery("UPDATE rent_distribution SET elec = :elec, water = :water, rent = :rent, wifi = :wifi WHERE room_no = :room_no");
-    $stmt->bindParam(':elec', $elec, PDO::PARAM_INT);
-    $stmt->bindParam(':water', $water, PDO::PARAM_INT);
-    $stmt->bindParam(':rent', $rent, PDO::PARAM_INT);
-    $stmt->bindParam(':wifi', $wifi, PDO::PARAM_INT);
-    $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
-    return $stmt->execute();
-}
-
-public function addRoom($room_no)
-{
-    $stmt = $this->runQuery("INSERT INTO rent_distribution (room_no, elec, water, rent, wifi) VALUES (:room_no, 0, 0, 0, 0)");
-    $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
-    return $stmt->execute();
-}
-
     //GIVING VALUE TO THE FOREIGN TABLES WITH CONNECTION TO USER
     public function logs($user_id, $name, $guests, $activity)
     {
@@ -633,7 +553,7 @@ public function addRoom($room_no)
     public function user_notification($user_id, $sent_by, $notif)
     {
         $stmt = $this->runQuery("INSERT INTO user_notification (user_id, sent_by ,notif) VALUES (:user_id, :sent_by ,:notif)");
-        $stmt->execute(array(':user_id' => $user_id,  ':sent_by' => $sent_by, ':notif' => $notif));
+        $stmt->execute(array(':user_id' => $user_id, ':sent_by' => $sent_by, ':notif' => $notif));
     }
 
     public function isUserLoggedIn()
@@ -647,12 +567,7 @@ public function addRoom($room_no)
     }
     public function redirect()
     {
-
-        $_SESSION['status_title'] = "Oops!";
-        $_SESSION['status'] = "Admin must loggin first.";
-        $_SESSION['status_code'] = "error";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: ../../../index.php');
+        echo "<script>alert('Admin must loggin first'); window.location.href = '../../../index.php';</script>";
         exit;
     }
 
@@ -660,11 +575,7 @@ public function addRoom($room_no)
     {
 
         if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {         // CSRF Token Validation
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Invalid CSRF token.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../forgot-password.php');
+            echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../forgot-password.php'; </script>";
             exit;
         }
         unset($_SESSION['csrf_token']);
@@ -760,18 +671,11 @@ public function addRoom($room_no)
 
             // Send the reset email
             $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-            $_SESSION['status_title'] = "Success!";
-            $_SESSION['status'] = "A password reset link has been sent to your email.";
-            $_SESSION['status_code'] = "";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../index.php');
+
+            echo "<script>alert('A password reset link has been sent to your email.'); window.location.href = '../../../index.php';</script>";
             exit;
         } else {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "No account found with that email.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../forgot-password.php');
+            echo "<script>alert('No account found with that email.'); window.location.href = '../../../forgot-password.php';</script>";
             exit;
         }
     }
@@ -780,11 +684,7 @@ public function addRoom($room_no)
 
         // CSRF Token Validation
         if (!isset($csrf_token) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Invalid CSRF token.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../reset-password.php?token=$token');
+            echo "<script>alert('Invalid CSRF token.'); window.location.href = '../../../reset-password.php?token=$token'; </script>";
             exit;
         }
         unset($_SESSION['csrf_token']);
@@ -807,18 +707,11 @@ public function addRoom($room_no)
                 ":password" => $hash_password,
                 ":reset_token" => $token
             ));
-            $_SESSION['status_title'] = "Success!";
-            $_SESSION['status'] = "Your password has been successfully reset.";
-            $_SESSION['status_code'] = "success";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../index.php');
+
+            echo "<script>alert('Your password has been successfully reset. You can now log in with your new password.'); window.location.href = '../../../index.php';</script>";
             exit;
         } else {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Invalid or expired token. Please request a new password reset.";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../forgot-password.php');
+            echo "<script>alert('Invalid or expired token. Please request a new password reset.'); window.location.href = '../../../forgot-password.php';</script>";
             exit;
         }
     }
@@ -828,12 +721,7 @@ public function addRoom($room_no)
 
         $stmt = $this->runQuery('UPDATE user_bills SET room_no = :room_no , name=:name , email=:email , balance=:balance ,electricity=:electricity ,water=:water ,rent=:rent ,wifi=:wifi ,due_date=:due_date WHERE user_details = :id');
         $stmt->execute([':room_no' => $room_no, ':name' => $name, ':email' => $email, ':balance' => $balance, ':electricity' => $electricity, ':water' => $water, ':rent' => $rent, ':wifi' => $wifi, ':due_date' => $due_date, ':id' => $id]);
-        $_SESSION['status_title'] = "Success!";
-        $_SESSION['status'] = "UPDATED SUCCESSFULLY!";
-        $_SESSION['status_code'] = "success";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: admin_dashboard.php');
-        exit;
+        echo "<script>alert('UPDATED SUCCESSFULLY!'); window.location.href = 'admin_dashboard.php'; </script>";
     }
 
 
@@ -847,9 +735,11 @@ public function addRoom($room_no)
 
             $stmt2 = $this->runQuery('DELETE FROM user WHERE id = :id');
             $stmt2->execute([':id' => $deletee_user]);
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+
     }
 
     public function save_log()
@@ -859,6 +749,7 @@ public function addRoom($room_no)
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;
@@ -899,21 +790,14 @@ public function addRoom($room_no)
 
             unlink($filename);
 
-            $stmt = $this->runQuery('DELETE FROM logs');           //BABALIKAN
-            $stmt->execute();
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "Text File Downloaded!";
-            $_SESSION['status_code'] = "success";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../admin_logs.php');
-            
         } else {
-            $_SESSION['status_title'] = "Oops!";
-            $_SESSION['status'] = "No data to export!";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['status_timer'] = 40000;
-            header('Location: ../admin_logs.php');
+            echo "<script>alert('No data to export!'); window.location.href = '../admin_logs.php';</script>";
         }
+
+        $stmt = $this->runQuery('DELETE FROM logs');
+        $stmt->execute();
+        echo "<script>alert('Text File Downloaded!'); window.location.href = '../admin_logs.php';</script>";
+
     }
 
     public function user_paid($paid_user)
@@ -1011,15 +895,12 @@ public function addRoom($room_no)
                             </body>
                             </html>";
             $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;
         }
-        $_SESSION['status_title'] = "Oops!";
-        $_SESSION['status'] = "TENANT IS NOTIFIED ABOUT HIS PAYMENT. ";
-        $_SESSION['status_code'] = "";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: admin_dashboard.php');
+        echo "<script>alert('TENANT IS NOTIFIED ABOUT HIS PAYMENT. '); window.location.href = 'admin_dashboard.php';</script>";
     }
 
     public function unsettled_payment($id, $unsettled_payment)
@@ -1124,16 +1005,14 @@ public function addRoom($room_no)
                                 </body>
                                 </html>";
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "Your balance deducts your unpaid amount by ₱$balance";
-                        $_SESSION['status_code'] = "success";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_dashboard.php');
+
+                        echo "<script>alert('Your balance deducts your unpaid amount by ₱$balance'); window.location.href = 'admin_dashboard.php';</script>";
 
                         $balance = 0;
 
                         $stmt = $this->runQuery('UPDATE user_bills SET balance = :balance, electricity = :elec ,  water = :water , due_date = :due_date , unpaid_amt = :unpaid_amt WHERE user_details=:id');
                         $stmt->execute([':balance' => $balance, ':elec' => $elec, ':water' => $water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt, ':id' => $user_id]);
+
                     } elseif ($total_unp_amt <= $balance) {           //kapag mas maliit value ng inenter na number sa balance na meron sa database
                         $balance = abs($balance - $total_unp_amt);
                         $unpaid_amt = 0;
@@ -1203,11 +1082,9 @@ public function addRoom($room_no)
                                 </body>
                                 </html>";
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "You have sufficient balance for your unpaid amount!";
-                        $_SESSION['status_code'] = "success";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_dashboard.php');
+
+                        echo "<script>alert('You have sufficient balance for your unpaid amount!'); window.location.href = 'admin_dashboard.php';</script>";
+
                     } elseif ($total_unp_amt > $balance && $balance == 0) {                    //kapag mas malaki value o equal sya sa balance  and balance nya is equal to zero       
 
                         $unpaid_amt = $total_unp_amt;
@@ -1277,18 +1154,13 @@ public function addRoom($room_no)
                                 </body>
                                 </html>";
                         $this->send_email($email, $message, $subject, $this->smtp_email, $this->smtp_password);
-                        $_SESSION['status_title'] = "Success!";
-                        $_SESSION['status'] = "Tenant is notified about his/her unpaid amount!";
-                        $_SESSION['status_code'] = "success";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_dashboard.php');
+
+                        echo "<script>alert('Tenant is notified about his/her unpaid amount! '); window.location.href = 'admin_dashboard.php';</script>";
+
                     } else {
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "BALANCE IS A NEGATIVE NUMBER *for sam rison* ";
-                        $_SESSION['status_code'] = "error";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_dashboard.php');
+                        echo "<script>alert('BALANCE IS A NEGATIVE NUMBER *for sam rison* '); window.location.href = 'admin_dashboard.php';</script>";
                     }
+
                 } else {                  //Para sure lang maglalagay parin sya
                     $unpaid_amt = $unsettled_payment;
 
@@ -1296,18 +1168,14 @@ public function addRoom($room_no)
                     $stmt->execute([':elec' => $elec, ':water' => $water, ':due_date' => $due_date, ':unpaid_amt' => $unpaid_amt, ':id' => $user_id]);
                 }
             } else {    //kung nagfail lang yung pagfetch ng user_bills table
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "Process Unsuccessful :((";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 40000;
-                header('Location: admin_dashboard.php');
+                echo "<script>alert('Process Unsuccessful :(( '); window.location.href = 'admin_dashboard.php';</script>";
             }
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;
         }
     }
-
 
     public function approve_user($approve_user)
     {  //NOTIFIES THE USER ABOUT HIS/HER CONCERN 
@@ -1340,17 +1208,9 @@ public function addRoom($room_no)
 
                         $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
                         $stmt->execute([':id' => $id]);
-                        $_SESSION['status_title'] = "Success!";
-                        $_SESSION['status'] = "Tenant eto oh para sayu yi3333 ";
-                        $_SESSION['status_code'] = "";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: ../landlord/landlord_comment.php');
+                        echo "<script>alert('Tenant eto oh para sayu yi3333'); window.location.href = '../landlord/landlord_comment.php';</script>";
                     } else { //eto naman pag YUNG INAAPPROVE NI LANDLORD is indi user (which is impossible dapat mangyare kaya ganyan eror)
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "How? Dapat di mo to maaccess ah kasi delete lang yung sa landlord";
-                        $_SESSION['status_code'] = "error";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: ../landlord/landlord_comment.php');
+                        echo "<script>alert('How? Dapat di mo to maaccess ah kasi delete lang yung sa landlord'); window.location.href = '../landlord/landlord_comment.php';</script>";
                     }
                     //landlord code
                 } elseif ($_SESSION['role'] === 'admin') {
@@ -1367,11 +1227,8 @@ public function addRoom($room_no)
                         $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
                         $stmt->execute([':id' => $id]);
 
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "Nag game ka kay boss ah dont forget!";
-                        $_SESSION['status_code'] = "error";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_comment.php');
+                        echo "<script>alert('Nag game ka kay boss ah dont forget!'); window.location.href = 'admin_comment.php';</script>";
+
                     } elseif ($roleee === 'user') {    //kung yung nagsend sa kanya type nya ay user....
 
                         $user_id = $user;
@@ -1385,30 +1242,16 @@ public function addRoom($room_no)
                         $stmt = $this->runQuery('DELETE FROM user_comments WHERE id=:id');
                         $stmt->execute([':id' => $id]);
 
+                        echo "<script>alert('Ayan tenant, nireplyan kita ah'); window.location.href = 'admin_comment.php';</script>";
 
-                        $_SESSION['status_title'] = "Success!";
-                        $_SESSION['status'] = "Ayan tenant, nireplyan kita ah";
-                        $_SESSION['status_code'] = "success";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_comment.php');
                     } else {     //eto for sam rison nirereplyan nya sarili nya HAHAHHAHA
-
-
-                        $_SESSION['status_title'] = "Oops!";
-                        $_SESSION['status'] = "Baliw ka ba? Bat mo nirereplyan sarili mo?";
-                        $_SESSION['status_code'] = "error";
-                        $_SESSION['status_timer'] = 40000;
-                        header('Location: admin_comment.php');
+                        echo "<script>alert('Baliw ka ba? Bat mo nirereplyan sarili mo?'); window.location.href = 'admin_comment.php';</script>";
                     }
                 }
             } else {
-
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "FAILED TO PROCESS the approval ";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 40000;
-                header('Location: admin_comment.php');
+                echo "<script>alert('FAILED TO PROCESS the approval '); window.location.href = 'admin_comment.php';</script>";
             }
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;
@@ -1425,18 +1268,9 @@ public function addRoom($room_no)
             $stmt->execute([':id' => $id]);
 
             if ($_SESSION['role'] === 'landlord') {
-
-                $_SESSION['status_title'] = "Success!";
-                $_SESSION['status'] = "Declined Successfully!!";
-                $_SESSION['status_code'] = "success";
-                $_SESSION['status_timer'] = 40000;
-                header('Location: ../landlord/landlord_comment.php');
+                echo "<script>alert('Declined Successfully!!'); window.location.href = '../landlord/landlord_comment.php';</script>";
             } else {
-                $_SESSION['status_title'] = "Oops!";
-                $_SESSION['status'] = "Message ignored! ";
-                $_SESSION['status_code'] = "error";
-                $_SESSION['status_timer'] = 40000;
-                header('Location: admin_comment.php');
+                echo "<script>alert('Message ignored! '); window.location.href = 'admin_comment.php';</script>";
             }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -1473,20 +1307,144 @@ public function addRoom($room_no)
 
 
                     $stmt = $this->runQuery('UPDATE user_bills SET electricity=:electricity ,water=:water ,rent=:rent ,wifi=:wifi WHERE room_no = :room_no');
-                    $stmt->execute([':electricity' => $distributed_elec, ':water' => $distributed_water, ':rent' => $total_rent, ':wifi' =>  $total_wifi, ':room_no' => $room_no]);
+                    $stmt->execute([':electricity' => $distributed_elec, ':water' => $distributed_water, ':rent' => $total_rent, ':wifi' => $total_wifi, ':room_no' => $room_no]);
 
-                    $_SESSION['status_title'] = "Oops!";
-                    $_SESSION['status'] = "THERE ARE AT LEAST $no_tenants IN ROOM $room_no";
-                    $_SESSION['status_code'] = "error";
-                    $_SESSION['status_timer'] = 40000;
-                    header('Location: admin_comment.php');
+                    echo "<script>alert('THERE ARE AT LEAST $no_tenants IN ROOM $room_no'); window.location.href = 'admin_comment.php';</script>";
                 } else {
-                    $_SESSION['status_title'] = "Oops!";
-                    $_SESSION['status'] = "Error: No tenants in room $room_no";
-                    $_SESSION['status_code'] = "error";
-                    $_SESSION['status_timer'] = 40000;
-                    header('Location: admin_comment.php');
+
+                    echo "<script>alert('Error: No tenants in room $room_no'); window.location.href = 'admin_comment.php';</script>";   // If there are no tenants, show an alert
                 }
+            }
+
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+}
+class landlord
+{
+    private $conn;
+    private $settings;
+    private $smtp_email;
+    private $smtp_password;
+
+    private $admin;
+
+    public function __construct()
+    {
+        $this->settings = new SystemConfig();
+        $this->smtp_email = $this->settings->getSmtpEmail();
+        $this->smtp_password = $this->settings->getSmtpPassword();
+
+        $database = new Database();
+        $this->conn = $database->dbConnection();
+
+        $this->admin = new ADMIN();
+
+    }
+
+    public function removeTenant($user_id)
+    {
+        $stmt = $this->admin->runQuery("UPDATE user SET status = '' WHERE id = :id");
+        $stmt->execute([':id' => $user_id]);
+        echo "<script>alert('Tenant Removed!'); window.location.href = 'landlord_tenant_profile.php'; </script>";
+    }
+
+    public function updateBill($room_no, $elec, $water, $rent, $wifi, &$message)
+    {
+        $stmt = $this->admin->runQuery("UPDATE rent_distribution SET elec = :elec, water = :water, rent = :rent, wifi = :wifi WHERE room_no = :room_no");
+        $stmt->bindParam(':elec', $elec, PDO::PARAM_INT);
+        $stmt->bindParam(':water', $water, PDO::PARAM_INT);
+        $stmt->bindParam(':rent', $rent, PDO::PARAM_INT);
+        $stmt->bindParam(':wifi', $wifi, PDO::PARAM_INT);
+        $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
+
+        // Reset the message before updating
+        $message = "";
+
+        if ($stmt->execute()) {
+            $message = "Bills for Room $room_no updated successfully!";
+        } else {
+            $message = "Error updating bills.";
+        }
+    }
+
+    public function add_room()
+    {
+        try {
+
+            $read = $this->admin->runQuery('SELECT MAX(room_no) AS max_room_no FROM rent_distribution');           // Get the maximum room_no from the database to calculate the new room number
+            $read->execute();
+            $result = $read->fetch(PDO::FETCH_ASSOC);
+
+
+            $last_row_values = $this->admin->runQuery('SELECT rent, wifi FROM rent_distribution ORDER BY room_no DESC LIMIT 1'); // Fetch the last room's rent and wifi values (assuming they are in the last row)
+            $last_row_values->execute();
+            $lastRow = $last_row_values->fetch(PDO::FETCH_ASSOC);
+
+            $add_room = $result['max_room_no'] + 1;                 // Get the new room number (incrementing the maximum room_no)
+
+            // Default rent and wifi values if the last row doesn't exist or if it's the first room
+            $newRent = isset($lastRow['rent']) ? $lastRow['rent'] : 0;   // Default rent = 0 if no previous room exists
+            $newWifi = isset($lastRow['wifi']) ? $lastRow['wifi'] : 0;   // Default wifi = 0 if no previous room exists
+
+            // Insert the new room into the database with the rent and wifi values from the previous room
+            $stmt = $this->admin->runQuery('INSERT INTO rent_distribution(room_no, elec, water, rent, wifi) VALUES (:add_room, 0, 0, :rent, :wifi)');
+            $stmt->execute([
+                ':add_room' => $add_room,
+                ':rent' => $newRent,
+                ':wifi' => $newWifi
+            ]);
+
+            echo "<script>alert('Added Rooms Successfully!'); window.location.href = 'landlord_bill_mng.php';</script>";   // If there are no tenants, show an alert
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function landlord_comment($user_id, $address, $typee, $comment)
+    {
+
+        $stmt = $this->admin->runQuery('INSERT INTO user_comments(user_id,address,type,comment)VALUES(:user_id,:address, :type,:comment)');
+        $stmt->execute([':user_id' => $user_id, ':address' => $address, ':type' => $typee, ':comment' => $comment]);
+    }
+
+    public function send_msg($receiver, $type, $text)
+    {
+        try {
+            $stmt = $this->admin->runQuery('SELECT * FROM user WHERE fullname = :name');
+            $stmt->execute([':name' => $receiver]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['usertype'] == 'admin') {
+
+                $user_id = $_SESSION['adminSession'];
+                $address = $receiver;
+                $typee = $type;
+                $comment = $text;
+
+                $this->landlord_comment($user_id, $address, $typee, $comment);
+
+                echo "<script>alert('Admin is NOW informed.'); window.location.href = '../../landlord/landlord_comment.php';</script>";
+            } elseif ($result['usertype'] == 'user') {
+
+                $user_id = $result['id'];
+                $sent_by = $_SESSION['role'];
+                $subject = $type;
+                $notif = "Subject:$subject 
+                              Message:$text";
+
+                $this->admin->user_notification($user_id, $sent_by, $notif);
+
+                echo "<script>alert('User is notified!'); window.location.href = '../../landlord/landlord_comment.php';</script>";
+            } else {
+                echo "<script>alert('Your Message is not processed.'); window.location.href = 'landlord_message.php';</script>";
             }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -1494,9 +1452,12 @@ public function addRoom($room_no)
         }
     }
 
-    
+
 }
-if (isset($_POST['btn-signup'])) {
+
+
+
+if (isset($_POST['btn-signup'])) {                                                                    //ADMIN
     $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);
     $_SESSION['not_verify_email'] = trim($_POST['email']);
     $_SESSION['not_verify_password'] = trim($_POST['password']);
@@ -1508,11 +1469,11 @@ if (isset($_POST['btn-signup'])) {
     $addAdmin->sendOtp($otp, $email);
 }
 
-if (isset($_POST['btn-verify'])) {
+if (isset($_POST['btn-verify'])) {                                                                    //ADMIN
     $csrf_token = trim($_POST['csrf_token']);
-    $fullname =  $_SESSION['not_verify_fullname'];
+    $fullname = $_SESSION['not_verify_fullname'];
     $email = $_SESSION['not_verify_email'];
-    $password =  $_SESSION['not_verify_password'];
+    $password = $_SESSION['not_verify_password'];
 
     $tokencode = md5(uniqid(rand()));
     $otp = trim($_POST['otp']);
@@ -1521,7 +1482,7 @@ if (isset($_POST['btn-verify'])) {
     $adminVerify->verifyOTP($fullname, $email, $password, $tokencode, $otp, $csrf_token);
 }
 
-if (isset($_POST['btn-signin'])) {
+if (isset($_POST['btn-signin'])) {                                                                       //ADMIN
     $csrf_token = trim($_POST['csrf_token']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -1530,12 +1491,12 @@ if (isset($_POST['btn-signin'])) {
     $admindSignin->adminSignin($email, $password, $csrf_token);
 }
 
-if (isset($_GET['admin_signout'])) {
+if (isset($_GET['admin_signout'])) {                                                                      //ADMIN
     $adminSignout = new ADMIN();
     $adminSignout->adminSignout();
 }
 
-if (isset($_POST['btn-forgot-password'])) {
+if (isset($_POST['btn-forgot-password'])) {                                                               //ADMIN
     $csrf_token = trim($_POST['csrf_token']);
     $email = trim($_POST['email']);
 
@@ -1543,7 +1504,7 @@ if (isset($_POST['btn-forgot-password'])) {
     $adminForgot->forgotPassword($email, $csrf_token);
 }
 
-if (isset($_POST['btn-reset-password'])) {
+if (isset($_POST['btn-reset-password'])) {                                                                 //ADMIN
     $csrf_token = trim($_POST['csrf_token']);
     $token = trim($_POST['token']);
     $new_password = trim($_POST['new_password']);
@@ -1551,22 +1512,15 @@ if (isset($_POST['btn-reset-password'])) {
     $confirm_new_password = trim($_POST['confirm_new_password']);
 
     // Check if new_password and confirm_new_password match
-    if ($new_password !== $confirm_new_password) {
-     
-        $_SESSION['status_title'] = "Oops!";
-        $_SESSION['status'] = "Passwords do not match. Please try again.";
-        $_SESSION['status_code'] = "error";
-        $_SESSION['status_timer'] = 40000;
-        header('Location: ../../../reset-password.php?token=$token');
+    if ($new_password !== $confirm_new_password) {                                                            //ADMIN
+        echo "<script>alert('Passwords do not match. Please try again.'); window.location.href = '../../../reset-password.php?token=$token';</script>";
         exit;
     }
-
-
     $adminReset = new ADMIN();
     $adminReset->resetPassword($token, $new_password, $csrf_token);
 }
 
-if (isset($_POST['admin-btn-save'])) {
+if (isset($_POST['admin-btn-save'])) {                                                                        //ADMIN
     $id = trim($_POST['id']);
     $room_no = trim($_POST['room_no']);
     $name = trim($_POST['name']);
@@ -1582,50 +1536,89 @@ if (isset($_POST['admin-btn-save'])) {
     $update->update_user($room_no, $name, $email, $balance, $electricity, $water, $rent, $wifi, $due_date, $id);
 }
 
-if (isset($_POST['admin-btn-delete'])) {
-    $deletee_user = trim($_POST['admin-btn-delete']);
 
-    $delete = new ADMIN();
-    $delete->delete_user($deletee_user);
-}
-
-if (isset($_POST['admin-btn-save-log'])) {
+//ADMIN BUTTONS
+if (isset($_POST['admin-btn-save-log'])) {                                                                  //ADMIN
     $exporter = new ADMIN();
     $data = $exporter->save_log();
     $exporter->exportToFile($data);
 }
 
-if (isset($_POST['admin-btn-approve'])) {
-    $approve_user = trim($_POST['admin-btn-approve']);
-
-    $approve_users = new ADMIN();
-    $approve_users->approve_user($approve_user);
-}
-
-if (isset($_POST['admin-btn-ignore'])) {
-    $ignore_user = trim($_POST['admin-btn-ignore']);
-
-    $ignore_users = new ADMIN();
-    $ignore_users->ignore_user($ignore_user);
-}
-
-if (isset($_POST['admin-btn-paid'])) {
+if (isset($_POST['admin-btn-paid'])) {                                                                      //ADMIN
     $paid_user = trim($_POST['admin-btn-paid']);
 
     $user_paid = new ADMIN();
     $user_paid->user_paid($paid_user);
 }
 
-if (isset($_POST['admin-btn-unsettled'])) {
+if (isset($_POST['admin-btn-unsettled'])) {                                                                   //ADMIN
     $id = trim($_POST['id']);
     $unsettled_payment = trim($_POST['unsettled_pay']);
 
     $unsettled_pay = new ADMIN();
     $unsettled_pay->unsettled_payment($id, $unsettled_payment);
 }
-if (isset($_POST['admin-btn-distribute'])) {
+if (isset($_POST['admin-btn-distribute'])) {                                                                  //ADMIN
     $id = trim($_POST['admin-btn-distribute']);
 
     $distribute = new ADMIN();
     $distribute->distribute_rent($id);
+}
+
+//both Landlord and admin button
+
+if (isset($_POST['admin-btn-approve'])) {                                                                   //ADMIN
+    $approve_user = trim($_POST['admin-btn-approve']);
+
+    $approve_users = new ADMIN();
+    $approve_users->approve_user($approve_user);
+}
+
+if (isset($_POST['admin-btn-ignore'])) {                                                                    //ADMIN
+    $ignore_user = trim($_POST['admin-btn-ignore']);
+
+    $ignore_users = new ADMIN();
+    $ignore_users->ignore_user($ignore_user);
+}
+
+if (isset($_POST['admin-btn-delete'])) {                                                                      //ADMIN
+    $deletee_user = trim($_POST['admin-btn-delete']);
+
+    $delete = new ADMIN();
+    $delete->delete_user($deletee_user);
+}
+
+//LANDLORD BUTTONS
+if (isset($_POST['landlord-add-room'])) {
+    $landlord_add_room = new landlord();
+    $landlord_add_room->add_room();
+}
+
+if (isset($_POST['landlord-btn-send'])) {
+    $receiver = trim($_POST['person']);
+    $type = trim($_POST['subject']);
+    $text = trim($_POST['message']);
+
+    $send_msgg = new landlord();
+    $send_msgg->send_msg($receiver, $type, $text);
+}
+
+if (isset($_POST['landlord-btn-update'])) {
+    $room_no = trim($_POST['room_no']);
+    $elec = trim($_POST['elec']);
+    $water = trim($_POST['water']);
+    $rent = trim($_POST['rent']);
+    $wifi = trim($_POST['wifi']);
+
+    // Create an instance of the ADMIN class and call the updateBill method
+    $update_bills = new landlord();
+    $update_bills->updateBill($room_no, $elec, $water, $rent, $wifi, $message); // $message will be updated
+}
+
+if (isset($_POST['remove_user'])) {
+
+    $user_id = trim($_POST['user_id']);
+
+    $remove_user = new landlord();
+    $remove_user->removeTenant($user_id);
 }

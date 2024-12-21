@@ -18,7 +18,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Logs</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -76,8 +76,8 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="layout">
 
-                <br>
-                <br>
+                    <br>
+                    <br>
 
                     <h3>TODAY'S LOGS</h3>
 
@@ -85,19 +85,19 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <br>
 
                     <table class="styled-table">
-                       <thead>
-                     <tr>
-                         <th>ID</th>
-                         <th>NAME</th>
-                         <th>GUESTS</th>
-                         <th>ACTIVITY</th>
-                         <th>TIME ENTERED</th>
-                   </tr>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>GUESTS</th>
+                                <th>ACTIVITY</th>
+                                <th>TIME ENTERED</th>
+                            </tr>
                         <tbody>
                             <?php
                             if ($user_data) {
                                 foreach ($user_data as $row) {
-                            ?>
+                                    ?>
                                     <tr>
                                         <td><?= $row['user_id'] ?> </td>
                                         <td><?= $row['name'] ?> </td>
@@ -106,7 +106,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <td><?= $row['created_at'] ?></td>
                                     </tr>
 
-                                <?php
+                                    <?php
                                 }
                             } else {
 
@@ -114,7 +114,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr>
                                     <td colspan="5" style="text-align: center;">NO RECORD FOUND</td>
                                 </tr>
-                            <?php
+                                <?php
                             }
                             ?>
                         </tbody>

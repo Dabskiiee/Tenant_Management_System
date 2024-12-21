@@ -94,9 +94,9 @@ $number_of_rooms = $result2['no_of_rooms']; // Get the count of rooms from the r
                             $stmt->bindParam(':room_no', $i, PDO::PARAM_INT);
                             $stmt->execute();
                             $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-                        <div>
-                        <h1>ROOM <?= $i ?></h1>
+                            ?>
+                            <div>
+                                <h1>ROOM <?= $i ?></h1>
                                 <table>
                                     <thead>
                                         <tr>
@@ -119,7 +119,7 @@ $number_of_rooms = $result2['no_of_rooms']; // Get the count of rooms from the r
                                         <?php
                                         if ($user_data) {
                                             foreach ($user_data as $row) {
-                                        ?>
+                                                ?>
                                                 <tr>
                                                     <td><?= $row['name'] ?> </td>
                                                     <td><?= $row['email'] ?> </td>
@@ -130,33 +130,41 @@ $number_of_rooms = $result2['no_of_rooms']; // Get the count of rooms from the r
                                                     <td><?= $row['wifi'] ?> </td>
                                                     <td><?= $row['unpaid_amt'] ?> </td>
                                                     <td><?= $row['due_date'] ?> </td>
-                                                    <td><a class="buttons" id="edit" href="edit.php?id=<?= $row['user_details'] ?>"><i class="lni lni-pencil"></i></a></td>
+                                                    <td><a class="buttons" id="edit"
+                                                            href="edit.php?id=<?= $row['user_details'] ?>"><i
+                                                                class="lni lni-pencil"></i></a></td>
                                                     <form action="" method="POST">
-                                                    <td>
-                                                        <button type="submit" name="admin-btn-delete" class="buttons" id="delete" value="<?= $row['user_details'] ?>"><i class="fas fa-trash"></i></button>
-                                                    </td>
-                                                    <td class="actions">
-                                                        <button type="submit" name="admin-btn-paid" class="buttons" id="edit" value="<?= $row['user_details'] ?>"><i class="paid-icon fas fa-check-circle"></i></button>
-                                                    </td>
-                                                    <td>
-                                                        <a class="buttons" id="edit" href="unsettle_payment.php?id=<?= $row['user_details'] ?>"><i class="unsettled-icon fas fa-exclamation-circle"></i></a>
-                                                    </td>
+                                                        <td>
+                                                            <button type="submit" name="admin-btn-delete" class="buttons"
+                                                                id="delete" value="<?= $row['user_details'] ?>"><i
+                                                                    class="fas fa-trash"></i></button>
+                                                        </td>
+                                                        <td class="actions">
+                                                            <button type="submit" name="admin-btn-paid" class="buttons" id="edit"
+                                                                value="<?= $row['user_details'] ?>"><i
+                                                                    class="paid-icon fas fa-check-circle"></i></button>
+                                                        </td>
+                                                        <td>
+                                                            <a class="buttons" id="edit"
+                                                                href="unsettle_payment.php?id=<?= $row['user_details'] ?>"><i
+                                                                    class="unsettled-icon fas fa-exclamation-circle"></i></a>
+                                                        </td>
                                                     </form>
                                                 </tr>
-                                        <?php
+                                                <?php
                                             }
                                         } else {
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td colspan="12">NO RECORD FOUND</td>
                                             </tr>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
                                 </table>
-                        </div>
-                        <?php
+                            </div>
+                            <?php
                         }
                         ?>
 
@@ -198,7 +206,8 @@ $number_of_rooms = $result2['no_of_rooms']; // Get the count of rooms from the r
                                                 <td><?= $row['rent'] ?> </td>
                                                 <td><?= $row['wifi'] ?> </td>
                                                 <td><?= $row['due_date'] ?> </td>
-                                                <td><a class="buttons" id="edit" href="edit.php?id=<?= $row['user_details'] ?>"><i
+                                                <td><a class="buttons" id="edit"
+                                                        href="edit.php?id=<?= $row['user_details'] ?>"><i
                                                             class="lni lni-pencil"></i></a></td>
                                                 <td>
                                                     <form action="" method="POST">
@@ -216,7 +225,7 @@ $number_of_rooms = $result2['no_of_rooms']; // Get the count of rooms from the r
                                         <tr>
                                             <td colspan="11">NO RECORD FOUND</td>
                                         </tr>
-                                    <?php
+                                        <?php
                                     }
                                     ?>
                                 </tbody>

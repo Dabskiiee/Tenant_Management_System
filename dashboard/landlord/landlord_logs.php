@@ -24,7 +24,7 @@ $roomData = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landlord Dashboard</title>
+    <title>Landlord logs</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -91,46 +91,46 @@ $roomData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             </nav>
             <main class="content px-3 py-4">
-            <form class="searchform" action="landlord_search_date.php" method="POST">
-                <input id="date" type="text" name="datesearch" placeholder="Search for a specific date...">
-                <input id="namesearch" type="text" name="namesearch" placeholder="Search for a user name...">
+                <form class="searchform" action="landlord_search_date.php" method="POST">
+                    <input id="date" type="text" name="datesearch" placeholder="Search for a specific date...">
+                    <input id="namesearch" type="text" name="namesearch" placeholder="Search for a user name...">
 
-                <button type="submit">Search</button>
-            </form>
+                    <button type="submit">Search</button>
+                </form>
 
-            <h1>Room Data</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Room Number</th>
-                        <th>Name</th>
-                        <th>Guests Entered</th>
-                        <th>Activity</th>
-                        <th>Time Entered</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if($roomData){
-                        foreach ($roomData as $room) {?>
+                <h1>Room Data</h1>
+                <table>
+                    <thead>
                         <tr>
-                            <td><?php echo htmlspecialchars($room['room_number']); ?></td>
-                            <td><?php echo htmlspecialchars($room['user_name']); ?></td>
-                            <td><?php echo htmlspecialchars($room['guests']); ?></td>
-                            <td><?php echo htmlspecialchars($room['activity']); ?></td>
-                            <td><?php echo htmlspecialchars($room['created_at']); ?></td>
+                            <th>Room Number</th>
+                            <th>Name</th>
+                            <th>Guests Entered</th>
+                            <th>Activity</th>
+                            <th>Time Entered</th>
                         </tr>
-                        <?php
-                        }
-                        }else{ ?>
+                    </thead>
+                    <tbody>
+                        <?php if ($roomData) {
+                            foreach ($roomData as $room) { ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($room['room_number']); ?></td>
+                                    <td><?php echo htmlspecialchars($room['user_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($room['guests']); ?></td>
+                                    <td><?php echo htmlspecialchars($room['activity']); ?></td>
+                                    <td><?php echo htmlspecialchars($room['created_at']); ?></td>
+                                </tr>
+                                <?php
+                            }
+                        } else { ?>
                             <tr>
-                                 <td colspan="5">NO RECORD FOUND</td>
-                             </tr> 
-                   <?php     } ?>
-                        
-                    <?php ?>
-                </tbody>
-            </table>
-            <a href="landlord_home.php">Back</a>
+                                <td colspan="5">NO RECORD FOUND</td>
+                            </tr>
+                        <?php } ?>
+
+                        <?php ?>
+                    </tbody>
+                </table>
+                <a href="landlord_home.php">Back</a>
 
             </main>
 
