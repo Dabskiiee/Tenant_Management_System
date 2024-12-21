@@ -8,40 +8,31 @@ if (!$admin->isUserLoggedIn()) {
 
 $message = "";
 
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
-    // Ensure 'room_no' is present
-    if (isset($_POST['room_no']) && !empty($_POST['room_no'])) {
+// Handle form submissions
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['update'])) {
         $room_no = $_POST['room_no'];
         $elec = $_POST['elec'];
         $water = $_POST['water'];
         $rent = $_POST['rent'];
         $wifi = $_POST['wifi'];
 
-        // Prepare and execute the update query with named placeholders
-        $stmt = $admin->runQuery("UPDATE rent_distribution SET elec = :elec, water = :water, rent = :rent, wifi = :wifi WHERE room_no = :room_no");
-
-        // Bind the parameters
-        $stmt->bindParam(':elec', $elec, PDO::PARAM_INT);
-        $stmt->bindParam(':water', $water, PDO::PARAM_INT);
-        $stmt->bindParam(':rent', $rent, PDO::PARAM_INT);
-        $stmt->bindParam(':wifi', $wifi, PDO::PARAM_STR);
-        $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
-
-        // Execute the statement and check for success
-        if ($stmt->execute()) {
+        if ($admin->updateBill($room_no, $elec, $water, $rent, $wifi)) {
             $message = "Bills for Room $room_no updated successfully!";
         } else {
-            $message = "Error updating bills: " . $conn->errorInfo()[2];
+            $message = "Error updating bills.";
         }
-    } else {
-        $message = "Error: Room number is missing!";
+    } elseif (isset($_POST['add_room'])) {
+        $room_no = $_POST['new_room_no'];
+        if ($admin->addRoom($room_no)) {
+            $message = "Room $room_no added successfully!";
+        } else {
+            $message = "Error adding room.";
+        }
     }
 }
 
-$stmt = $admin->runQuery("SELECT * FROM rent_distribution");
-$stmt->execute();
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $admin->getBills();
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +42,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landlord Dashboard</title>
+    <title>Landlord Bill Management</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -118,7 +109,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             </nav>
             <main class="content px-3 py-4">
-            <h1 style="text-align: center;">Rent Bills</h1>
+                <h1 style="text-align: center;">Rent Bills</h1>
                 <?php if (!empty($message)) {
                     echo "<p style='text-align: center; color: green;'>$message</p>";
                 } ?>
@@ -136,42 +127,48 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php
                         if ($result) {
-                            foreach($result as $row) {
+                            foreach ($result as $row) {
                         ?>
-                                 <tr>
-                        <form method='POST'>
-                            <td> <?= htmlspecialchars($row['room_no'])?><input type='hidden' name='room_no' value='<?=htmlspecialchars($row['room_no'])?>'></td>
-                            <td><input type='number' name='elec' value='<?=htmlspecialchars($row['elec'])?>' required></td>
-                            <td><input type='number' name='water' value='<?=htmlspecialchars($row['water'])?>' required></td>
-                            <td><input type='number' name='rent' value='<?=htmlspecialchars($row['rent'])?>' required></td>
-                            <td><input type='number' name='wifi' value='<?=htmlspecialchars($row['wifi'])?>' required></td>
-                            <td><input type='submit' name='update' value='Update'></td>                            
-                        </form>
-                    </tr>
-                    <?php
-                    
-                            }?>
-                    <form method='POST'>
-                            <td colspan='6'><button class='add_room' type='submit' name='add_room' value='1'>+</button></td>
-                     </form>
-                     <?php   } else { ?>
-                             <tr><td colspan='6'>No records found</td></tr>";
-                      <?php  } ?>
+                                <tr>
+                                    <form method='POST'>
+                                        <td> <?= htmlspecialchars($row['room_no']) ?><input type='hidden' name='room_no' value='<?= htmlspecialchars($row['room_no']) ?>'></td>
+                                        <td><input type='number' name='elec' value='<?= htmlspecialchars($row['elec']) ?>' required></td>
+                                        <td><input type='number' name='water' value='<?= htmlspecialchars($row['water']) ?>' required></td>
+                                        <td><input type='number' name='rent' value='<?= htmlspecialchars($row['rent']) ?>' required></td>
+                                        <td><input type='number' name='wifi' value='<?= htmlspecialchars($row['wifi']) ?>' required></td>
+                                        <td><input type='submit' name='update' value='Update'></td>
+                                    </form>
+                                </tr>
+                        <?php
+                            }
+                        ?>
+                            <form method='POST'>
+                                <td colspan='6'><button class='add_room' type='submit' name='add_room' value='1'>+</button></td>
+                            </form>
+                        <?php
+                        } else {
+                        ?>
+                            <tr>
+                                <td colspan='6'>No records found</td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
                     </tbody>
                 </table>
-              
+
             </main>
             <script>
-        // Scroll to the search result after form submission (if any)
-        <?php if ($search_term != ''): ?>
-            var userRow = document.getElementById("user_<?= $row['id'] ?>");
-            if (userRow) {
-                userRow.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-        <?php endif; ?>
-    </script>
+                // Scroll to the search result after form submission (if any)
+                <?php if ($search_term != '') : ?>
+                    var userRow = document.getElementById("user_<?= $row['id'] ?>");
+                    if (userRow) {
+                        userRow.scrollIntoView({
+                            behavior: "smooth"
+                        });
+                    }
+                <?php endif; ?>
+            </script>
 
         </div>
     </div>
@@ -182,4 +179,3 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </body>
 
 </html>
-<?php

@@ -590,6 +590,33 @@ class ADMIN
         $stmt = $this->conn->prepare($sql);
         return $stmt;
     }
+
+    // Bill Management Functions
+public function getBills()
+{
+    $stmt = $this->runQuery("SELECT * FROM rent_distribution");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function updateBill($room_no, $elec, $water, $rent, $wifi)
+{
+    $stmt = $this->runQuery("UPDATE rent_distribution SET elec = :elec, water = :water, rent = :rent, wifi = :wifi WHERE room_no = :room_no");
+    $stmt->bindParam(':elec', $elec, PDO::PARAM_INT);
+    $stmt->bindParam(':water', $water, PDO::PARAM_INT);
+    $stmt->bindParam(':rent', $rent, PDO::PARAM_INT);
+    $stmt->bindParam(':wifi', $wifi, PDO::PARAM_INT);
+    $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
+    return $stmt->execute();
+}
+
+public function addRoom($room_no)
+{
+    $stmt = $this->runQuery("INSERT INTO rent_distribution (room_no, elec, water, rent, wifi) VALUES (:room_no, 0, 0, 0, 0)");
+    $stmt->bindParam(':room_no', $room_no, PDO::PARAM_STR);
+    return $stmt->execute();
+}
+
     //GIVING VALUE TO THE FOREIGN TABLES WITH CONNECTION TO USER
     public function logs($user_id, $name, $guests, $activity)
     {
