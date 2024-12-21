@@ -64,29 +64,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                         <span>Mailbox</span>
                     </a>
                 </li>
-
-
-                <li class="sidebar-item">
-                    <a href="../landlord/landlord_tenant_profile.php" class="sidebar-link">
-                    <i class="fa-solid fa-envelope"></i>
-                        <span>Mailbox</span>
-                    </a>
-                </li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <li class="sidebar-item">
                     <a href="user_support.php" class="sidebar-link collapsed has-dropdown">
                     <i class="fa-solid fa-handshake-angle"></i>
