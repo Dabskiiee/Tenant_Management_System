@@ -1,15 +1,17 @@
 <?php
 require_once '../../dashboard/admin/authentication/admin-class.php'; // Include the ADMIN class
+require_once './user_function/user-side.php'; 
 
 // Instantiate the ADMIN class
 $admin = new ADMIN();
+$user_side = new User_Side();
 
 // Fetch user data
-$user = $admin->getUserData();
+$user = $user_side->getUserData();
 
 // Handle form submission to update profile
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $message = $admin->updateUserProfile($_POST, $_FILES);
+    $message = $user_side->updateUserProfile($_POST, $_FILES);
 
     if ($message == "Profile updated successfully!") {
         header("Location: user_profile.php?success=1");
@@ -32,7 +34,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>User Profile</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"

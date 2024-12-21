@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
     <div class="user-info-container">
         <div class="user-info">
             <div class="profile-image-section">
-                <img src="<?php echo htmlspecialchars($user_data['profile_image'] ?? '../user/uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
+                <img src="<?php echo '../user/' . htmlspecialchars($user_data['profile_image'] ?? '../user/uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
             </div>
             <div class="details">
                 <h3>Name: <span><?php echo $user_data['fullname']; ?></span></h3>

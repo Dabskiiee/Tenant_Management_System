@@ -40,13 +40,13 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar">
+    <aside id="sidebar">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="user_index.php">TENANTE MANAGEMENT</a>
+                    <a href="landlord_tenant_profile.php">TENANTE MANAGEMENT</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -58,30 +58,36 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
                 </li>
                 <li class="sidebar-item">
                     <a href="user_history.php" class="sidebar-link">
-                    <i class="fa-solid fa-envelope"></i>
+                        <i class="fa-solid fa-envelope"></i>
                         <span>Mailbox</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_support.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-handshake-angle"></i>
+                        <i class="fa-solid fa-handshake-angle"></i>
                         <span>Support Us</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_about_us.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-address-card"></i>
+                        <i class="fa-solid fa-address-card"></i>
                         <span>About Us</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_profile.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span>Profile</span>
                     </a>
                 </li>
             </ul>
-           
+            <div class="sidebar-footer">
+                <a href="../admin/authentication/admin-class.php?admin_signout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+
+                </a>
+            </div>
         </aside>
         <div class="main">
             <nav class="navbar navbar-expand px-4 py-3">
@@ -90,19 +96,6 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
                 </form>
 
 <div class="layout">
-    <div class="sidebar">
-        <ul class="sidebar-menu">
-            <li><a href="#" class="sidebar-link">Dashboard</a></li>
-            <li><a href="user_history.php" class="sidebar-link">Mailbox</a></li>
-            <li><a href="user_support.php" class="sidebar-link">Support</a></li>
-            <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
-            <li><a href="user_profile.php" class="sidebar-link" >Profile</a></li>
-            <li><a href="../landlord/landlord_tenant_profile.php" class="sidebar-link" >Tenants</a></li>
-        </ul>
-    </div>
-    <button class="sign-out"> 
-        <a href="dashboard/admin/authentication/admin-class.php?admin-signout">SIGN OUT</a>
-    </button>
 
     <div class="main-content">
     <div>
