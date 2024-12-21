@@ -6,11 +6,11 @@ if(!$admin->isUserLoggedIn()) {
     $admin->redirect();
 }
 
-// Check if the 'id' parameter exists in the URL
+
 if (isset($_GET['id'])) {
     $user_id = $_GET['id'];
 
-    // Fetch user details based on the user ID
+
     $stmt = $admin->runQuery("SELECT * FROM user WHERE id = :id");
     $stmt->execute(array(":id" => $user_id));
     $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,6 +23,7 @@ if (isset($_GET['id'])) {
     echo "No user ID provided.";
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>

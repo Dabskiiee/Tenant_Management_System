@@ -1493,6 +1493,8 @@ public function addRoom($room_no)
             return false;
         }
     }
+
+    
 }
 if (isset($_POST['btn-signup'])) {
     $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);

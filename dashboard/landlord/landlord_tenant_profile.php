@@ -21,22 +21,40 @@ if ($search_term != '') {
 
 $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (isset($_POST['remove_user'])) {
+if (isset($_POST['removeUserRow'])) {
     $user_id = $_POST['user_id'];
 
-    // Delete the user from the database
-    $stmt = $admin->runQuery("DELETE FROM user WHERE id = :id");
+    // Fetch the current status of the user
+    $stmt = $admin->runQuery("SELECT status FROM user WHERE id = :id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Determine the new status
+    if ($user['status'] == 'active') {
+        $new_status = 'inactive'; // Change to inactive if currently active
+    } else {
+        $new_status = ''; // If not active, set status to empty
+    }
+
+    // Update the user's status
+    $stmt = $admin->runQuery("UPDATE user SET status = :status WHERE id = :id");
+    $stmt->bindParam(':status', $new_status, PDO::PARAM_STR);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        // Redirect back to the page to reflect changes
+        // Redirect to the same page to reflect changes
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
-        echo "<script>alert('Failed to remove the user. Please try again.');</script>";
+        echo "<script>alert('Failed to update the user status. Please try again.');</script>";
     }
 }
+
+
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -188,13 +206,22 @@ if (isset($_POST['remove_user'])) {
         <?php endif; ?>
     </script>
 
-        </div>
+
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-    <script src="../../src/js/show.js"></script>
+</div>
+
+<script>
+function removeUserRow(userId) {
+    // Hide the user's row
+    const userRow = document.getElementById(`user_${userId}`);
+    if (userRow) {
+        userRow.remove();
+    }
+}
+</script>
+
 </body>
 
 </html>
-<?php
+
+

@@ -2,21 +2,26 @@
 require_once '../admin/authentication/admin-class.php';
 
 $admin = new ADMIN();
-if(!$admin->isUserLoggedIn()) {
+if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
+}
+
+$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
+$stmt2->execute(array(":id" => $_SESSION['userSession']));
+$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($user_data2['status'] !== 'active') {
+    session_destroy();
+    header("Location: ../../login.php?status=inactive");
+    exit();
 }
 
 $stmt = $admin->runQuery("SELECT * FROM user_bills WHERE user_details = :id");
 $stmt->execute(array(":id" => $_SESSION['userSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
-$stmt2->execute(array(":id" => $_SESSION['userSession']));
-$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
 $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + $user_data['wifi'] + $user_data['unpaid_amt'];
-      
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,13 +40,13 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar">
+    <aside id="sidebar">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="user_index.php">TENANTE MANAGEMENT</a>
+                    <a href="landlord_tenant_profile.php">TENANTE MANAGEMENT</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -53,30 +58,36 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
                 </li>
                 <li class="sidebar-item">
                     <a href="user_history.php" class="sidebar-link">
-                    <i class="fa-solid fa-envelope"></i>
+                        <i class="fa-solid fa-envelope"></i>
                         <span>Mailbox</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_support.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-handshake-angle"></i>
+                        <i class="fa-solid fa-handshake-angle"></i>
                         <span>Support Us</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_about_us.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-address-card"></i>
+                        <i class="fa-solid fa-address-card"></i>
                         <span>About Us</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="user_profile.php" class="sidebar-link collapsed has-dropdown">
-                    <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span>Profile</span>
                     </a>
                 </li>
             </ul>
-           
+            <div class="sidebar-footer">
+                <a href="../admin/authentication/admin-class.php?admin_signout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+
+                </a>
+            </div>
         </aside>
         <div class="main">
             <nav class="navbar navbar-expand px-4 py-3">
@@ -84,9 +95,10 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 
                 </form>
 
-            </nav>
-            <main class="content px-3 py-4">
-            <div>
+<div class="layout">
+
+    <div class="main-content">
+    <div>
         <div class="user-info-container">
             <div class="user-info">
                 <div class="profile-image-section">
