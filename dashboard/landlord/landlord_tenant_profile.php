@@ -2,56 +2,27 @@
 require_once '../../dashboard/admin/authentication/admin-class.php';
 
 $admin = new ADMIN();
+
 if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
 }
 
-// Initialize the search term
 $search_term = isset($_POST['search_term']) ? $_POST['search_term'] : '';
 
 
-// Modify the SQL query to filter users by username
-if ($search_term != '') {
-    $stmt = $admin->runQuery("SELECT * FROM user WHERE fullname LIKE :search_term");
-    $stmt->execute([':search_term' => '%' . $search_term . '%']);
-} else {
-    $stmt = $admin->runQuery("SELECT * FROM user WHERE usertype = 'user'");
-    $stmt->execute();
-}
+$user_data = $admin->fetchTenants($search_term);
 
-$user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (isset($_POST['removeUserRow'])) {
+if (isset($_POST['remove_user'])) {
     $user_id = $_POST['user_id'];
-
-    // Fetch the current status of the user
-    $stmt = $admin->runQuery("SELECT status FROM user WHERE id = :id");
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Determine the new status
-    if ($user['status'] == 'active') {
-        $new_status = 'inactive'; // Change to inactive if currently active
-    } else {
-        $new_status = ''; // If not active, set status to empty
-    }
-
-    // Update the user's status
-    $stmt = $admin->runQuery("UPDATE user SET status = :status WHERE id = :id");
-    $stmt->bindParam(':status', $new_status, PDO::PARAM_STR);
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-        // Redirect to the same page to reflect changes
+    if ($admin->removeTenant($user_id)) {
+ 
         header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
+        exit();
     } else {
         echo "<script>alert('Failed to update the user status. Please try again.');</script>";
     }
 }
-
-
 ?>
 
 
@@ -132,13 +103,11 @@ if (isset($_POST['removeUserRow'])) {
             <main class="content px-3 py-4">
                 <h3>TENANTS PROFILE</h3>
 
-                <!-- Search Form -->
                 <form method="POST" action="" class="search-form">
                     <input type="text" name="search_term" placeholder="Search by username" value="<?= htmlspecialchars($search_term) ?>">
                     <button type="submit" class="buttons search-btn">Search</button>
                 </form>
 
-                <!-- Back to Full List Button -->
                 <?php if ($search_term != ''): ?>
                     <form method="POST" action="" class="back-form">
                         <button type="submit" class="buttons back-btn">Back to Full List</button>
@@ -148,54 +117,54 @@ if (isset($_POST['removeUserRow'])) {
                 <br><br>
 
                 <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>USERNAME</th>
-                            <th>EMAIL</th>
-                            <th>VIEW</th>
-                            <th>REMOVE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($user_data) {
-                            foreach ($user_data as $row) {
-                                // Create a unique anchor ID for each row
-                                $anchor_id = "user_" . $row['id'];
-                        ?>
-                                <tr id="<?= $anchor_id ?>">
-                                    <td><?= $row['id'] ?> </td>
-                                    <td><?= $row['fullname'] ?> </td>
-                                    <td><?= $row['email'] ?> </td>
-                                    <td>
-                                        <!-- VIEW button inside the table row -->
-                                        <a href="tenants_view.php?id=<?= $row['id'] ?>" class="buttons view-btn"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                    <td>
-                                        <!-- REMOVE button inside the table row -->
-                                        <form method="POST" action="" style="display:inline;">
-                                            <input type="hidden" name="user_id" value="<?= $row['id'] ?>">
-                                            <button type="submit" name="remove_user" class="buttons remove-btn"><i class="fas fa-trash-alt"></i> </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php
-                            }
-                        } else {
-                            ?>
-                            <tr>
-                                <td colspan="5" style="text-align: center;">NO RECORD FOUND</td>
-                            </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>USERNAME</th>
+            <th>EMAIL</th>
+            <th>VIEW</th>
+            <th>REMOVE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($user_data) {
+            foreach ($user_data as $row) {
+              
+                $anchor_id = "user_" . $row['id'];
+        ?>
+                <tr id="<?= $anchor_id ?>">
+                    <td><?= $row['id'] ?> </td>
+                    <td><?= $row['fullname'] ?> </td>
+                    <td><?= $row['email'] ?> </td>
+                    <td>
+                       
+                        <a href="tenants_view.php?id=<?= $row['id'] ?>" class="buttons view-btn"><i class="fas fa-eye"></i></a>
+                    </td>
+                    <td>
+           
+                        <form method="POST" action="" style="display:inline;">
+                            <input type="hidden" name="user_id" value="<?= $row['id'] ?>">
+                            <button type="submit" name="remove_user" class="buttons remove-btn"><i class="fas fa-trash-alt"></i> </button>
+                        </form>
+                    </td>
+                </tr>
+            <?php
+            }
+        } else {
+            ?>
+            <tr>
+                <td colspan="5" style="text-align: center;">NO RECORD FOUND</td>
+            </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+</table>
 
             </main>
             <script>
-        // Scroll to the search result after form submission (if any)
+   
         <?php if ($search_term != ''): ?>
             var userRow = document.getElementById("user_<?= $row['id'] ?>");
             if (userRow) {
@@ -212,7 +181,7 @@ if (isset($_POST['removeUserRow'])) {
 
 <script>
 function removeUserRow(userId) {
-    // Hide the user's row
+  
     const userRow = document.getElementById(`user_${userId}`);
     if (userRow) {
         userRow.remove();
