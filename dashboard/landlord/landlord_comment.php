@@ -10,35 +10,86 @@ $stmt = $admin->runQuery("SELECT * FROM user_comments WHERE address='landlord'")
 $stmt->execute();
 $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../src/css/landlord/landlord_side.css">
-    <title>Comment Management</title>
+    <title>Landlord Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../src/css/landlord/landlord_comment.css ">
 </head>
 
 <body>
-
-    <div class="layout">
-
-        <div class="sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="landlord_home.php" class="sidebar-link">Home</a></li>
-                <li><a href="landlord_tenant_profile.php" class="sidebar-link">Tenant Profiles</a></li>
-                <li><a href="landlord_logs.php" class="sidebar-link">Logs Monitoring</a></li>
-                <li><a href="landlord_bill_mng.php" class="sidebar-link">Bill Management</a></li>
-                <li><a href="#" class="sidebar-link">Comment Management</a></li>
-                <a href="../admin/authentication/admin-class.php?admin_signout"><button type="button">Log
-                        Out</button></a>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-grid-alt"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="landlord_tenant_profile.php">TENANTE MANAGEMENT</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="landlord_home.php" class="sidebar-link">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="landlord_tenant_profile.php" class="sidebar-link">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Tenant Profiles</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="landlord_logs.php" class="sidebar-link collapsed has-dropdown">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Logs Monitoring</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="landlord_bill_mng.php" class="sidebar-link collapsed has-dropdown">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Bill Management</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="landlord_comment.php" class="sidebar-link collapsed has-dropdown">
+                        <i class="lni lni-layout"></i>
+                        <span>Comment Management</span>
+                    </a>
+                </li>
             </ul>
-        </div>
+            <div class="sidebar-footer">
+                <a href="../admin/authentication/admin-class.php?admin_signout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
 
-        <div class="main-content">
+                </a>
+            </div>
+        </aside>
+        <div class="main">
+            <nav class="navbar navbar-expand px-4 py-3">
+                <form action="#" class="d-none d-sm-inline-block">
+
+                </form>
+
+            </nav>
+            <main class="content px-3 py-4">
+
+            </main>
             <h3>COMMENTS</h3>
-            
+
             <br>
             <br>
 
@@ -68,7 +119,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 $stmt = $admin->runQuery("SELECT room_no , name FROM user_bills WHERE user_details=:id");     //For tenants
                                 $stmt->execute([':id' => $id]);
                                 $user_data1 = $stmt->fetch(PDO::FETCH_ASSOC);
-                                ?>
+                    ?>
 
                                 <tr>
                                     <td><?= $user_data1['room_no'] ?> </td>
@@ -87,7 +138,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </form>
                                 </tr>
 
-                                <?php
+                        <?php
                             } elseif ($check['usertype'] === 'admin' || $check['usertype'] === 'landlord') {
                                 //THE RESULT WILL NOT BE DISPLAYED
                             }
@@ -126,8 +177,8 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $check = $stmt->fetch(PDO::FETCH_ASSOC);
 
                             if ($check['usertype'] === 'landlord') {          //CHECKS IF THE USERTYPE IS USER BEFORE EXECUTING
-                    
-                                ?>
+
+                    ?>
 
                                 <tr>
                                     <td><?= htmlspecialchars('admin') ?> </td>
@@ -144,7 +195,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                 </tr>
 
-                                <?php
+                        <?php
                             } elseif ($check['usertype'] === 'admin' || $check['usertype'] === 'user') {
                                 //THE RESULT WILL NOT BE DISPLAYED
                             }
@@ -164,8 +215,16 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <button class="circle-compose-msg msg" type="button" title="Compose a MESSAGE">+</button>
             </a>
 
+
+
         </div>
-    </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+        <script src="../../src/js/show.js"></script>
+
+        <?php include_once '../../config/sweetalert.php'; ?>
 </body>
 
 </html>
+<?php

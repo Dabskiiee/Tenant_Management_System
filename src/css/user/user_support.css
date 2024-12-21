@@ -1,55 +1,386 @@
-body {
-    font-family: Arial, sans-serif;
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --color-bg: #fff;
+    --color-bg-sidebar: #0ABAB5;
+    --color-bg-hover: rgba(255, 255, 255, 0.075);
+    --color-highlight: #6c757d;
+    --color-text: #fff;
+    --font-size-base: 0.9rem;
+    --font-size-logo: 1.15rem;
+    --font-size-icon: 1.5rem;
+    --font-size-sidebar-icon: 1.1rem;
+    --spacing-base: 1rem;
+    --spacing-large: 1.5rem;
+    --spacing-small: 0.625rem;
+    --spacing-medium: 1.625rem;
+    --transition-fast: 0.25s ease-in-out;
+    --transition-medium: 0.35s ease-in-out;
+    --pic-width: 40%;  /* Set default image width to 40% */
+    --margin-small: 10px;
+    --max-width-about: 80%;
+    --text-width: 55%;
+    --font-size-h2: 2rem;
+    --font-size-p: 1rem;
+    --secondary-color: #333;
+}
+
+::after,
+::before {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #F1F8F8;
 }
 
-
-.sidebar {
-    background-color: #0ABAB5; 
-    color: white;
-    padding: 20px;
-    height: 100vh;
-    position: fixed;
-    width: 220px;
-    top: 0;
-    left: 0;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin: 20px 0;
-}
-
-.sidebar ul li a {
-    color: white;
+a {
     text-decoration: none;
-    font-size: 18px;
-    display: block;
-    transition: all 0.3s ease;
 }
 
-.sidebar ul li a:hover {
-    background-color: #095E5E; 
-    padding-left: 10px;
+li {
+    list-style: none;
 }
 
+body {
+    font-family: var(--font-primary);
+}
 
-.main-content {
-    margin-left: 240px; 
-    padding: 5px 15px;
-    color: #0A4444;
-    display: flex;
+h1 {
+    color: #0ABAB5;
+    font-size: 2em;
+    margin-bottom: 30px;
     justify-content: center;
-    align-items: center;
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+    background-color: var(--color-bg);
+    min-width: 0;
+}
+
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all var(--transition-fast);
+    background-color: var(--color-bg-sidebar);
+    display: flex;
     flex-direction: column;
 }
 
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
 
-/* PLEASE DESIGN THIS ONE THANKS */
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: var(--spacing-base) var(--spacing-large);
+}
+
+.toggle-btn i {
+    font-size: var(--font-size-icon);
+    color: var(--color-text);
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: var(--color-text);
+    font-size: var(--font-size-logo);
+    font-weight: 600;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+
+#sidebar.expand .sidebar-logo,
+#sidebar.expand a.sidebar-link span {
+    animation: fadeIn var(--transition-fast);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+a.sidebar-link {
+    padding: var(--spacing-small) var(--spacing-medium);
+    color: var(--color-text);
+    display: block;
+    font-size: var(--font-size-base);
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link i,
+.dropdown-item i {
+    font-size: var(--font-size-sidebar-icon);
+    margin-right: 0.75rem;
+}
+
+a.sidebar-link:hover {
+    background-color: var(--color-bg-hover);
+    border-left: 3px solid var(--color-highlight);
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color: var(--color-bg-sidebar);
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 0.075rem 0.075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: var(--spacing-large);
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all 0.2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all 0.2s ease-out;
+}
+
+.navbar {
+    background-color: #f5f5f5;
+    box-shadow: 0 0 2rem 0 rgba(33, 37, 41, 0.1);
+}
+
+.navbar-expand .navbar-collapse {
+    min-width: 200px;
+}
+/* Container */
+.container {
+    display: flex;
+    width: 900px;
+    background: #fff;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 70px;
+}
+  /* Left Section */
+  .left-section {
+    flex: 1;
+    background: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .illustration {
+    width: 150px;
+    height: 150px;
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: relative; /* Keep this if you have relative positioning for other purposes */
+  }
+  
+  .message img {
+    max-width: 100%; /* Ensure the image fits within the container */
+    max-height: 100%; /* Maintain aspect ratio and fit the height */
+  }
+  /* Right Section */
+  .right-section {
+    flex: 1;
+    padding: 30px;
+    background: white;
+  }
+  
+  .right-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Form Elements */
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+  }
+  
+  form input:focus,
+  form textarea:focus {
+    border-color: #8a63d2;
+  }
+  
+  form button {
+    width: 100%;
+    background-color: #8a63d2;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  
+  form button:hover {
+    background-color: #754eb8;
+  }
+  /* General Form Styles */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  select,
+  textarea,
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  select:focus,
+  textarea:focus,
+  input[type="text"]:focus {
+    border-color: #8a63d2;
+    box-shadow: 0 0 5px rgba(138, 99, 210, 0.5);
+    outline: none;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  button.submit-button {
+    background-color: #8a63d2;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  button.submit-button:hover {
+    background-color: #754eb8;
+    box-shadow: 0 4px 10px rgba(117, 78, 184, 0.2);
+  }
+  
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 1200px) {
+    .container {
+        width: 80%; /* Adjust width for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack sections vertically */
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .left-section,
+    .right-section {
+        flex: none;
+        width: 100%; /* Full width for both sections */
+    }
+
+    .illustration {
+        width: 120px; /* Adjust image size */
+        height: 120px;
+    }
+
+    .right-section h2 {
+        font-size: 1.5rem; /* Smaller heading font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin-top: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em; /* Adjust header size */
+    }
+
+    form input,
+    form textarea {
+        padding: 8px; /* Reduce padding */
+        font-size: 0.9rem; /* Reduce font size */
+    }
+
+    form button {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}

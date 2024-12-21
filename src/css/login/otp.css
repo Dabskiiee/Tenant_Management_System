@@ -1,84 +1,114 @@
 :root {
-    --background-color: #e8f7f2; 
-    --primary-color: #0abab5;
-    --button-bg-color: #007d85; 
-    --button-hover-bg-color: #005f63; 
-    --icon-border-color: #b5e4e0; 
-    --icon-color-green: #6fcf97; 
-    --icon-color-blue: #87d4dc; 
+    --background-color: #a0c4d7; 
+    --primary-color: #6C9BB3;
+    --input-background: #dbe8f0; 
+    --button-background: #5a89a7;
+    --button-hover-background: #3d6f85; 
+    --text-color: #333333;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    --container-bg-color: #E6F2F8;
+    --border-color: #a9b8c1; 
+    --secondary-color: #4a7a96; 
 }
 
-
-body{
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(-45deg, var(--button-hover-bg-color), var(--button-bg-color),var(--icon-color-green),var(--icon-border-color),var(--icon-color-blue));
-    background-size: 400% 400%;
-    animation: bg 12s ease infinite;
-    overflow-y: hidden;
-}
-
-.con{
+body {
+    background-size: cover; 
+    background-position: center center; 
+    background-attachment: fixed; 
+    color: var(--text-color);
     display: flex;
-    position: relative;
-    justify-content:center;
-    margin: 30vh 30vw;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    overflow: hidden;
+    background-image: url('../../img/reset.jpg'); 
+    font-family: var(--font-family);
 }
 
-.container{
+.con {
     display: flex;
-    position: relative;
-    background-color: var(--icon-border-color);
-    width: 63ch;
-    height: 22vh;
-    flex-direction: column;
-    padding: 1rem;
-    border: 2px solid black;
-    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
-.container > h2{
+.container {
+    background-color: var(--input-background);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-width: 360px;
+    width: 100%;
     text-align: center;
-    color: var(--primary-color) ;
-    font-size: 2.5rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
 }
 
-.container > form{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+.container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
 }
 
-input{
-    padding:0.5em;
-    border-radius: 5px;
-    border-color: rgba(0, 0, 0, 0.288);
-    width: 98%;
-    margin-top: 0.5em;
+.container form {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    width: 100%; 
 }
 
-button{
+input[type="number"] {
+    padding: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--input-background);
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+input[type="number"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--button-background);
+    color: #FFFFFF;
+    font-size: 1rem;
     font-weight: bold;
-    border-radius: 7.5px;
-    background-color: var(--button-bg-color);
-    padding: 0.75em;
-    margin: 0em 1.5em;
-    margin-top: 0.5em;
-    width: 92.5%;
-    
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%; 
 }
-button:hover{
-    background-color: var(--button-hover-bg-color);
+
+button:hover {
+    background-color: var(--button-hover-background);
+    transform: translateY(-2px);
 }
-@keyframes bg {
-    0%{
-        background-position: 0% 50%;
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(10, 186, 181, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 1.5rem;
     }
-    50%{
-        background-position: 100% 100%;
+
+    .container h2 {
+        font-size: 1.5rem;
     }
-    100%{
-        background-position: 0% 50%;
+
+    input[type="number"],
+    button {
+        font-size: 0.9rem;
     }
-    
 }

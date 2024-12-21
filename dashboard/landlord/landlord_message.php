@@ -19,6 +19,7 @@ $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     
     <form action="../user/user_function/user-side.php" method="POST">
+             <a href="landlord_comment.php"><img src="../../src/img/back_button.png" alt="haws" width="25px" height="30px"></a>
                 <h1>Message</h1>
                     <div class="mb-3">
                         <label class="beside" for="who">TO:</label>

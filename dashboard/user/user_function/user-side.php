@@ -36,24 +36,6 @@ CLASS User_Side{
         echo "<script>alert('Mail deleted successfully!'); window.location.href = '../user_history.php'; </script>";
         }
 
-        public function delete_mails($delete_all_mail){
-    
-            $stmt= $this->admin->runQuery('DELETE FROM user_notification WHERE user_id=:delete_all_mail');
-            $stmt->execute([':delete_all_mail' =>$delete_all_mail]);
-
-            if ($stmt->rowCount() > 0) {
-                // If records are found, proceed to delete them
-                $delete_stmt = $this->admin->runQuery('DELETE FROM user_notification WHERE user_id=:delete_all_mail');
-                $delete_stmt->execute([':delete_all_mail' => $delete_all_mail]);
-        
-                // Show success message after deletion
-                echo "<script>alert('All mails deleted!'); window.location.href = '../user_history.php'; </script>";
-            } else {
-                // If no records are found, show an alert
-                echo "<script>alert('NO MESSAGES FOUND'); window.location.href = '../user_history.php'; </script>";
-            }
-        }
-
     public function send_msg($receiver,$type,$text ){
         try {
             $stmt= $this->admin->runQuery('SELECT * FROM user WHERE fullname = :name');
@@ -88,8 +70,9 @@ CLASS User_Side{
             echo "Error: " . $e->getMessage();
             return false;
         }
-        
     }
+
+    
 }
 
 if (isset($_POST['btn-submit-sup'])) {
@@ -107,14 +90,6 @@ if (isset($_POST['user-btn-delete'])) {
     
     $delete_msg = new User_Side();
     $delete_msg->user_history($delete_mail);
-
-}
-
-if (isset($_POST['user-btn-delete-all'])) {
-    $delete_all_mail = trim($_POST['user-btn-delete-all']);
-    
-    $delete_msgs = new User_Side();
-    $delete_msgs->delete_mails($delete_all_mail);
 
 }
 

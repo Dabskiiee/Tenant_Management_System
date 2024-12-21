@@ -25,6 +25,7 @@ $token = $_GET['token'];
     <meta charset="UTF-8">
     <title>Reset Password</title>
     <link rel="stylesheet" href="src/css/login/reset-password.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <div class = "con">
@@ -44,5 +45,6 @@ $token = $_GET['token'];
         </form>
         </div>
     </div>
+    <?php include_once 'config/sweetalert.php'; ?>
 </body>
 </html>
