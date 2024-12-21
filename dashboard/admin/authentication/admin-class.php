@@ -1469,15 +1469,14 @@ class ADMIN
 
     public function getUserData()
     {
-        // Start session if it's not started
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Get user ID from session
+       
         $user_id = $_SESSION['userSession'];
 
-        // Fetch user data from the database
+        
         $sql = "SELECT * FROM user WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
@@ -1485,23 +1484,23 @@ class ADMIN
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Update user profile data
+   
     public function updateUserProfile($postData, $fileData)
     {
-        // Sanitize and capture form data
+        
         $fullname = htmlspecialchars(trim($postData['fullname']));
         $firstname = htmlspecialchars(trim($postData['firstname']));
         $lastname = htmlspecialchars(trim($postData['lastname']));
         $birthday = htmlspecialchars(trim($postData['birthday']));
         $civil_status = htmlspecialchars(trim(strtolower($postData['civil_status'])));
         $gender = htmlspecialchars(trim(strtolower($postData['gender'])));
-        $imagePath = $this->getUserData()['profile_image']; // Default to existing image
+        $imagePath = $this->getUserData()['profile_image']; 
 
-        // Handle image upload
+        
         if (isset($fileData['profile_image']) && $fileData['profile_image']['error'] == UPLOAD_ERR_OK) {
             $targetDir = "uploads/profile_pictures/";
             if (!is_dir($targetDir)) {
-                mkdir($targetDir, 0755, true); // Create directory if not exists
+                mkdir($targetDir, 0755, true); 
             }
 
             $imageFileType = strtolower(pathinfo($fileData['profile_image']['name'], PATHINFO_EXTENSION));
@@ -1512,7 +1511,7 @@ class ADMIN
                 $targetFile = $targetDir . $newFileName;
 
                 if (move_uploaded_file($fileData['profile_image']['tmp_name'], $targetFile)) {
-                    $imagePath = $targetFile; // Update the path
+                    $imagePath = $targetFile; 
                 } else {
                     return "Failed to upload profile picture.";
                 }
@@ -1521,7 +1520,7 @@ class ADMIN
             }
         }
 
-        // Update user data including profile image
+       
         $update_sql = "UPDATE user SET fullname = :fullname, firstname = :firstname, lastname = :lastname, 
                        birthday = :birthday, civil_status = :civil_status, gender = :gender, 
                        profile_image = :profile_image WHERE id = :id";
@@ -1542,6 +1541,33 @@ class ADMIN
             return "Error updating profile.";
         }
     }
+
+
+   
+    public function fetchTenants($search_term = '')
+    {
+        $query = "SELECT * FROM user WHERE usertype = 'user' AND status != ''";
+        if ($search_term) {
+            $query .= " AND fullname LIKE :search_term";
+        }
+
+        $stmt = $this->conn->prepare($query);
+        if ($search_term) {
+            $stmt->bindValue(':search_term', '%' . $search_term . '%', PDO::PARAM_STR);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+  
+    public function removeTenant($user_id)
+    {
+        $stmt = $this->conn->prepare("UPDATE user SET status = '' WHERE id = :id");
+        $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
 }
 if (isset($_POST['btn-signup'])) {
     $_SESSION['not_verify_fullname'] = trim($_POST['fullname']);
