@@ -6,11 +6,11 @@ if(!$admin->isUserLoggedIn()) {
     $admin->redirect();
 }
 
-// Check if the 'id' parameter exists in the URL
+
 if (isset($_GET['id'])) {
     $user_id = $_GET['id'];
 
-    // Fetch user details based on the user ID
+
     $stmt = $admin->runQuery("SELECT * FROM user WHERE id = :id");
     $stmt->execute(array(":id" => $user_id));
     $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,6 +23,7 @@ if (isset($_GET['id'])) {
     echo "No user ID provided.";
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +42,7 @@ if (isset($_GET['id'])) {
     <div class="user-info-container">
         <div class="user-info">
             <div class="profile-image-section">
-                <img src="<?php echo '../user/' . htmlspecialchars($user_data['profile_image'] ?? '../user/uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
+                <img src="<?php echo htmlspecialchars($user_data['profile_image'] ?? '../user/uploads/profile_pictures/default_profile.jpg'); ?>" alt="Profile Picture" class="profile-image">
             </div>
             <div class="details">
                 <h3>Name: <span><?php echo $user_data['fullname']; ?></span></h3>

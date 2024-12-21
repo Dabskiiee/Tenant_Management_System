@@ -1,79 +1,21 @@
 <?php
-session_start();
-require '../../database/dbconnection.php';
+require_once '../../dashboard/admin/authentication/admin-class.php'; // Include the ADMIN class
 
-$user_id = $_SESSION['userSession'];
-
-// Instantiate the Database class and connect
-$db_instance = new Database();
-$conn = $db_instance->dbConnection();
+// Instantiate the ADMIN class
+$admin = new ADMIN();
 
 // Fetch user data
-$sql = "SELECT * FROM user WHERE id = :id";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$user = $admin->getUserData();
 
-
+// Handle form submission to update profile
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanitize and capture form data
-    $fullname = htmlspecialchars(trim($_POST['fullname']));
-    $firstname = htmlspecialchars(trim($_POST['firstname']));
-    $lastname = htmlspecialchars(trim($_POST['lastname']));
-    $birthday = htmlspecialchars(trim($_POST['birthday']));
-    $civil_status = htmlspecialchars(trim(strtolower($_POST['civil_status'])));
-    $gender = htmlspecialchars(trim(strtolower($_POST['gender'])));
-    $imagePath = $user['profile_image']; // Default to existing image
+    $message = $admin->updateUserProfile($_POST, $_FILES);
 
-    // Handle image upload
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
-        $targetDir = "uploads/profile_pictures/";
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0755, true); // Create directory if not exists
-        }
-
-        $imageFileType = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-
-        if (in_array($imageFileType, $allowedTypes)) {
-            $newFileName = uniqid('profile_', true) . '.' . $imageFileType;
-            $targetFile = $targetDir . $newFileName;
-
-            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
-                $imagePath = $targetFile; // Update the path
-            } else {
-                $error_message = "Failed to upload profile picture.";
-            }
-        } else {
-            $error_message = "Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.";
-        }
-    }
-
-    if (!isset($error_message)) {
-        // Update user data including profile image
-        $update_sql = "UPDATE user SET fullname = :fullname, firstname = :firstname, lastname = :lastname, 
-                       birthday = :birthday, civil_status = :civil_status, gender = :gender, 
-                       profile_image = :profile_image WHERE id = :id";
-
-        $update_stmt = $conn->prepare($update_sql);
-
-        $update_stmt->bindParam(":fullname", $fullname, PDO::PARAM_STR);
-        $update_stmt->bindParam(":firstname", $firstname, PDO::PARAM_STR);
-        $update_stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
-        $update_stmt->bindParam(":birthday", $birthday, PDO::PARAM_STR);
-        $update_stmt->bindParam(":civil_status", $civil_status, PDO::PARAM_STR);
-        $update_stmt->bindParam(":gender", $gender, PDO::PARAM_STR);
-        $update_stmt->bindParam(":profile_image", $imagePath, PDO::PARAM_STR);
-        $update_stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
-
-        if ($update_stmt->execute()) {
-            $success_message = "Profile updated successfully!";
-            header("Location: user_profile.php?success=1");
-            exit;
-        } else {
-            $error_message = "Error updating profile.";
-        }
+    if ($message == "Profile updated successfully!") {
+        header("Location: user_profile.php?success=1");
+        exit;
+    } else {
+        $error_message = $message;
     }
 }
 
@@ -82,7 +24,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     $success_message = "Profile updated successfully!";
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -218,4 +159,3 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
 </body>
 
 </html>
-<?php

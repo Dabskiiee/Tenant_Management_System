@@ -1,5 +1,47 @@
 <?php
-    include_once 'config/settings-configuration.php';
+include_once 'config/settings-configuration.php';
+
+if (isset($_POST['btn-signin'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Prepare SQL to fetch the user by email
+    $stmt = $admin->runQuery("SELECT id, email, password, status FROM user WHERE email = :email");
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if user exists
+    if ($user) {
+        // Verify the password
+        if (password_verify($password, $user['password'])) {
+            // Check if the user status is not 'active'
+            if ($user['status'] !== 'active') {
+                // Redirect or show message if user is not active
+                $_SESSION['error_message'] = "No account found with that email.";
+                header("Location: ../../login.php");
+                exit;
+            }
+
+            // If the status is 'active', proceed with login
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+            // Redirect to dashboard or any other protected page
+            header("Location: ../../dashboard.php");
+            exit;
+        } else {
+            // Incorrect password
+            $_SESSION['error_message'] = "Incorrect email or password.";
+            header("Location: ../../login.php");
+            exit;
+        }
+    } else {
+        // User not found
+        $_SESSION['error_message'] = "User does not exist.";
+        header("Location: ../../login.php");
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>

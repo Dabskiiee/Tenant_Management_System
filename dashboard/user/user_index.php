@@ -2,21 +2,26 @@
 require_once '../admin/authentication/admin-class.php';
 
 $admin = new ADMIN();
-if(!$admin->isUserLoggedIn()) {
+if (!$admin->isUserLoggedIn()) {
     $admin->redirect();
+}
+
+$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
+$stmt2->execute(array(":id" => $_SESSION['userSession']));
+$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($user_data2['status'] !== 'active') {
+    session_destroy();
+    header("Location: ../../login.php?status=inactive");
+    exit();
 }
 
 $stmt = $admin->runQuery("SELECT * FROM user_bills WHERE user_details = :id");
 $stmt->execute(array(":id" => $_SESSION['userSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-$stmt2 = $admin->runQuery("SELECT * FROM user WHERE id = :id");
-$stmt2->execute(array(":id" => $_SESSION['userSession']));
-$user_data2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
 $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + $user_data['wifi'] + $user_data['unpaid_amt'];
-      
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -84,9 +89,23 @@ $total = $user_data['water'] + $user_data['rent'] + $user_data['electricity'] + 
 
                 </form>
 
-            </nav>
-            <main class="content px-3 py-4">
-            <div>
+<div class="layout">
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#" class="sidebar-link">Dashboard</a></li>
+            <li><a href="user_history.php" class="sidebar-link">Mailbox</a></li>
+            <li><a href="user_support.php" class="sidebar-link">Support</a></li>
+            <li><a href="user_about_us.php" class="sidebar-link">About Us</a></li>
+            <li><a href="user_profile.php" class="sidebar-link" >Profile</a></li>
+            <li><a href="../landlord/landlord_tenant_profile.php" class="sidebar-link" >Tenants</a></li>
+        </ul>
+    </div>
+    <button class="sign-out"> 
+        <a href="dashboard/admin/authentication/admin-class.php?admin-signout">SIGN OUT</a>
+    </button>
+
+    <div class="main-content">
+    <div>
         <div class="user-info-container">
             <div class="user-info">
                 <div class="profile-image-section">
