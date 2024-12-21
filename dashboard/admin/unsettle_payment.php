@@ -24,6 +24,7 @@ $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 <body>
     
     <form action="" method="POST">
+                <a href="admin_dashboard.php"><img src="../../src/img/back_button.png" alt="haws" width="25px" height="30px"></a>
                 <h1>UNSETTLED TENANT PAYMENT</h1>
                 
                 <input type="hidden" name="id" value="<?= $user_data['user_details'] ?>">

@@ -1,9 +1,15 @@
 :root {
+    --primary-color: #cbd8cc;
+    --primary-c: #45a049; /* Green for primary color */
+    --secondary-color: #f0f0f0;
+    --text-color: #333;
+    --border-color: #ddd;
+    --highlight-color: #6c757d;
     --font-primary: 'Poppins', sans-serif;
     --color-bg: #fff;
-    --color-bg-sidebar: #f4c430;
+    --color-bg-sidebar: #ca564d;
     --color-bg-hover: rgba(255, 255, 255, 0.075);
-    --color-highlight: #6c757d;
+    --color-highlight: #6c757d; /* Green color for highlights */
     --color-text: #fff;
     --font-size-base: 0.9rem;
     --font-size-logo: 1.15rem;
@@ -188,235 +194,103 @@ a.sidebar-link:hover {
 
 @media (min-width: 768px) {}
 
-/* Reset some default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
 }
 
-/* Main content area */
-.main {
-    margin-left: 0px; 
-    padding: 10px;
-}
-
-/* Title */
 h3 {
     font-size: 2rem; 
     color: var(--text-color); 
     text-align: center; 
     font-weight: bold; 
-    margin-top: -20px;
+    margin-top: -150px;
     margin-bottom: 5px; 
     padding: 10px; 
     text-transform: uppercase; 
     letter-spacing: 1px;
-    border-bottom: 3px solid var(--text-color);
 }
 
-h1 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: bold;  
-}
-
-/* General styles for the form */
-.search-form {
-    display: flex;
-    justify-content: center; 
-    align-items: center;     
-    margin: 20px auto;
-    padding: 10px;
-    max-width: 500px; 
-    border-radius: 5px; 
-
-}
-
-/* Style for the input field */
-.search-form input[type="text"] {
-    flex-grow: 1; 
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-    outline: none;
-}
-
-/* Input field focus style */
-.search-form input[type="text"]:focus {
-    border-color: #090909; 
-    box-shadow: 0 0 5px rgba(137, 139, 142, 0.5); 
-}
-
-/* Style for the submit button */
-.search-form .search-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #787a7d; 
-    border: none;
-    border-radius: 4px;
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-}
-
-/* Button hover effect */
-.search-form .search-btn:hover {
-    background-color: #595959; 
-}
-
-/* Button focus effect */
-.search-form .search-btn:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(174, 178, 182, 0.5);
-}
-
-/* Add space for room tables */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 40px;  
+    margin: 20px 0;
+    font-size: 16px;
+    background-color: white;
 }
 
-table th, table td {
-    padding: 9px;
-    border: 1px solid #ddd;
+/* Table Styling for class 'styled-table' */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    background-color: white;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px;
     text-align: center;
+    border: 1px solid var(--border-color);
 }
 
-th {
+.styled-table th {
+    background-color: var(--highlight-color);
+    color: var(--primary-c);
+}
+
+/* Set green background color for the first row (ID, Name, Guests, Activity, Time) */
+.styled-table tr:first-child th {
     background-color: #343a40; 
     color: white; 
-    font-size: 16px;
-    padding: 12px 15px;
-    text-align: left; 
 }
 
-
-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+/* Style for even rows */
+.styled-table tr:nth-child(even) {
+    background-color: var(--secondary-color);
 }
 
-/* Add space between room sections */
-.layout > div {
-    margin-bottom: 40px; 
-}
-
-
-table td {
-    font-size: 14px;
-    color: #555;
-}
-
-/* Edit Delete Buttons */
-#delete, #edit {
-    border: none;
-    background: none; 
-    padding: 0;
-}
-
-.buttons i {
-    font-size: 20px; 
-    border: none; 
-    padding: 0; 
-}
-
-#edit i {
-    color: #007bff; 
-}
-
-#delete i {
-    color: #ff3b30; 
-}
-
-#edit:hover i, #delete:hover i {
-    opacity: 0.7; 
-}
-
-
-/* Table No Record Found */
-td[colspan="12"], td[colspan="11"] {
-    text-align: center;
-    color: #888;
-    font-size: 18px;
-}
-
-/* Style for Unsettled icon */
-a#edit .unsettled-icon {
-    color: red !important;
-    font-size: 20px; 
-    font-weight: bold; 
-}
-
-/* General styling for the table cell containing buttons */
-td {
-    padding: 10px;
-    text-align: center;
-}
-
-/* General button styles for both VIEW and REMOVE buttons */
-.buttons {
-    display: inline-block;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
-    border: none;
-    background: none;
-    outline: none;
-    transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.view-btn {
-    color: #4CAF50;
-}
-
-.view-btn:hover {
-    color: #45a049;
-    transform: scale(1.05);
-}
-
-.remove-btn {
-    color: #dd2c0c;
-}
-
-.remove-btn:hover {
-    color: #c62828;
-    transform: scale(1.05);
-}
-
-.buttons i {
-    margin-right: 8px;
-    font-size: 18px;
-}
-
-.remove-btn:disabled {
-    color: #9e9e9e;
-    cursor: not-allowed;
-}
-
-table th {
-    background-color: #343a40;
+/* Hover effect for table rows */
+.styled-table tr:hover {
+    background-color: var(--primary-color);
     color: white;
+}
+
+.styled-table tr td {
+    color: var(--text-color);
+}
+
+/* Center the save button using Flexbox */
+.layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.buttons {
+    background-color: var(--color-highlight);
+    color: white;
+    border: none;
+    padding: 12px 30px;
     font-size: 16px;
-    padding: 12px 15px;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 20px auto;
     text-align: center;
+    width: 200px;
 }
 
-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+.buttons:hover {
+    background-color: #343a40; /* Darker green on hover */
 }
 
-/* Make table responsive for smaller screens */
+/* Responsive */
+
+/* Responsive Design for Mobile (max-width: 768px) */
 @media (max-width: 768px) {
     .main {
         margin-left: 0;
@@ -431,22 +305,9 @@ table tbody tr:nth-child(even) {
     table td {
         font-size: 14px;
     }
-    .search-form {
-        max-width: 100%;
-        padding: 15px;
-    }
-
-    .search-form input[type="text"] {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    .search-form .search-btn {
-        font-size: 14px;
-        padding: 8px 15px;
-    }
 }
 
+/* Mobile Design for Smaller Screens */
 @media (max-width: 500px) {
     table {
         width: 100%;
@@ -455,3 +316,5 @@ table tbody tr:nth-child(even) {
         white-space: nowrap;
     }
 }
+
+

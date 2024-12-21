@@ -51,6 +51,7 @@ if (isset($_POST['btn-signin'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="src/css/login/login.css">
     <title>Tenant_Management_System Login Page</title>
 </head>
@@ -102,6 +103,7 @@ if (isset($_POST['btn-signin'])) {
         </div>
     </div>
     <script src="src/js/script.js"></script>
+    <?php include_once 'config/sweetalert.php'; ?>
 </body>
 
 </html>

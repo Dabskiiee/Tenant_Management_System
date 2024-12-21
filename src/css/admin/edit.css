@@ -5,7 +5,6 @@ body {
     padding: 0;
 }
 
-/* Styling for the form container */
 form {
     width: 50%;
     margin: 50px auto;
@@ -48,7 +47,7 @@ input[type="text"], input[type="email"], input[type="number"], input[type="date"
 button[type="submit"] {
     width: 100%;
     padding: 12px;
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
     font-size: 16px;
     border: none;
@@ -57,7 +56,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #007bff;
 }
 
 /* Styling for form input on focus */
@@ -102,7 +101,7 @@ select:focus {
 }
 
 #shorter{
-    width: 15%;
+    width: 30%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;

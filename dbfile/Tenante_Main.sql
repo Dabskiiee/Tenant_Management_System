@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 10, 2024 at 11:49 AM
+-- Generation Time: Dec 19, 2024 at 06:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `email_config` (
 --
 
 INSERT INTO `email_config` (`id`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'tenantemanagement@gmail.com', 'bqpn gijq kenu sxbl', '2024-09-22 00:44:32', NULL);
+(1, 'tenantemanagement@gmail.com', 'bqpn gijq kenu sxbl', '2024-09-21 16:44:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -62,10 +62,9 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`id`, `user_id`, `name`, `guests`, `activity`, `created_at`) VALUES
-(8, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-10 08:55:39'),
-(9, 8, 'hildz', 0, 'Has successfully signed in.', '2024-12-10 09:20:58'),
-(10, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-10 10:18:23'),
-(11, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-10 10:20:36');
+(51, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-15 15:13:36'),
+(52, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-15 15:16:22'),
+(53, 1, 'adie', 0, 'Has successfully signed in.', '2024-12-19 05:15:14');
 
 -- --------------------------------------------------------
 
@@ -87,9 +86,9 @@ CREATE TABLE `rent_distribution` (
 --
 
 INSERT INTO `rent_distribution` (`id`, `room_no`, `elec`, `water`, `rent`, `wifi`) VALUES
-(1, 1, 1750, 500, 5000, 1500),
-(2, 2, 1500, 300, 5000, 1500),
-(3, 3, 1350, 450, 5000, 1500);
+(1, 1, 650, 750, 5000, 1500),
+(2, 2, 2000, 1200, 5000, 1500),
+(3, 3, 1200, 500, 5000, 1500);
 
 -- --------------------------------------------------------
 
@@ -121,12 +120,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `fullname`, `email`, `usertype`, `firstname`, `lastname`, `birthday`, `civil_status`, `gender`, `profile_image`, `password`, `reset_token`, `token_expiry`, `status`, `tokencode`, `created_at`) VALUES
-(1, 'adie', 'adiesayu928@gmail.com', 'user', '', '', NULL, 'single', 'Other', 'uploads/profile_pictures/default_profile.jpg', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-12-09 11:02:05'),
+(1, 'adie', 'adiesayu928@gmail.com', 'user', 'jonatan', 'mekeni', '2000-12-08', 'single', 'Male', 'uploads/profile_pictures/profile_6759bc56931770.20207478.png', '827ccb0eea8a706c4c34a16891f84e7b', 'b35a791797f429667ecd96a26130b83d83c0d1d993c39f33c59e981dd0e8a093', '2024-12-10 15:28:32', 'active', NULL, '2024-12-09 11:02:05'),
 (2, 'Adrian', 'drpepper3k@gmail.com', 'user', 'Adruia', 'Lolad', '0033-12-03', 'widowed', 'Female', 'uploads/profile_pictures/profile_6754667007c3b8.35262126.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-11-22 22:09:43'),
 (4, 'Miko', 'alucifer757@gmail.com', 'user', '123', 'adasd123', '0023-12-31', 'divorced', 'Female', 'uploads/profile_pictures/profile_6754635193f7c9.56919858.png', 'c13367945d5d4c91047b3b50234aa7ab', NULL, NULL, 'active', NULL, '2024-12-07 06:48:31'),
 (5, 'Lelouch vi Britannia', 'idkfamhelpme@gmail.com', 'user', 'alsdkoka', 'Lelo123', '0144-04-04', 'single', 'Female', 'uploads/profile_pictures/profile_67546641d61165.02221014.png', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-07 07:13:00'),
-(7, 'alan john', 'ajjohn152129@gmail.com', 'admin', '', '', '0000-00-00', '', 'Other', 'uploads/profile_pictures/default_profile.jpg', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-23 22:46:26'),
-(8, 'hildz', 'hildakagura46@gmail.com', 'user', '', '', NULL, 'single', 'Other', 'uploads/profile_pictures/default_profile.jpg', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-10 09:13:39');
+(7, 'admin', 'tenantemanagement@gmail.com', 'admin', '', '', '0000-00-00', 'single', 'Other', 'uploads/profile_pictures/default_profile.jpg', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, 'active', NULL, '2024-11-23 22:46:26'),
+(9, 'pog1lndlord', 'luis.dabu1226@gmail.com', 'landlord', '', '', NULL, 'single', 'Other', 'uploads/profile_pictures/default_profile.jpg', '202cb962ac59075b964b07152d234b70', NULL, NULL, 'active', NULL, '2024-12-10 01:13:39');
 
 -- --------------------------------------------------------
 
@@ -154,11 +153,10 @@ CREATE TABLE `user_bills` (
 --
 
 INSERT INTO `user_bills` (`id`, `room_no`, `name`, `user_details`, `email`, `balance`, `electricity`, `water`, `rent`, `wifi`, `due_date`, `unpaid_amt`) VALUES
-(1, 1, 'adie', 1, 'adiesayu928@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-01-03', 200.00),
-(2, 1, 'Adrian', 2, 'drpepper3k@gmail.com', 0, 875.00, 250.00, 5000, 1500, '2024-12-01', 0.00),
-(4, 2, 'Miko', 4, 'alucifer757@gmail.com', 6500, 1750.00, 500.00, 5000, 1500, '2025-02-07', 0.00),
-(5, 3, 'Lelouch vi Britannia', 5, 'idkfamhelpme@gmail.com', 6500, 1750.00, 500.00, 5000, 1500, '2025-02-07', 0.00),
-(7, 0, 'hildz', 8, 'hildakagura46@gmail.com', 6500, 0.00, 0.00, 5000, 1500, '2025-02-07', 0.00);
+(1, 2, 'adie', 1, 'adiesayu928@gmail.com', 5500, 1000.00, 600.00, 5000, 1500, '2025-01-03', 0.00),
+(2, 1, 'Adrian', 2, 'drpepper3k@gmail.com', 0, 0.00, 325.00, 5000, 1500, '2025-01-03', 0.00),
+(4, 2, 'Miko', 4, 'alucifer757@gmail.com', 6500, 1000.00, 600.00, 5000, 1500, '2025-01-03', 0.00),
+(5, 3, 'Lelouch vi Britannia', 5, 'idkfamhelpme@gmail.com', 6500, 3000.00, 1600.00, 5000, 1500, '2025-01-03', 0.00);
 
 -- --------------------------------------------------------
 
@@ -188,13 +186,6 @@ CREATE TABLE `user_notification` (
   `notif` text NOT NULL,
   `time_sent` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_notification`
---
-
-INSERT INTO `user_notification` (`id`, `user_id`, `sent_by`, `notif`, `time_sent`) VALUES
-(4, 1, 'Admin', 'Your Report is approved and noted by this dormitory! We will take further action as soon as possible!', '2024-12-09 12:48:55');
 
 --
 -- Indexes for dumped tables
@@ -248,7 +239,7 @@ ALTER TABLE `user_notification`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `rent_distribution`
@@ -260,7 +251,7 @@ ALTER TABLE `rent_distribution`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_bills`
@@ -272,13 +263,13 @@ ALTER TABLE `user_bills`
 -- AUTO_INCREMENT for table `user_comments`
 --
 ALTER TABLE `user_comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `user_notification`
 --
 ALTER TABLE `user_notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- Constraints for dumped tables
